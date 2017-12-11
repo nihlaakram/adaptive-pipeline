@@ -10,7 +10,15 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>adaptive-pipeline-xml-generator</module>
+        <module>adaptive-pipeline-varying-load</module>
     </modules>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <slf4j.version>1.7.15</slf4j.version>
+        <junit.version>4.11</junit.version>
+    </properties>
 
 </project>
