@@ -28,12 +28,12 @@ public class Stage implements EventHandler<LongEvent> {
     public void onEvent(LongEvent event, long sequence, boolean endOfBatch) {
 
         if(event.getId()%getNum()==this.id){
-            for(int i=0; i<10000; i++){}
+            //for(int i=0; i<10000; i++){}
             incrementCount();
             totallatency= (System.currentTimeMillis()-event.getTimestamp());
 
             if(count%100==0){
-                System.out.println(count+ "  "+ ((totallatency*0.1)/count));
+                System.out.println(count+ "\tavg lat: "+ ((totallatency*1.0)/count));
             }
         }
     }

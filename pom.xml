@@ -11,6 +11,8 @@
     <modules>
         <module>adaptive-pipeline-xml-generator</module>
         <module>adaptive-pipeline-varying-load</module>
+        <module>adaptive-pipeline-framework</module>
+        <module>adaptive-pipeline-framework</module>
     </modules>
 
     <properties>
