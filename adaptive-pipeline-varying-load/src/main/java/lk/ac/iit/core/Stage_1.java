@@ -2,12 +2,8 @@ package lk.ac.iit.core;
 
 import com.lmax.disruptor.EventHandler;
 import lk.ac.iit.data.LongEvent;
-import lk.ac.iit.data.XMLMessage;
-import org.apache.commons.text.RandomStringGenerator;
 
-import java.util.concurrent.LinkedBlockingQueue;
-
-public class Stage implements EventHandler<LongEvent> {
+public class Stage_1 implements EventHandler<LongEvent> {
     private String name;
     private final int id;
     private static int num;
@@ -16,7 +12,7 @@ public class Stage implements EventHandler<LongEvent> {
     private static long totallatency = 0;
 
 
-    public Stage (String name, int id, int num){
+    public Stage_1(String name, int id, int num){
         this.name = name;
         this.id = id;
         this.num = num;
@@ -40,11 +36,11 @@ public class Stage implements EventHandler<LongEvent> {
 
 
     public synchronized static void setNum(int num) {
-        Stage.num = num;
+        Stage_1.num = num;
     }
 
     public synchronized static long getNum() {
-        return Stage.num;
+        return Stage_1.num;
     }
 
     private synchronized static void incrementCount(){

@@ -1,7 +1,7 @@
 //package lk.ac.iit.main;
 //
 //import lk.ac.iit.core.Producer;
-//import lk.ac.iit.core.Stage;
+//import lk.ac.iit.core.Stage_1;
 //import lk.ac.iit.core.Terminator;
 //import lk.ac.iit.data.XMLMessage;
 //
@@ -36,9 +36,9 @@
 //        }
 //
 //        //create the stages
-//        Stage[] stages = new Stage[stageCount];
+//        Stage_1[] stages = new Stage_1[stageCount];
 //        for(int i=0; i<stageCount; i++){
-//            stages[i] = new Stage(queues[i], queues[i+1], charCount);
+//            stages[i] = new Stage_1(queues[i], queues[i+1], charCount);
 //        }
 //
 //        //start threads
