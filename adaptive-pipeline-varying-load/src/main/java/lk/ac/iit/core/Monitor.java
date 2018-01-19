@@ -13,12 +13,14 @@ public class Monitor implements Runnable{
 
 
 
-    private Monitor(int monitorCount){
+    public Monitor(int stageCount, int monitorCount){
+        //StaticBlockSingleton
         this.analyzer = new Analyzer();
         this.terminated = false;
         this.monitorCount = monitorCount;
     }
 
+    //access monitor functions through this
     public synchronized static Monitor getMonitor(){
         System.out.println("Requested for monitor"+monitor);
         return monitor;
@@ -35,12 +37,20 @@ public class Monitor implements Runnable{
         this.terminated = true;
     }
 
-    public static void initMonitor(int monitorCount){
+    public static void initMonitor(int stageCount, int monitorCount){
         if(monitor == null){
 
-            monitor = new Monitor(monitorCount);
-            System.out.println("No monitor fount, creates one"+monitor);
+            monitor = new Monitor(stageCount, monitorCount);
+            System.out.println("No monitor found, creates one"+monitor);
         }
         //return monitor;
+    }
+
+    //sending latency data
+    public void setLatency(long [] latency){
+        int length = latency.length;
+        for (int i=0; i<length; i++)
+        System.out.print(latency[i]+"\t");
+
     }
 }
