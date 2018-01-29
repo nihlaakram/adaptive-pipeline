@@ -1,26 +1,12 @@
 package lk.ac.iit.data;
 
-public class StageData {
+public interface StageData {
 
-    private long timestamp;
-    private Object dataObject;
+    public long getTimestamp();
+    public void setTimestamp(long timestamp);
+    public Object getDataObject();
+    public void setDataObject(Object dataObject);
 
-    public StageData( Object dataObject){
-        this.timestamp = System.currentTimeMillis();
-        this.dataObject = dataObject;
-    }
-
-    public long getTimestamp() {
-        return this.timestamp;
-    }
-
-    public Object getDataObject() {
-        return this.dataObject;
-    }
-
-    public void setDataObject(Object dataObject) {
-        this.dataObject = dataObject;
-    }
 
 
 
