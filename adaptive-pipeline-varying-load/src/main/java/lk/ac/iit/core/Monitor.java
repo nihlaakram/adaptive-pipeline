@@ -39,7 +39,7 @@ public class Monitor implements Runnable{
 
     public static void initMonitor(int stageCount, int monitorCount){
         if(monitor == null){
-
+            //lazy thread safe
             monitor = new Monitor(stageCount, monitorCount);
             System.out.println("No monitor found, creates one"+monitor);
         }
