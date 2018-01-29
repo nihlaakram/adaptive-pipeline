@@ -1,6 +1,7 @@
 package lk.ac.iit.core;
 
 
+import java.util.ArrayList;
 
 //
 public class Monitor implements Runnable{
@@ -9,7 +10,10 @@ public class Monitor implements Runnable{
     private static Monitor monitor;
 
     private int monitorCount;
+    private int stageCount;
     private boolean terminated;
+
+    private ArrayList<Long> [] latencyArr;
 
 
 
@@ -18,18 +22,41 @@ public class Monitor implements Runnable{
         this.analyzer = new Analyzer();
         this.terminated = false;
         this.monitorCount = monitorCount;
+        this.stageCount = stageCount;
+        this.latencyArr = new ArrayList[this.stageCount];
+
+        for(int i=0; i<this.stageCount; i++){
+            this.latencyArr[i] = new ArrayList<>();
+        }
+
     }
 
     //access monitor functions through this
     public synchronized static Monitor getMonitor(){
-        System.out.println("Requested for monitor"+monitor);
+        //System.out.println("Requested for monitor"+monitor);
         return monitor;
     }
 
     @Override
     public void run() {
 
-        while (!this.terminated){}
+        while (!this.terminated){
+            //System.out.println("Thread running"+latencyArr[0]);
+            //if count is reached, send data to analyser
+            if(this.latencyArr[this.stageCount-1].size()==this.monitorCount){
+                for(int i=0; i<this.monitorCount; i++){
+                    System.out.print(i+" ");
+                    for(int j=0; j<this.stageCount; j++){
+                        System.out.print(this.latencyArr[j].get(i)+"\t");
+                    }
+                    System.out.println();
+
+                }
+                break;
+            }
+
+
+        }
 
     }
 
@@ -41,16 +68,17 @@ public class Monitor implements Runnable{
         if(monitor == null){
             //lazy thread safe
             monitor = new Monitor(stageCount, monitorCount);
-            System.out.println("No monitor found, creates one"+monitor);
+           // System.out.println("No monitor found, creates one"+monitor);
         }
         //return monitor;
     }
 
     //sending latency data
     public void setLatency(long [] latency){
-        int length = latency.length;
-        for (int i=0; i<length; i++)
-        System.out.print(latency[i]+"\t");
+        for(int i=0; i<this.stageCount; i++){
+            this.latencyArr[i].add(latency[i]);
+        }
+        //System.out.println(this.latencyArr[0].get(0));
 
     }
 }
