@@ -7,7 +7,6 @@ public class Analyser {
     private int noOfStages;
     private int noOfSummarizer;
     private int monitorThreshold;
-    private Executor executor;
 
     private long[] latencyArr;
     private double[] tpsArr;
@@ -15,8 +14,8 @@ public class Analyser {
     private long [] endTime;
     private double [] avgLatency;
 
-    public Analyser(Executor executor, int noOfStages, int monitorThreshold) {
-        this.executor = executor;
+    public Analyser(int noOfStages, int monitorThreshold) {
+
         this.noOfStages = noOfStages;
         this.monitorThreshold = monitorThreshold;
         this.noOfSummarizer = getNoOfStages() -1;
@@ -66,8 +65,5 @@ public class Analyser {
         return this.monitorThreshold;
     }
 
-    public Executor getExecutor() {
-        return this.executor;
-    }
 
 }

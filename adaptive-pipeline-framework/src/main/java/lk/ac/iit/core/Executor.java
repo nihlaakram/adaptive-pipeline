@@ -1,5 +1,7 @@
 package lk.ac.iit.core;
 
+import lk.ac.iit.core.planner.Planner;
+
 public class Executor implements Runnable {
 
     private static Executor executor;
@@ -7,7 +9,7 @@ public class Executor implements Runnable {
     private boolean terminate;
 
     private Executor() {
-        this.planner = new Planner();
+        this.planner = new Planner(null, 0);
         this.terminate = false;
     }
 

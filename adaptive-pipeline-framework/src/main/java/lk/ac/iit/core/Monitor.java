@@ -3,6 +3,7 @@ package lk.ac.iit.core;
 
 import lk.ac.iit.core.analyser.Analyser;
 import lk.ac.iit.core.analyser.AnalyserData;
+import lk.ac.iit.core.planner.Planner;
 
 //
 public class Monitor implements Runnable {
@@ -17,9 +18,9 @@ public class Monitor implements Runnable {
     private int tempCount = 0;
 
 
-    public Monitor(Executor executor, int noOfStage, int monitorThreshold) {
+    public Monitor(Planner planner, int noOfStage, int monitorThreshold) {
         //StaticBlockSingleton
-        this.analyser = new Analyser(executor, noOfStage, monitorThreshold);
+        this.analyser = new Analyser(noOfStage, monitorThreshold);
         this.terminated = false;
         this.monitorThreshold = monitorThreshold;
         this.noOfStage = noOfStage;
@@ -32,10 +33,10 @@ public class Monitor implements Runnable {
         return monitor1;
     }
 
-    public static void initMonitor(Executor executor, int stageCount, int monitorCount) {
+    public static void initMonitor(Planner planner, int stageCount, int monitorCount) {
         if (monitor1 == null) {
             //lazy thread safe
-            monitor1 = new Monitor(executor, stageCount, monitorCount);
+            monitor1 = new Monitor(planner, stageCount, monitorCount);
         }
     }
 
