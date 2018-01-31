@@ -1,11 +1,11 @@
 package lk.ac.iit.core.planner;
 
-public class LatencyPlanner {
+public class PlannerData {
 
     private boolean scalability;
     private int stageID;
 
-    public LatencyPlanner(boolean scalability, int stageID) {
+    public PlannerData(boolean scalability, int stageID) {
         this.scalability = scalability;
         this.stageID = stageID;
     }

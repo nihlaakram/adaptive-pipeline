@@ -10,6 +10,7 @@ public class PlannerTest {
         System.out.println(planner.getNoOfThread());
 
         System.out.println(planner.getMAX_THREADS());
+        System.out.println(planner.getMin(new double[]{1.0, 5.0, 0.0}));
 
     }
 }
