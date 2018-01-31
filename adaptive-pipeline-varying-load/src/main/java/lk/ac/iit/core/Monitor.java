@@ -9,23 +9,23 @@ public class Monitor implements Runnable{
     private Analyzer analyzer;
     private static Monitor monitor;
 
-    private int monitorCount;
-    private int stageCount;
+    private int monitorThreshold;
+    private int noOfStage;
     private boolean terminated;
 
     private ArrayList<Long> [] latencyArr;
 
 
 
-    public Monitor(int stageCount, int monitorCount){
+    public Monitor(Analyzer analyzer, int noOfStage, int monitorThreshold){
         //StaticBlockSingleton
-        this.analyzer = new Analyzer();
+        this.analyzer = analyzer;
         this.terminated = false;
-        this.monitorCount = monitorCount;
-        this.stageCount = stageCount;
-        this.latencyArr = new ArrayList[this.stageCount];
+        this.monitorThreshold = monitorThreshold;
+        this.noOfStage = noOfStage;
+        this.latencyArr = new ArrayList[this.noOfStage];
 
-        for(int i=0; i<this.stageCount; i++){
+        for(int i = 0; i<this.noOfStage; i++){
             this.latencyArr[i] = new ArrayList<>();
         }
 
@@ -33,7 +33,6 @@ public class Monitor implements Runnable{
 
     //access monitor functions through this
     public synchronized static Monitor getMonitor(){
-        //System.out.println("Requested for monitor"+monitor);
         return monitor;
     }
 
@@ -41,18 +40,17 @@ public class Monitor implements Runnable{
     public void run() {
 
         while (!this.terminated){
-            //System.out.println("Thread running"+latencyArr[0]);
             //if count is reached, send data to analyser
-            if(this.latencyArr[this.stageCount-1].size()==this.monitorCount){
-                for(int i=0; i<this.monitorCount; i++){
+            if(this.latencyArr[this.noOfStage -1].size()==this.monitorThreshold){
+                for(int i = 0; i<this.monitorThreshold; i++){
                     System.out.print(i+" ");
-                    for(int j=0; j<this.stageCount; j++){
+                    for(int j = 0; j<this.noOfStage; j++){
                         System.out.print(this.latencyArr[j].get(i)+"\t");
                     }
                     System.out.println();
 
                 }
-                break;
+               // break;
             }
 
 
@@ -64,21 +62,17 @@ public class Monitor implements Runnable{
         this.terminated = true;
     }
 
-    public static void initMonitor(int stageCount, int monitorCount){
+    public static void initMonitor(Analyzer analyzer, int stageCount, int monitorCount){
         if(monitor == null){
             //lazy thread safe
-            monitor = new Monitor(stageCount, monitorCount);
-           // System.out.println("No monitor found, creates one"+monitor);
+            monitor = new Monitor(analyzer, stageCount, monitorCount);
         }
-        //return monitor;
     }
 
     //sending latency data
     public void setLatency(long [] latency){
-        for(int i=0; i<this.stageCount; i++){
+        for(int i = 0; i<this.noOfStage; i++){
             this.latencyArr[i].add(latency[i]);
         }
-        //System.out.println(this.latencyArr[0].get(0));
-
     }
 }
