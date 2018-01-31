@@ -52,7 +52,6 @@ public class Monitor implements Runnable{
 
     private synchronized void sendDataToAnalyser(){
         for(int i = 0; i<this.monitorThreshold; i++){
-            //System.out.print(i+" ");
             for(int j = 0; j<this.noOfStage; j++){
                 System.out.print(this.timeArray[i][j]+"\t");
             }
