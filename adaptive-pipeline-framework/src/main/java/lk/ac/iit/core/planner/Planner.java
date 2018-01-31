@@ -36,7 +36,13 @@ public class Planner {
         return noOfThread;
     }
 
-
+    //check is the system can scale
+    public boolean systemScale(){
+        if(getMAX_THREADS()<getNoOfThread() || getMAX_THREADS()!=getNoOfThread()){
+            return true;
+        }
+        return  false;
+    }
 
 
 }
