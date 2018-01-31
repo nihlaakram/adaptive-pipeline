@@ -11,7 +11,7 @@ public class MonitorTest {
         t1.start();
         for (int i = 0; i < 2000; i++) {
 
-            monitor1.setTimestamp(new long[]{i, i + 1, i + 2});
+            monitor1.setTimestamp(new long[]{0,  + 1,  + 2});
 
 
         }
