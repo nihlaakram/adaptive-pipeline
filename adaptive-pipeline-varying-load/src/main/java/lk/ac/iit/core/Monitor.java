@@ -1,11 +1,14 @@
 package lk.ac.iit.core;
 
 
+import lk.ac.iit.core.analyser.Analyser;
+import lk.ac.iit.core.analyser.AnalyserData;
+
 //
 public class Monitor implements Runnable {
 
     private static Monitor monitor1;
-    private Analyzer analyzer;
+    private Analyser analyser;
     private int monitorThreshold;
     private int noOfStage;
     private boolean terminated;
@@ -16,7 +19,7 @@ public class Monitor implements Runnable {
 
     public Monitor(Executor executor, int noOfStage, int monitorThreshold) {
         //StaticBlockSingleton
-        this.analyzer = new Analyzer(executor, noOfStage, monitorThreshold);
+        this.analyser = new Analyser(executor, noOfStage, monitorThreshold);
         this.terminated = false;
         this.monitorThreshold = monitorThreshold;
         this.noOfStage = noOfStage;
@@ -53,7 +56,11 @@ public class Monitor implements Runnable {
     }
 
     private synchronized void sendDataToAnalyser() {
-        this.analyzer.analyser(timeArray);
+        AnalyserData analyserData = this.analyser.analyse(timeArray);
+        //calculate
+        System.out.println("Avg Lat "+analyserData.getAvgLatency()[0]+"\t"+analyserData.getAvgLatency()[1]+"\t");
+        System.out.println("TPS "+analyserData.getTpsArr()[0]+"\t"+analyserData.getTpsArr()[1]+"\t");
+
     }
 
     private synchronized void resetMonitor() {

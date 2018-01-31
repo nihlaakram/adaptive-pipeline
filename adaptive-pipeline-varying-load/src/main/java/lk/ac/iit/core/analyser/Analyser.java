@@ -1,6 +1,8 @@
-package lk.ac.iit.core;
+package lk.ac.iit.core.analyser;
 
-public class Analyzer {
+import lk.ac.iit.core.Executor;
+
+public class Analyser {
 
     private int noOfStages;
     private int noOfSummarizer;
@@ -9,11 +11,11 @@ public class Analyzer {
 
     private long[] latencyArr;
     private double[] tpsArr;
-    long [] startTime;
-    long [] endTime;
-    double [] avgLatency;
+    private long [] startTime;
+    private long [] endTime;
+    private double [] avgLatency;
 
-    public Analyzer(Executor executor, int noOfStages, int monitorThreshold) {
+    public Analyser(Executor executor, int noOfStages, int monitorThreshold) {
         this.executor = executor;
         this.noOfStages = noOfStages;
         this.monitorThreshold = monitorThreshold;
@@ -31,16 +33,13 @@ public class Analyzer {
         this.avgLatency = new double[getNoOfStages()-1];
     }
 
-    public void analyser(long[][] timeData) {
+    public AnalyserData analyse(long[][] timeData) {
         initPerfSummarizer();
         //startTime and endTime related data
         this.startTime = timeData[0];
         this.endTime = timeData[getMonitorThreshold()-1];
 
-        //calculate TPS
-
-
-        //calculate total latency & average latency
+        //calculate TPS & average latency
         for (int j = 0; j < this.noOfStages-1; j++) {
             for (int i = 0; i < this.monitorThreshold; i++) {
                 this.latencyArr[j] = latencyArr[j]+(timeData[i][j+1]-timeData[i][j]);
@@ -50,9 +49,8 @@ public class Analyzer {
             tpsArr[j] = getMonitorThreshold()/(endTime[j+1]-startTime[j]);
         }
 
-        //calculate
-        System.out.println("Avg Lat "+avgLatency[0]+"\t"+avgLatency[1]+"\t");
-        System.out.println("TPS "+tpsArr[0]+"\t"+tpsArr[1]+"\t");
+        AnalyserData analyzerData = new AnalyserData(this.tpsArr, this.avgLatency);
+        return analyzerData;
 
 
 
