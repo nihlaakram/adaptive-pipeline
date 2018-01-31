@@ -1,6 +1,8 @@
 package lk.ac.iit.core;
 
 
+import lk.ac.iit.execption.NegativeTimestampException;
+
 import java.util.ArrayList;
 
 //
@@ -13,7 +15,8 @@ public class Monitor implements Runnable{
     private int noOfStage;
     private boolean terminated;
 
-    private ArrayList<Long> [] latencyArr;
+    private long [][] timeArray;
+    private int tempCount =0;
 
 
 
@@ -23,11 +26,7 @@ public class Monitor implements Runnable{
         this.terminated = false;
         this.monitorThreshold = monitorThreshold;
         this.noOfStage = noOfStage;
-        this.latencyArr = new ArrayList[this.noOfStage];
-
-        for(int i = 0; i<this.noOfStage; i++){
-            this.latencyArr[i] = new ArrayList<>();
-        }
+        this.timeArray = new long[monitorThreshold][noOfStage];
 
     }
 
@@ -41,16 +40,16 @@ public class Monitor implements Runnable{
 
         while (!this.terminated){
             //if count is reached, send data to analyser
-            if(this.latencyArr[this.noOfStage -1].size()==this.monitorThreshold){
+            if(this.tempCount==this.monitorThreshold){
                 for(int i = 0; i<this.monitorThreshold; i++){
-                    System.out.print(i+" ");
+                    //System.out.print(i+" ");
                     for(int j = 0; j<this.noOfStage; j++){
-                        System.out.print(this.latencyArr[j].get(i)+"\t");
+                        System.out.print(this.timeArray[i][j]+"\t");
                     }
                     System.out.println();
 
                 }
-               // break;
+                break;
             }
 
 
@@ -69,10 +68,20 @@ public class Monitor implements Runnable{
         }
     }
 
-    //sending latency data
-    public void setLatency(long [] latency){
-        for(int i = 0; i<this.noOfStage; i++){
-            this.latencyArr[i].add(latency[i]);
-        }
+    //receive timestamp related data
+    public void setTimestamp(long [] timestamp) throws NegativeTimestampException{
+
+//            for(int i = 0; i<this.noOfStage; i++){
+//                if(timestamp[i]<0l){
+//                    throw new NegativeTimestampException(timestamp[i]);
+//                } else {
+//                    this.timeArray[i].add(timestamp[i]);
+//                }
+//
+//            }
+        this.timeArray[this.tempCount] = timestamp;
+        this.tempCount++;
+
+
     }
 }
