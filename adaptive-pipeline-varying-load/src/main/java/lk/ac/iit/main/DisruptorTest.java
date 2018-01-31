@@ -13,8 +13,7 @@ import java.util.concurrent.Executors;
 
 
 class LongEventFactory implements EventFactory<LongEvent> {
-    public LongEvent newInstance()
-    {
+    public LongEvent newInstance() {
         return new LongEvent();
     }
 }
@@ -31,8 +30,8 @@ public class DisruptorTest {
         // Construct the Disruptor
         Disruptor<LongEvent> disruptor = new Disruptor<>(factory, bufferSize, executor);
         Stage_1[] arrHandler = new Stage_1[3];
-        for(int i =0; i<3; i++){
-            arrHandler [i] = new Stage_1(i+"", i, 1);
+        for (int i = 0; i < 3; i++) {
+            arrHandler[i] = new Stage_1(i + "", i, 1);
         }
         disruptor.handleEventsWith(arrHandler);
 
@@ -45,12 +44,12 @@ public class DisruptorTest {
         Producer producer = new Producer(ringBuffer);
 
         ByteBuffer bb = ByteBuffer.allocate(8);
-        for (long l = 0; l<1000; l++)
+        for (long l = 0; l < 1000; l++)
 
         {
             bb.putLong(0, l);
             producer.onData(bb, l);
-            if(l==500){
+            if (l == 500) {
                 Thread.sleep(1000);
                 Stage_1.setNum(3);
                 System.out.println("=======================");

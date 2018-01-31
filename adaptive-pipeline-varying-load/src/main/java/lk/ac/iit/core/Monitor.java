@@ -2,23 +2,21 @@ package lk.ac.iit.core;
 
 
 //
-public class Monitor implements Runnable{
+public class Monitor implements Runnable {
 
-    private Analyzer analyzer;
     private static Monitor monitor1;
-
+    private Analyzer analyzer;
     private int monitorThreshold;
     private int noOfStage;
     private boolean terminated;
 
-    private long [][] timeArray;
-    private int tempCount =0;
+    private long[][] timeArray;
+    private int tempCount = 0;
 
 
-
-    public Monitor(Analyzer analyzer, int noOfStage, int monitorThreshold){
+    public Monitor(Executor executor, int noOfStage, int monitorThreshold) {
         //StaticBlockSingleton
-        this.analyzer = analyzer;
+        this.analyzer = new Analyzer(executor, noOfStage, monitorThreshold);
         this.terminated = false;
         this.monitorThreshold = monitorThreshold;
         this.noOfStage = noOfStage;
@@ -27,58 +25,49 @@ public class Monitor implements Runnable{
     }
 
     //access monitor1 functions through this
-    public synchronized static Monitor getMonitor1(){
+    public synchronized static Monitor getMonitor1() {
         return monitor1;
+    }
+
+    public static void initMonitor(Executor executor, int stageCount, int monitorCount) {
+        if (monitor1 == null) {
+            //lazy thread safe
+            monitor1 = new Monitor(executor, stageCount, monitorCount);
+        }
     }
 
     @Override
     public void run() {
 
-        while (!this.terminated){
+        while (!this.terminated) {
 
-                if(this.tempCount==this.monitorThreshold) {
-                    System.out.println("Temp Count : " + this.tempCount);
-                    sendDataToAnalyser();
-                    resetMonitor();
-                }
-
-
-
-
-
-        }
-
-    }
-
-    private synchronized void sendDataToAnalyser(){
-        for(int i = 0; i<this.monitorThreshold; i++){
-            for(int j = 0; j<this.noOfStage; j++){
-                System.out.print(this.timeArray[i][j]+"\t");
+            if (this.tempCount == this.monitorThreshold) {
+                System.out.println("Temp Count : " + this.tempCount);
+                sendDataToAnalyser();
+                resetMonitor();
             }
-            System.out.println();
+
 
         }
+
     }
 
-    private synchronized void resetMonitor(){
+    private synchronized void sendDataToAnalyser() {
+        this.analyzer.analyser(timeArray);
+    }
+
+    private synchronized void resetMonitor() {
         this.timeArray = new long[monitorThreshold][noOfStage];
         this.tempCount = 0;
         notifyAll();
     }
 
-    public void setTerminated(){
+    public void setTerminated() {
         this.terminated = true;
     }
 
-    public static void initMonitor(Analyzer analyzer, int stageCount, int monitorCount){
-        if(monitor1 == null){
-            //lazy thread safe
-            monitor1 = new Monitor(analyzer, stageCount, monitorCount);
-        }
-    }
-
     //receive timestamp related data
-    public synchronized void setTimestamp(long [] timestamp) {
+    public synchronized void setTimestamp(long[] timestamp) {
 
 //            for(int i = 0; i<this.noOfStage; i++){
 //                if(timestamp[i]<0l){
@@ -88,7 +77,7 @@ public class Monitor implements Runnable{
 //                }
 //
 //            }
-        if(tempCount==1000){
+        if (tempCount == 1000) {
 
             try {
                 wait();
@@ -98,7 +87,6 @@ public class Monitor implements Runnable{
         }
         this.timeArray[this.tempCount] = timestamp;
         this.tempCount++;
-
 
 
     }

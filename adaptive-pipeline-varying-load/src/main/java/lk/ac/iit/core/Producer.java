@@ -2,23 +2,14 @@ package lk.ac.iit.core;
 
 import com.lmax.disruptor.RingBuffer;
 import lk.ac.iit.data.LongEvent;
-import lk.ac.iit.data.XMLMessage;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.nio.ByteBuffer;
-import java.util.concurrent.LinkedBlockingQueue;
 
-public class Producer  {
+public class Producer {
 
     private final RingBuffer<LongEvent> ringBuffer;
 
-    public Producer(RingBuffer<LongEvent> ringBuffer)
-    {
+    public Producer(RingBuffer<LongEvent> ringBuffer) {
         this.ringBuffer = ringBuffer;
     }
 

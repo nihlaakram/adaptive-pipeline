@@ -9,9 +9,9 @@ public class MonitorTest {
         Monitor monitor1 = Monitor.getMonitor1();
         Thread t1 = new Thread(monitor1);
         t1.start();
-        for (int i =0; i<2000; i++){
+        for (int i = 0; i < 2000; i++) {
 
-                monitor1.setTimestamp(new long[]{i,i+1,i+2});
+            monitor1.setTimestamp(new long[]{i, i + 1, i + 2});
 
 
         }

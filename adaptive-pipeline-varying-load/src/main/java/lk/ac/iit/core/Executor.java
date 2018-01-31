@@ -1,19 +1,18 @@
 package lk.ac.iit.core;
 
-public class Executor implements Runnable{
+public class Executor implements Runnable {
 
-    private Planner planner;
     private static Executor executor;
-
+    private Planner planner;
     private boolean terminate;
 
-    private Executor(){
+    private Executor() {
         this.planner = new Planner();
         this.terminate = false;
     }
 
-    public synchronized static Executor getExecutor(){
-        if(executor == null){
+    public synchronized static Executor getExecutor() {
+        if (executor == null) {
             executor = new Executor();
         }
         return executor;
@@ -22,7 +21,7 @@ public class Executor implements Runnable{
     @Override
     public void run() {
         //runs until application terminates
-        while ( ! this.terminate) {
+        while (!this.terminate) {
 
             //plan scaling
 
@@ -31,7 +30,7 @@ public class Executor implements Runnable{
         }
     }
 
-    public void setTerminate(){
+    public void setTerminate() {
         this.terminate = true;
     }
 }
