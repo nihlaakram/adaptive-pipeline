@@ -37,7 +37,7 @@ public class Planner {
     }
 
     //check is the system can scale
-    public boolean systemScale(){
+    private boolean systemScale(){
         if(getMAX_THREADS()>getNoOfThread()){
             return true;
         }
@@ -45,19 +45,19 @@ public class Planner {
     }
 
     //check latency and see if scaling is required
-    public PlannerData latencyScale(){
+    private PlannerData latencyScale(){
         PlannerData plannerData = new PlannerData(true, getMax(this.data.getAvgLatency()));
         return plannerData;
     }
 
     //check tps and see if scaling is required
-    public PlannerData tpsScale(){
+    private PlannerData tpsScale(){
         PlannerData plannerData = new PlannerData(true, getMin(this.data.getAvgLatency()));
         return plannerData;
     }
 
 
-    public int getMax(double[] inputArray){
+    private int getMax(double[] inputArray){
         double maxValue = inputArray[0];
         int maxIndex = 0;
         for(int i=1;i < inputArray.length;i++){
@@ -68,8 +68,7 @@ public class Planner {
         }
         return maxIndex+1;
     }
-
-    public int getMin(double[] inputArray){
+    private int getMin(double[] inputArray){
         double maxValue = inputArray[0];
         int maxIndex = 0;
         for(int i=1;i < inputArray.length;i++){
@@ -81,5 +80,17 @@ public class Planner {
         return maxIndex+1;
     }
 
-
+    public PlannerData plan() {
+        //check if the system is capable of scaling
+        if(this.systemScale()){
+            //check latency
+            PlannerData data = this.latencyScale();
+            if(data.isScalability()){
+                return data;
+            } else {
+                return this.tpsScale();
+            }
+        }
+        return new PlannerData(false, -1);
+    }
 }
