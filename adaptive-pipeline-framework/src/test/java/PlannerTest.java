@@ -11,6 +11,7 @@ public class PlannerTest {
 
         System.out.println(planner.getMAX_THREADS());
         System.out.println(planner.plan().isScalability());
+        System.out.println(planner.plan().getStageID());
         //System.out.println(planner.getMin(new double[]{1.0, 5.0, 0.0}));
 
     }

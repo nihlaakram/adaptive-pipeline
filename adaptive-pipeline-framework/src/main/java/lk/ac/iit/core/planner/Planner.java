@@ -47,6 +47,7 @@ public class Planner {
     //check latency and see if scaling is required
     private PlannerData latencyScale(){
         PlannerData plannerData = new PlannerData(true, getMax(this.data.getAvgLatency()));
+        //System.out.println(this.data.getAvgLatency()[0]);
         return plannerData;
     }
 
@@ -88,6 +89,7 @@ public class Planner {
             if(data.isScalability()){
                 return data;
             } else {
+                //return tps
                 return this.tpsScale();
             }
         }

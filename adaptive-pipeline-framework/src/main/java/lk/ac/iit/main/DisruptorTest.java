@@ -43,6 +43,8 @@ public class DisruptorTest {
 
         Producer producer = new Producer(ringBuffer);
 
+        System.out.println(Thread.activeCount());
+
         ByteBuffer bb = ByteBuffer.allocate(8);
         for (long l = 0; l < 1000; l++)
 
