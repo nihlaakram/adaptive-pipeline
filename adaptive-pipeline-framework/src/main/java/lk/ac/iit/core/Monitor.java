@@ -4,9 +4,10 @@ package lk.ac.iit.core;
 import lk.ac.iit.core.analyser.Analyser;
 import lk.ac.iit.core.analyser.AnalyserData;
 import lk.ac.iit.core.planner.Planner;
+import lk.ac.iit.core.planner.PlannerData;
 
 //
-public class Monitor implements Runnable {
+public class Monitor {
 
     private static Monitor monitor1;
     private Analyser analyser;
@@ -18,7 +19,7 @@ public class Monitor implements Runnable {
     private int tempCount = 0;
 
 
-    public Monitor(Planner planner, int noOfStage, int monitorThreshold) {
+    public Monitor( int noOfStage, int monitorThreshold) {
         //StaticBlockSingleton
         this.analyser = new Analyser(noOfStage, monitorThreshold);
         this.terminated = false;
@@ -30,42 +31,30 @@ public class Monitor implements Runnable {
 
     //access monitor1 functions through this
     public synchronized static Monitor getMonitor1() {
+
         return monitor1;
     }
 
-    public static void initMonitor(Planner planner, int stageCount, int monitorCount) {
+    public static void initMonitor(int stageCount, int monitorCount) {
         if (monitor1 == null) {
             //lazy thread safe
-            monitor1 = new Monitor(planner, stageCount, monitorCount);
+            monitor1 = new Monitor(stageCount, monitorCount);
         }
     }
 
-    @Override
-    public void run() {
-
-        while (!this.terminated) {
-
-            if (this.tempCount == this.monitorThreshold) {
-                System.out.println("Temp Count : " + this.tempCount);
-                sendDataToAnalyser();
-                resetMonitor();
-            }
-
-
-        }
-
-    }
 
     private synchronized void sendDataToAnalyser() {
         AnalyserData analyserData = this.analyser.analyse(timeArray);
+        System.out.println("hello");
         //calculate
-        System.out.println("Avg Lat "+analyserData.getAvgLatency()[0]+"\t"+analyserData.getAvgLatency()[1]+"\t");
-        System.out.println("TPS "+analyserData.getTpsArr()[0]+"\t"+analyserData.getTpsArr()[1]+"\t");
+//        Planner planner = new Planner(analyserData, 5);
+//        PlannerData plannerData = planner.plan();
+//        System.out.println(plannerData.isScalability()+"\t"+plannerData.isScalability());
 
     }
 
     private synchronized void resetMonitor() {
-        this.timeArray = new long[monitorThreshold][noOfStage];
+        this.timeArray = new long[monitorThreshold][noOfStage+1];
         this.tempCount = 0;
         notifyAll();
     }
@@ -85,11 +74,18 @@ public class Monitor implements Runnable {
 //                }
 //
 //            }
-        if (tempCount == 1000) {
+        if (tempCount == monitorThreshold) {
 
             try {
-                wait();
-            } catch (InterruptedException e) {
+                System.out.println("waiting");
+                if (this.tempCount == this.monitorThreshold) {
+//                notifyAll();
+                    System.out.println("Temp Count : " + this.tempCount);
+                    sendDataToAnalyser();
+                    resetMonitor();
+                }
+                System.out.println("waiting released");
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

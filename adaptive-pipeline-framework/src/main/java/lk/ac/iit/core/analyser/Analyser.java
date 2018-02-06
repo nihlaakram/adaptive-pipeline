@@ -18,7 +18,7 @@ public class Analyser {
 
         this.noOfStages = noOfStages;
         this.monitorThreshold = monitorThreshold;
-        this.noOfSummarizer = getNoOfStages() -1;
+        this.noOfSummarizer = getNoOfStages() ;
 
         //initPerfSummarizer();
 
@@ -29,7 +29,7 @@ public class Analyser {
         this.tpsArr = new double [noOfSummarizer];
         this.startTime = new long [getNoOfStages()];
         this.endTime = new long [getNoOfStages()];
-        this.avgLatency = new double[getNoOfStages()-1];
+        this.avgLatency = new double[getNoOfStages()];
     }
 
     public AnalyserData analyse(long[][] timeData) {
@@ -38,8 +38,9 @@ public class Analyser {
         this.startTime = timeData[0];
         this.endTime = timeData[getMonitorThreshold()-1];
 
+        System.out.println(noOfStages);
         //calculate TPS & average latency
-        for (int j = 0; j < this.noOfStages-1; j++) {
+        for (int j = 0; j < this.noOfStages; j++) {
             for (int i = 0; i < this.monitorThreshold; i++) {
                 this.latencyArr[j] = latencyArr[j]+(timeData[i][j+1]-timeData[i][j]);
 
@@ -49,6 +50,8 @@ public class Analyser {
         }
 
         AnalyserData analyzerData = new AnalyserData(this.tpsArr, this.avgLatency);
+        System.out.println(this.tpsArr[0]+"\t"+this.tpsArr[1]);
+        System.out.println(this.avgLatency[0]+"\t"+this.avgLatency[1]);
         return analyzerData;
 
 
