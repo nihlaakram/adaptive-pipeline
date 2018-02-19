@@ -19,6 +19,10 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <slf4j.version>1.7.15</slf4j.version>
         <junit.version>4.11</junit.version>
+        <siddhi.version>4.0.4</siddhi.version>
+        <log4j.version>1.2.17.wso2v1</log4j.version>
+        <testng.version>6.11</testng.version>
+
     </properties>
 
 

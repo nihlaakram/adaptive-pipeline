@@ -45,11 +45,10 @@ public class Monitor {
 
     private synchronized void sendDataToAnalyser() {
         AnalyserData analyserData = this.analyser.analyse(timeArray);
-        System.out.println("hello");
         //calculate
-//        Planner planner = new Planner(analyserData, 5);
-//        PlannerData plannerData = planner.plan();
-//        System.out.println(plannerData.isScalability()+"\t"+plannerData.isScalability());
+        Planner planner = new Planner(analyserData, 5);
+        PlannerData plannerData = planner.plan();
+        System.out.println(plannerData.isScalability()+"\t"+plannerData.getStageID());
 
     }
 
@@ -66,25 +65,14 @@ public class Monitor {
     //receive timestamp related data
     public synchronized void setTimestamp(long[] timestamp) {
 
-//            for(int i = 0; i<this.noOfStage; i++){
-//                if(timestamp[i]<0l){
-//                    throw new NegativeTimestampException(timestamp[i]);
-//                } else {
-//                    this.timeArray[i].add(timestamp[i]);
-//                }
-//
-//            }
         if (tempCount == monitorThreshold) {
 
             try {
-                System.out.println("waiting");
                 if (this.tempCount == this.monitorThreshold) {
-//                notifyAll();
                     System.out.println("Temp Count : " + this.tempCount);
                     sendDataToAnalyser();
                     resetMonitor();
                 }
-                System.out.println("waiting released");
             } catch (Exception e) {
                 e.printStackTrace();
             }

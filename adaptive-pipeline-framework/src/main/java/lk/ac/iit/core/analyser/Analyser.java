@@ -50,8 +50,8 @@ public class Analyser {
         }
 
         AnalyserData analyzerData = new AnalyserData(this.tpsArr, this.avgLatency);
-        System.out.println(this.tpsArr[0]+"\t"+this.tpsArr[1]);
-        System.out.println(this.avgLatency[0]+"\t"+this.avgLatency[1]);
+        System.out.println("TPS : "+this.tpsArr[0]+"\t"+this.tpsArr[1]);
+        System.out.println("Avg Lat: "+this.avgLatency[0]+"\t"+this.avgLatency[1]);
         return analyzerData;
 
 
