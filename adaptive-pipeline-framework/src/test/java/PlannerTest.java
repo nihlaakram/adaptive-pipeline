@@ -1,5 +1,5 @@
-import lk.ac.iit.core.planner.Planner;
 import lk.ac.iit.core.analyser.AnalyserData;
+import lk.ac.iit.core.planner.Planner;
 
 public class PlannerTest {
 

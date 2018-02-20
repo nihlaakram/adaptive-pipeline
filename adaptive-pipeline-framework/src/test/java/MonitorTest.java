@@ -11,19 +11,19 @@ public class MonitorTest {
         //monitor1.start();
         for (int i = 0; i < 1000; i++) {
 
-            monitor1.setTimestamp(new long[]{0,  + 1,  + 5});
+            monitor1.setTimestamp(new long[]{0, +1, +5});
 
 
         }
 
         for (int i = 0; i < 1000; i++) {
 
-            monitor1.setTimestamp(new long[]{2,  + 4,  + 5});
+            monitor1.setTimestamp(new long[]{2, +4, +5});
 
 
         }
 
-        monitor1.setTimestamp(new long[]{2,  + 4,  + 5});
+        monitor1.setTimestamp(new long[]{2, +4, +5});
         System.out.println("completed sending data");
 
     }

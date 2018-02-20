@@ -1,6 +1,6 @@
 import lk.ac.iit.core.Monitor;
-import lk.ac.iit.data.StageHandler;
 import lk.ac.iit.data.StageData;
+import lk.ac.iit.data.StageHandler;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -36,13 +36,18 @@ class SampleProducer extends Thread {
 
 class SampleStageHandler extends StageHandler {
 
-    int count =0;
+    int count = 0;
+
+    public SampleStageHandler(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
+        super(inQueue, outQueue);
+    }
+
     public void run() {
         while (true) {
             StageData val = getInQueue().poll();
             if (val != null) {
                 count++;
-                if(count>1000){
+                if (count > 1000) {
                     break;
                 }
                 //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[0]);
@@ -62,11 +67,6 @@ class SampleStageHandler extends StageHandler {
 
     }
 
-
-    public SampleStageHandler(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
-        super(inQueue, outQueue);
-    }
-
 }
 
 
@@ -76,6 +76,12 @@ class Terminator extends Thread {
     private LinkedBlockingQueue<StageData> outQueue;
     private Monitor monitor;
 
+
+    public Terminator(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue, Monitor monitor) {
+        this.inQueue = inQueue;
+        this.outQueue = outQueue;
+        this.monitor = monitor;
+    }
 
     public void run() {
         int count = 0;
@@ -88,7 +94,7 @@ class Terminator extends Thread {
                 //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[0]);
                 val.setTimestamp(2);
                 monitor.setTimestamp(val.getTimestamp());
-                if(count==1000){
+                if (count == 1000) {
                     //System.out.println("Terminator shutting down");
                     break;
                 }
@@ -99,17 +105,10 @@ class Terminator extends Thread {
         }
 
 
-
-    }
-
-
-    public Terminator(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue, Monitor monitor) {
-        this.inQueue = inQueue;
-        this.outQueue = outQueue;
-        this.monitor = monitor;
     }
 
 }
+
 public class FullTest {
 
     public static void main(String[] args) {
@@ -118,14 +117,14 @@ public class FullTest {
         //mape
         Monitor.initMonitor(2, 1000);
         Monitor monitor = Monitor.getMonitor1();
-       // monitor.start();
+        // monitor.start();
 
         LinkedBlockingQueue<StageData> in = new LinkedBlockingQueue<>();
         LinkedBlockingQueue<StageData> out = new LinkedBlockingQueue<>();
         //producer
 
 
-        Terminator  term = new Terminator(out, null, monitor);
+        Terminator term = new Terminator(out, null, monitor);
         term.start();
 
         SampleStageHandler stage = new SampleStageHandler(in, out);

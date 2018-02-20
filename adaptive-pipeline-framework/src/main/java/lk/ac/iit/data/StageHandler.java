@@ -5,11 +5,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class StageHandler extends Thread {
 
 
-
     private LinkedBlockingQueue<StageData> inQueue;
     private LinkedBlockingQueue<StageData> outQueue;
-
-
 
 
     public StageHandler(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
@@ -27,6 +24,7 @@ public class StageHandler extends Thread {
     }
 
     @Override
-    public void run() { }
+    public void run() {
+    }
 
 }

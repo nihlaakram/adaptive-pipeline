@@ -1,22 +1,23 @@
 package lk.ac.iit.data;
 
-public class StageData implements Data{
+public class StageData implements Data {
 
     private long[] timestampArr;
     private Object data;
 
-    public StageData(int noOfStages, Object data){
-        this.timestampArr = new long[noOfStages+1];
-        this.timestampArr[0]=  System.currentTimeMillis();
+    public StageData(int noOfStages, Object data) {
+        this.timestampArr = new long[noOfStages + 1];
+        this.timestampArr[0] = System.currentTimeMillis();
         this.data = data;
     }
+
     @Override
     public long[] getTimestamp() {
         return this.timestampArr;
     }
 
     @Override
-    public void setTimestamp( int stageId) {
+    public void setTimestamp(int stageId) {
         this.timestampArr[stageId] = System.currentTimeMillis();
     }
 
@@ -27,6 +28,6 @@ public class StageData implements Data{
 
     @Override
     public void setDataObject(Object dataObject) {
-        this.data= dataObject;
+        this.data = dataObject;
     }
 }

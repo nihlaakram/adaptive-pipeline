@@ -2,27 +2,22 @@ package lk.ac.iit.core;
 
 
 import lk.ac.iit.core.analyser.Analyser;
-import lk.ac.iit.core.analyser.AnalyserData;
 import lk.ac.iit.core.analyser.learner.SiddhiLearner;
-import lk.ac.iit.core.planner.Planner;
-import lk.ac.iit.core.planner.PlannerData;
-import org.wso2.siddhi.core.event.Event;
 
 //
 public class Monitor {
 
     private static Monitor monitor1;
+    SiddhiLearner siddhi = new SiddhiLearner();
     private Analyser analyser;
     private int monitorThreshold;
     private int noOfStage;
     private boolean terminated;
-
     private long[][] timeArray;
     private int tempCount = 0;
-    SiddhiLearner siddhi = new SiddhiLearner();
 
 
-    public Monitor( int noOfStage, int monitorThreshold) {
+    public Monitor(int noOfStage, int monitorThreshold) {
         //StaticBlockSingleton
         this.analyser = new Analyser(noOfStage, monitorThreshold);
         this.terminated = false;
@@ -53,7 +48,7 @@ public class Monitor {
 //    }
 
     private synchronized void resetMonitor() {
-        this.timeArray = new long[monitorThreshold][noOfStage+1];
+        this.timeArray = new long[monitorThreshold][noOfStage + 1];
         this.tempCount = 0;
         notifyAll();
     }

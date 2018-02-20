@@ -12,14 +12,13 @@ import org.wso2.siddhi.core.query.selector.attribute.aggregator.AttributeAggrega
 import org.wso2.siddhi.core.util.config.ConfigReader;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
 @Extension(
         name = "latency",
         namespace = "learner",
-        description = "This extension returns the latency of aggregated events." ,
+        description = "This extension returns the latency of aggregated events.",
         parameters = {
                 @Parameter(name = "data",
                         description = "The value that needs to be aggregated for the latency.",
@@ -63,23 +62,22 @@ public class LatencyAttributeAggregator extends AttributeAggregator {
     public Object processAdd(Object data) {
         this.count++;
 
-        this.totalLatency += (long)  data;
-        return (this.totalLatency/this.count);
+        this.totalLatency += (long) data;
+        return (this.totalLatency / this.count);
     }
 
 
     public Object processAdd(Object[] data) {
 
-        return new IllegalStateException("Latency cannot process data array, but found "+data);
+        return new IllegalStateException("Latency cannot process data array, but found " + data);
 
     }
 
 
     public Object processRemove(Object data) {
         this.count--;
-        this.totalLatency -= (double)  data;
-        return (this.totalLatency/this.count);
-
+        this.totalLatency -= (double) data;
+        return (this.totalLatency / this.count);
 
 
     }
@@ -90,9 +88,10 @@ public class LatencyAttributeAggregator extends AttributeAggregator {
                 data);
     }
 
-    @Override public boolean canDestroy() {
+    @Override
+    public boolean canDestroy() {
 
-        return  this.count == 0 && this.totalLatency == 0.0;
+        return this.count == 0 && this.totalLatency == 0.0;
     }
 
     public Object reset() {
@@ -119,8 +118,6 @@ public class LatencyAttributeAggregator extends AttributeAggregator {
         this.count = (Integer) state.get("Count");
 
     }
-
-
 
 
 }

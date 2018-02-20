@@ -32,27 +32,25 @@ public class LatencyAggregatorTestCase {
             public void receive(Event[] events) {
                 for (Event ev : events) {
                     count++;
-                    switch (count){
-                        case 1 :
+                    switch (count) {
+                        case 1:
                             Assert.assertEquals(1.0, (double) ev.getData()[0], 3);
                             break;
-                        case 2 :
+                        case 2:
                             Assert.assertEquals(2.0, (double) ev.getData()[0], 3);
                             break;
-                        case 3 :
+                        case 3:
                             Assert.assertEquals(3.0, (double) ev.getData()[0], 3);
                             break;
-                        case 4 :
+                        case 4:
                             Assert.assertEquals(4.0, (double) ev.getData()[0], 3);
                             break;
-                        case 5 :
+                        case 5:
                             Assert.assertEquals(5.0, (double) ev.getData()[0], 3);
                             break;
                         default:
                             break;
                     }
-
-
 
 
                 }
