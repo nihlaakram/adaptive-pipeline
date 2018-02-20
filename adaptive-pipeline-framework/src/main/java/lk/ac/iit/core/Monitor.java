@@ -3,8 +3,10 @@ package lk.ac.iit.core;
 
 import lk.ac.iit.core.analyser.Analyser;
 import lk.ac.iit.core.analyser.AnalyserData;
+import lk.ac.iit.core.analyser.learner.SiddhiLearner;
 import lk.ac.iit.core.planner.Planner;
 import lk.ac.iit.core.planner.PlannerData;
+import org.wso2.siddhi.core.event.Event;
 
 //
 public class Monitor {
@@ -17,6 +19,7 @@ public class Monitor {
 
     private long[][] timeArray;
     private int tempCount = 0;
+    SiddhiLearner siddhi = new SiddhiLearner();
 
 
     public Monitor( int noOfStage, int monitorThreshold) {
@@ -43,14 +46,11 @@ public class Monitor {
     }
 
 
-    private synchronized void sendDataToAnalyser() {
-        AnalyserData analyserData = this.analyser.analyse(timeArray);
-        //calculate
-        Planner planner = new Planner(analyserData, 5);
-        PlannerData plannerData = planner.plan();
-        System.out.println(plannerData.isScalability()+"\t"+plannerData.getStageID());
-
-    }
+//    private synchronized void sendDataToAnalyser() {
+//        AnalyserData analyserData = this.analyser.analyse(timeArray);
+//        //calculate
+//
+//    }
 
     private synchronized void resetMonitor() {
         this.timeArray = new long[monitorThreshold][noOfStage+1];
@@ -65,20 +65,25 @@ public class Monitor {
     //receive timestamp related data
     public synchronized void setTimestamp(long[] timestamp) {
 
-        if (tempCount == monitorThreshold) {
+//        if (tempCount == monitorThreshold) {
+//
+//            try {
+//                if (this.tempCount == this.monitorThreshold) {
+//                    System.out.println("Temp Count : " + this.tempCount);
+//                    sendDataToAnalyser();
+//                    resetMonitor();
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        this.timeArray[this.tempCount] = timestamp;
+//        this.tempCount++;
 
-            try {
-                if (this.tempCount == this.monitorThreshold) {
-                    System.out.println("Temp Count : " + this.tempCount);
-                    sendDataToAnalyser();
-                    resetMonitor();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        this.timeArray[this.tempCount] = timestamp;
-        this.tempCount++;
+        //send data to siddhi
+        analyser.analyse(timestamp);
+
+        //get the result from
 
 
     }

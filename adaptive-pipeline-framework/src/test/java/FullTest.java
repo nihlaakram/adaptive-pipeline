@@ -1,5 +1,5 @@
 import lk.ac.iit.core.Monitor;
-import lk.ac.iit.data.Stage;
+import lk.ac.iit.data.StageHandler;
 import lk.ac.iit.data.StageData;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -29,16 +29,22 @@ class SampleProducer extends Thread {
             }
 
         }
+
+
     }
 }
 
-class SampleStage extends Stage {
+class SampleStageHandler extends StageHandler {
 
-
+    int count =0;
     public void run() {
         while (true) {
             StageData val = getInQueue().poll();
             if (val != null) {
+                count++;
+                if(count>1000){
+                    break;
+                }
                 //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[0]);
                 val.setTimestamp(1);
                 //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[1] + "\n------------------");
@@ -51,11 +57,13 @@ class SampleStage extends Stage {
 
         }
 
+        //System.out.println("Stage shutting down");
+
 
     }
 
 
-    public SampleStage(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
+    public SampleStageHandler(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
         super(inQueue, outQueue);
     }
 
@@ -70,17 +78,26 @@ class Terminator extends Thread {
 
 
     public void run() {
+        int count = 0;
         while (true) {
             StageData val = this.inQueue.poll();
             if (val != null) {
+                count++;
+                //System.out.println(count);
+
                 //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[0]);
                 val.setTimestamp(2);
                 monitor.setTimestamp(val.getTimestamp());
+                if(count==1000){
+                    //System.out.println("Terminator shutting down");
+                    break;
+                }
                 //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[1] + "\n------------------");
 
             }
 
         }
+
 
 
     }
@@ -111,7 +128,7 @@ public class FullTest {
         Terminator  term = new Terminator(out, null, monitor);
         term.start();
 
-        SampleStage stage = new SampleStage(in, out);
+        SampleStageHandler stage = new SampleStageHandler(in, out);
         stage.start();
 
         SampleProducer producer = new SampleProducer(in);

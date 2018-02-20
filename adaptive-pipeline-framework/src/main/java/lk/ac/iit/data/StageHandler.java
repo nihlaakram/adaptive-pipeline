@@ -2,7 +2,7 @@ package lk.ac.iit.data;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class Stage extends Thread {
+public class StageHandler extends Thread {
 
 
 
@@ -12,7 +12,7 @@ public class Stage extends Thread {
 
 
 
-    public Stage(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
+    public StageHandler(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
         this.inQueue = inQueue;
         this.outQueue = outQueue;
     }
