@@ -27,11 +27,10 @@ public class StageHandler implements Cloneable, Runnable {
     public void run() {
     }
 
-    public Object clone() throws
-            CloneNotSupportedException
-    {
+    public StageHandler clone() throws
+            CloneNotSupportedException {
         // Assign the shallow copy to new refernce variable t
-        StageHandler t = (StageHandler)super.clone();
+        StageHandler t = (StageHandler) super.clone();
 
         //t.c = new StageHandler(getInQueue(), getOutQueue());
 

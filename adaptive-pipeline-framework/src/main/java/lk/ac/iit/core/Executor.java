@@ -1,38 +1,36 @@
 package lk.ac.iit.core;
 
 import lk.ac.iit.core.planner.Planner;
+import lk.ac.iit.data.StageHandler;
 
-public class Executor implements Runnable {
+public class Executor {
 
-    private static Executor executor;
-    private Planner planner;
-    private boolean terminate;
+    private StageHandler [] stageHandlers;
+    private int count =0;
 
-    private Executor() {
-        this.planner = new Planner(null, 0);
-        this.terminate = false;
+    public Executor(int noOfHandlers){
+        stageHandlers = new StageHandler[noOfHandlers];
     }
 
-    public synchronized static Executor getExecutor() {
-        if (executor == null) {
-            executor = new Executor();
+    public void addHandler(StageHandler handler) {
+        this.stageHandlers[count] = handler;
+        count++;
+
+    }
+
+    public void executeScaling(int stageID){
+        try {
+            System.out.println("Scaled1");
+            StageHandler stageHandler =  this.stageHandlers[stageID-1].clone();
+            System.out.println("Scaled2");
+            Thread t1 = new Thread(stageHandler);
+            System.out.println("Scaled3");
+            t1.start();
+
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
         }
-        return executor;
     }
 
-    @Override
-    public void run() {
-        //runs until application terminates
-        while (!this.terminate) {
 
-            //plan scaling
-
-            //execute scaling
-
-        }
-    }
-
-    public void setTerminate() {
-        this.terminate = true;
-    }
 }

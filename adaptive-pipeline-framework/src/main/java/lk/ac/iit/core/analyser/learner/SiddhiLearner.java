@@ -1,5 +1,6 @@
 package lk.ac.iit.core.analyser.learner;
 
+import lk.ac.iit.core.Monitor;
 import lk.ac.iit.core.analyser.AnalyserData;
 import lk.ac.iit.core.planner.Planner;
 import lk.ac.iit.core.planner.PlannerData;
@@ -47,6 +48,11 @@ public class SiddhiLearner {
                     Planner planner = new Planner(analyserData, 5);
                     PlannerData plannerData = planner.plan();
                     System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID());
+                    System.out.println(planner.getNoOfThread());
+                    if(plannerData.isScalability()){
+                        Monitor.getMonitor1().getExecutor().executeScaling(plannerData.getStageID());
+                        System.out.println("Hello");
+                    }
 
 
                 }

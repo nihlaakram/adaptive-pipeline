@@ -15,6 +15,7 @@ public class Monitor {
     private boolean terminated;
     private long[][] timeArray;
     private int tempCount = 0;
+    private Executor executor;
 
 
     public Monitor(int noOfStage, int monitorThreshold) {
@@ -24,6 +25,7 @@ public class Monitor {
         this.monitorThreshold = monitorThreshold;
         this.noOfStage = noOfStage;
         this.timeArray = new long[monitorThreshold][noOfStage];
+        this.executor = new Executor(noOfStage);
 
     }
 
@@ -40,12 +42,6 @@ public class Monitor {
         }
     }
 
-
-//    private synchronized void sendDataToAnalyser() {
-//        AnalyserData analyserData = this.analyser.analyse(timeArray);
-//        //calculate
-//
-//    }
 
     private synchronized void resetMonitor() {
         this.timeArray = new long[monitorThreshold][noOfStage + 1];
@@ -81,5 +77,9 @@ public class Monitor {
         //get the result from
 
 
+    }
+
+    public Executor getExecutor() {
+        return this.executor;
     }
 }
