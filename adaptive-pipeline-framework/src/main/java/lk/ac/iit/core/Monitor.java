@@ -41,26 +41,7 @@ public class Monitor {
     //receive timestamp related data
     public synchronized void setTimestamp(long[] timestamp) {
 
-//        if (tempCount == monitorThreshold) {
-//
-//            try {
-//                if (this.tempCount == this.monitorThreshold) {
-//                    System.out.println("Temp Count : " + this.tempCount);
-//                    sendDataToAnalyser();
-//                    resetMonitor();
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        this.timeArray[this.tempCount] = timestamp;
-//        this.tempCount++;
-
-        //send data to siddhi
         analyser.analyse(timestamp);
-
-        //get the result from
-
 
     }
 
