@@ -8,23 +8,18 @@ import lk.ac.iit.core.analyser.learner.SiddhiLearner;
 public class Monitor {
 
     private static Monitor monitor1;
-    SiddhiLearner siddhi = new SiddhiLearner();
     private Analyser analyser;
     private int monitorThreshold;
     private int noOfStage;
-    private boolean terminated;
-    private long[][] timeArray;
-    private int tempCount = 0;
+
     private Executor executor;
 
 
     public Monitor(int noOfStage, int monitorThreshold) {
         //StaticBlockSingleton
         this.analyser = new Analyser(noOfStage, monitorThreshold);
-        this.terminated = false;
         this.monitorThreshold = monitorThreshold;
         this.noOfStage = noOfStage;
-        this.timeArray = new long[monitorThreshold][noOfStage];
         this.executor = new Executor(noOfStage);
 
     }
@@ -42,16 +37,6 @@ public class Monitor {
         }
     }
 
-
-    private synchronized void resetMonitor() {
-        this.timeArray = new long[monitorThreshold][noOfStage + 1];
-        this.tempCount = 0;
-        notifyAll();
-    }
-
-    public void setTerminated() {
-        this.terminated = true;
-    }
 
     //receive timestamp related data
     public synchronized void setTimestamp(long[] timestamp) {

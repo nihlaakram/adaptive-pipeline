@@ -22,7 +22,7 @@ class SampleProducer extends Thread {
 
     @Override
     public void run() {
-        for (int i = 0; i < 2000; i++) {
+        for (int i = 0; i < 100000; i++) {
             try {
                 this.in.put(new SampleData(2, new Integer(i)));
 
@@ -60,7 +60,9 @@ class SampleStageHandler extends StageHandler {
 
                     val1.setTimestamp(1);
                     try {
-
+                        for(int i=0; i<100; i++){
+                            //do nothing
+                        }
                         getOutQueue().put(val1);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -107,18 +109,20 @@ class Terminator extends StageHandler  {
             if(getInQueue().size()>0){
                 StageData val = this.getInQueue().poll();
                 if (val.getDataObject() != null) {
-                    count++;
+                    for(int i=0; i<1000; i++){
+                        //do nothing
+                    }
                     val.setTimestamp(2);
                     monitor.setTimestamp(val.getTimestamp());
                 } else {
 
-                   // break;
+                    break;
                 }
             }
 
 
         }
-       // System.out.println("Terminator shutting down");
+        System.out.println("Terminator shutting down");
 
 
     }
@@ -132,7 +136,7 @@ public class FullTest {
 
         int stageCount = 2;
         //mape
-        Monitor.initMonitor(stageCount, 1000);
+        Monitor.initMonitor(stageCount, 10000);
         Monitor monitor = Monitor.getMonitor1();
         // monitor.start();
 
