@@ -22,29 +22,8 @@ public class Analyser {
 
 
     public void analyse(long[] timestamp) {
-//        initPerfSummarizer();
-//        //startTime and endTime related data
-//        this.startTime = timeData[0];
-//        this.endTime = timeData[getMonitorThreshold()-1];
-//
-//        System.out.println(noOfStages);
-//        //calculate TPS & average latency
-//        for (int j = 0; j < this.noOfStages; j++) {
-//            for (int i = 0; i < this.monitorThreshold; i++) {
-//                this.latencyArr[j] = latencyArr[j]+(timeData[i][j+1]-timeData[i][j]);
-//
-//            }
-//            avgLatency[j] = (latencyArr[j]/getMonitorThreshold()) ;
-//            tpsArr[j] = getMonitorThreshold()/(endTime[j+1]-startTime[j]);
-//        }
+
         siddhi.publish(new Event(System.currentTimeMillis(), new Object[]{timestamp[1] - timestamp[0], timestamp[2] - timestamp[1]}));
-
-
-//        AnalyserData analyzerData = new AnalyserData(this.tpsArr, this.avgLatency);
-//        System.out.println("TPS : "+this.tpsArr[0]+"\t"+this.tpsArr[1]);
-//        System.out.println("Avg Lat: "+this.avgLatency[0]+"\t"+this.avgLatency[1]);
-//        return analyzerData;
-
 
     }
 
