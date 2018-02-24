@@ -65,6 +65,7 @@
 //
 
 package lk.ac.iit.main;
+
 import lk.ac.iit.core.Monitor;
 import lk.ac.iit.data.StageData;
 import lk.ac.iit.data.StageHandler;
@@ -88,7 +89,7 @@ class SampleProducer extends Thread {
 
     @Override
     public void run() {
-       for (int i = 0; true; i++) {
+        for (int i = 0; true; i++) {
 
             try {
                 this.in.put(new SampleData(2, new Integer(i)));
@@ -142,11 +143,10 @@ class SampleStageHandler extends StageHandler {
 
 class Terminator extends Thread {
 
+    static int count = 0;
     private LinkedBlockingQueue<StageData> inQueue;
     private LinkedBlockingQueue<StageData> outQueue;
     private Monitor monitor;
-
-    static int count = 0;
 
 
     public Terminator(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue, Monitor monitor) {
@@ -204,21 +204,19 @@ public class Main {
         term.start();
 
         SampleStageHandler stage = new SampleStageHandler(in, out);
-       // stage.start();
+        // stage.start();
 
         SampleProducer producer = new SampleProducer(in);
         producer.start();
 
-        while (true){
-            if (term.count>=1000){
+        while (true) {
+            if (term.count >= 1000) {
                 Terminator term1 = new Terminator(out, null, monitor);
                 term1.start();
                 break;
             }
 
         }
-
-
 
 
     }

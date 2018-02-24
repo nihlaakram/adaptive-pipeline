@@ -49,7 +49,7 @@ public class SiddhiLearner {
                     PlannerData plannerData = planner.plan();
                     System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID());
                     System.out.println(planner.getNoOfThread());
-                    if(plannerData.isScalability()){
+                    if (plannerData.isScalability()) {
                         Monitor.getMonitor1().getExecutor().executeScaling(plannerData.getStageID());
                         System.out.println("Hello");
                     }

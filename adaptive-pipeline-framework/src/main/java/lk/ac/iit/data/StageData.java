@@ -7,7 +7,7 @@ public class StageData implements Data {
 
     public StageData(int noOfStages, Object data) {
         this.timestampArr = new long[noOfStages + 1];
-        if(noOfStages>0){
+        if (noOfStages > 0) {
             this.timestampArr[0] = System.currentTimeMillis();
         }
 
