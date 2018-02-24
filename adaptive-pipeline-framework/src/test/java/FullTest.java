@@ -149,8 +149,7 @@ public class FullTest {
         Thread t1 = new Thread(stage);
         t1.start();
 
-        monitor.getExecutor().addHandler(stage);
-        monitor.getExecutor().addHandler(term);
+        monitor.getExecutor().addHandler(stage, term);
 
         SampleProducer producer = new SampleProducer(in);
         producer.start();
