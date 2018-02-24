@@ -32,7 +32,7 @@ import java.util.Map;
                 syntax = "from inputStream#window.length(5)" +
                         "\nselect learner:latency(value) as latencyOfValues" +
                         "\ninsert into outputStream;",
-                description = "This will returns the layency of aggregated values as a double " +
+                description = "This will returns the latency of aggregated values as a double " +
                         "value for each event arrival and expiry of fixed window length 5."
         )
 )

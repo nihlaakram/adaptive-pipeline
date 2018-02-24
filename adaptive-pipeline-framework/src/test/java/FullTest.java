@@ -154,24 +154,6 @@ public class FullTest {
         SampleProducer producer = new SampleProducer(in);
         producer.start();
 
-//        while (true){
-//            if (term.count>=1000){
-//                StageHandler term1 = null;
-//                try {
-//                    term1 = (StageHandler) term.clone();
-//                    Thread t = new Thread(term1);
-//                    t.start();
-//
-//                } catch (CloneNotSupportedException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
-//            }
-//
-//        }
-
-        //System.out.println(term+"\t"+term1);
-
 
 
 
