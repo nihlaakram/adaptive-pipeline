@@ -9,11 +9,6 @@ public class Analyser {
     private int noOfStages;
     private int noOfSummarizer;
     private int monitorThreshold;
-    private long[] latencyArr;
-    private double[] tpsArr;
-    private long[] startTime;
-    private long[] endTime;
-    private double[] avgLatency;
 
     public Analyser(int noOfStages, int monitorThreshold) {
 
@@ -25,13 +20,6 @@ public class Analyser {
 
     }
 
-    private void initPerfSummarizer() {
-        this.latencyArr = new long[noOfSummarizer];
-        this.tpsArr = new double[noOfSummarizer];
-        this.startTime = new long[getNoOfStages()];
-        this.endTime = new long[getNoOfStages()];
-        this.avgLatency = new double[getNoOfStages()];
-    }
 
     public void analyse(long[] timestamp) {
 //        initPerfSummarizer();
