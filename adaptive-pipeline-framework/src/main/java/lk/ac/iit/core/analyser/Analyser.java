@@ -24,7 +24,7 @@ public class Analyser {
 
     public void analyse(long[] timestamp) {
 
-        siddhi.publish(new Event(System.currentTimeMillis(), new Object[]{timestamp[1] - timestamp[0], timestamp[2] - timestamp[1]}));
+        siddhi.publish(new Event(System.currentTimeMillis(), new Object[]{timestamp[1] - timestamp[0], timestamp[2] - timestamp[1], timestamp[0],  timestamp[1]}));
 
     }
 

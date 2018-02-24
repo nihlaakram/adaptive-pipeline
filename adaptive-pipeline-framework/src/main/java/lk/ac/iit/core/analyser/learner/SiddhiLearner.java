@@ -10,6 +10,8 @@ import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.StreamCallback;
 
+import java.util.Set;
+
 public class SiddhiLearner {
     private final InputHandler inputHandler;
     private final String query;
@@ -19,14 +21,17 @@ public class SiddhiLearner {
 
 
     public SiddhiLearner(int monitorThreshold) {
-        this.inStreamDefinition = "define stream inputStream (tt long, tt1 long); " +
-                "define stream outputStream (tt double, tt1 double);";
+        TpsAttributeAggregator.monitorThreshold = monitorThreshold;
+        this.inStreamDefinition = "define stream inputStream (tt long, tt1 long, tt2 long, tt3 long); " +
+                "define stream outputStream (tt double, tt1 double, tt2 double, tt3 double);";
         this.query = "@info(name = 'query1') " + "from inputStream#window.lengthBatch("+monitorThreshold+") " +
-                "select learner:latency(tt) as tt, learner:latency(tt1) as tt1 insert into filteredOutputStream";
+                "select learner:latency(tt) as tt, learner:latency(tt1) as tt1, learner:tps(tt2) as tt2 , " +
+                "learner:tps(tt3) as tt3 insert into filteredOutputStream";
 
 
         this.siddhiManager = new SiddhiManager();
         this.siddhiManager.setExtension("learner:latency", LatencyAttributeAggregator.class);
+        this.siddhiManager.setExtension("learner:tps", TpsAttributeAggregator.class);
         this.siddhiAppRuntime = this.siddhiManager.
                 createSiddhiAppRuntime(inStreamDefinition + query);
         this.inputHandler = this.siddhiAppRuntime.getInputHandler("inputStream");
@@ -44,14 +49,21 @@ public class SiddhiLearner {
                     System.out.println(ev);//(double) ev.getData()[0], (double) ev.getData()[2]
                     double val = (double) ev.getData()[0];
                     double val2 = (double) ev.getData()[1];
-                    AnalyserData analyserData = new AnalyserData(new double[]{1000.0, 250.0}, new double[]{val, val2});
+                    double val3 = (double) ev.getData()[2];
+                    double val4 = (double) ev.getData()[3];
+                    AnalyserData analyserData = new AnalyserData(new double[]{val3, val4}, new double[]{val, val2});
                     Planner planner = new Planner(analyserData, 5);
                     PlannerData plannerData = planner.plan();
-                    System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID());
-                    System.out.println(planner.getNoOfThread());
+                    System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID() + "\t"+planner.getNoOfThread());
+
+//                    Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+//                    Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
+//                    for(int i=0; i<threadArray.length;i++){
+//                        System.out.println(threadArray[i]);
+//                    }
                     if (plannerData.isScalability()) {
-                        Monitor.getMonitor1().getExecutor().executeScaling(plannerData.getStageID());
-                        System.out.println("Hello");
+                       Monitor.getMonitor1().getExecutor().executeScaling(plannerData.getStageID());
+
                     }
 
 

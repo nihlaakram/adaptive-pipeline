@@ -34,7 +34,6 @@ public class StageHandler implements Cloneable, Runnable {
             t = (StageHandler) super.clone();
         } catch (CloneNotSupportedException e) {
 
-
         }
 
         return t;

@@ -11,7 +11,6 @@ public class Monitor {
     private Analyser analyser;
     private int monitorThreshold;
     private int noOfStage;
-
     private Executor executor;
 
 
@@ -47,5 +46,10 @@ public class Monitor {
 
     public Executor getExecutor() {
         return this.executor;
+    }
+
+
+    public int getMonitorThreshold() {
+        return this.monitorThreshold;
     }
 }

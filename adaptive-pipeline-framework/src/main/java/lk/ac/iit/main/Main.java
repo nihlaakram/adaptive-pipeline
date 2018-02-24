@@ -1,82 +1,25 @@
-//package lk.ac.iit.main;
-//
-//import lk.ac.iit.core.Producer;
-//import lk.ac.iit.core.Stage_1;
-//import lk.ac.iit.core.Terminator;
-//import lk.ac.iit.data.XMLMessage;
-//
-//import java.util.concurrent.LinkedBlockingQueue;
-//
-//
-//public class Main {
-//
-//    public static void main(String[] args) throws InterruptedException {
-//
-//        int cores = Runtime.getRuntime().availableProcessors();
-//
-//        System.out.println(cores);
-//        //the message size
-//        int messageSize = 100;
-//
-//        //the no. of messages to use
-//        int messageCount = 1000;
-//
-//        //no of stages
-//        int stageCount = 1;
-//
-//        //contribution from each stage to the string
-//        int charCount = messageSize/stageCount;
-//
-//
-//
-//        //required queues
-//        LinkedBlockingQueue<XMLMessage>[] queues = new LinkedBlockingQueue[stageCount+1];
-//        for(int i=0; i<stageCount+1; i++){
-//            queues[i] = new LinkedBlockingQueue<XMLMessage>();
-//        }
-//
-//        //create the stages
-//        Stage_1[] stages = new Stage_1[stageCount];
-//        for(int i=0; i<stageCount; i++){
-//            stages[i] = new Stage_1(queues[i], queues[i+1], charCount);
-//        }
-//
-//        //start threads
-//        Thread[] threads = new Thread[stageCount];
-//        for(int i=0; i<stageCount; i++){
-//            threads[i] = new Thread(stages[i]);
-//            threads[i].start();
-//        }
-//
-//
-//
-//        Terminator term = new Terminator(queues[stageCount], System.currentTimeMillis(), messageCount);
-//        Thread t1 = new Thread(term);
-//        t1.start();
-//
-//        //fill data
-//        Producer prod = new Producer(queues[0], messageCount);
-//        Thread t2 = new Thread(prod);
-//        t2.start();
-//
-//
-//    }
-//}
-//
-
 package lk.ac.iit.main;
 
 import lk.ac.iit.core.Monitor;
 import lk.ac.iit.data.StageData;
 import lk.ac.iit.data.StageHandler;
+import lk.ac.iit.data.TerminationMessage;
+import org.apache.commons.text.RandomStringGenerator;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
 
 class SampleData extends StageData {
 
+
     public SampleData(int noOfStages, Object data) {
         super(noOfStages, data);
+
+    }
+
+
+    public void appendToBody(String body) {
+        this.setDataObject(body);
     }
 }
 
@@ -89,14 +32,21 @@ class SampleProducer extends Thread {
 
     @Override
     public void run() {
-        for (int i = 0; true; i++) {
-
+        for (int i = 0; i < 100000; i++) {
             try {
                 this.in.put(new SampleData(2, new Integer(i)));
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
+        }
+
+        try {
+            this.in.put(new TerminationMessage());
+            // this.in.put(new TerminationMessage());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
 
@@ -105,35 +55,47 @@ class SampleProducer extends Thread {
 
 class SampleStageHandler extends StageHandler {
 
-    static int count = 0;
-
     public SampleStageHandler(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
         super(inQueue, outQueue);
     }
 
     public void run() {
         while (true) {
-            StageData val = getInQueue().poll();
-            if (val != null) {
-                count++;
-//                if (count > 20000) {
-//                    break;
-//                }
-                //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[0]);
-                ;
-                val.setTimestamp(1);
-                //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[1] + "\n------------------");
-                try {
 
-                    getOutQueue().put(val);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+
+            if (getInQueue().size() > 0) {
+                SampleData val1 = (SampleData) getInQueue().poll();
+                if (val1.getDataObject() != null) {
+
+
+                    val1.setTimestamp(1);
+                    try {
+                        RandomStringGenerator random = new RandomStringGenerator.Builder()
+                                .withinRange('0', 'z').build();
+                        String charList = random.generate(100);
+                        val1.appendToBody(charList);
+                        getOutQueue().put(val1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        for(int i =0; i<5; i++){
+                            getOutQueue().put(new TerminationMessage());
+                        }
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
                 }
-            }
+//
 
+            }
         }
 
-        //System.out.println("Stage shutting down");
+        System.out.println("Stage shutting down");
 
 
     }
@@ -141,47 +103,41 @@ class SampleStageHandler extends StageHandler {
 }
 
 
-class Terminator extends Thread {
+class Terminator extends StageHandler  {
 
-    static int count = 0;
-    private LinkedBlockingQueue<StageData> inQueue;
-    private LinkedBlockingQueue<StageData> outQueue;
     private Monitor monitor;
 
 
     public Terminator(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue, Monitor monitor) {
-        this.inQueue = inQueue;
-        this.outQueue = outQueue;
+        super(inQueue, outQueue);
         this.monitor = monitor;
     }
 
     public void run() {
 
         while (true) {
-            StageData val = this.inQueue.poll();
-            if (val != null) {
-                count++;
-                //System.out.println(count);
-                try {
-                    sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[0]);
-                val.setTimestamp(2);
-                monitor.setTimestamp(val.getTimestamp());
-//                if (count == 20000) {
-//                    //System.out.println("Terminator shutting down");
-//                    break;
-//                }
-                //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[1] + "\n------------------");
+            if(getInQueue().size()>0){
+                SampleData val = (SampleData) this.getInQueue().poll();
+                if (val.getDataObject() != null) {
+                    RandomStringGenerator random = new RandomStringGenerator.Builder()
+                            .withinRange('0', 'z').build();
+                    String charList = random.generate(10);
+                    val.appendToBody(charList);
+                    val.setTimestamp(2);
+                    monitor.setTimestamp(val.getTimestamp());
+                } else {
 
+                    break;
+                }
             }
 
+
         }
+        System.out.println("Terminator shutting down");
 
 
     }
+
 
 }
 
@@ -189,9 +145,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-
+        int stageCount = 2;
         //mape
-        Monitor.initMonitor(2, 1000);
+        Monitor.initMonitor(stageCount, 10000);
         Monitor monitor = Monitor.getMonitor1();
         // monitor.start();
 
@@ -201,24 +157,20 @@ public class Main {
 
 
         Terminator term = new Terminator(out, null, monitor);
-        term.start();
+        Thread t2 = new Thread(term);
+        t2.start();
 
         SampleStageHandler stage = new SampleStageHandler(in, out);
-        // stage.start();
+        Thread t1 = new Thread(stage);
+        t1.start();
+
+        monitor.getExecutor().addHandler(stage, term);
 
         SampleProducer producer = new SampleProducer(in);
         producer.start();
 
-        while (true) {
-            if (term.count >= 1000) {
-                Terminator term1 = new Terminator(out, null, monitor);
-                term1.start();
-                break;
-            }
 
-        }
 
 
     }
 }
-

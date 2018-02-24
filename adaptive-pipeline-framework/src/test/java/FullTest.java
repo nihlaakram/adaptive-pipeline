@@ -109,7 +109,7 @@ class Terminator extends StageHandler  {
             if(getInQueue().size()>0){
                 StageData val = this.getInQueue().poll();
                 if (val.getDataObject() != null) {
-                    for(int i=0; i<1000; i++){
+                    for(int i=0; i<10000; i++){
                         //do nothing
                     }
                     val.setTimestamp(2);
