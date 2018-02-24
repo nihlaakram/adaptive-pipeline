@@ -18,10 +18,10 @@ public class SiddhiLearner {
     private SiddhiAppRuntime siddhiAppRuntime;
 
 
-    public SiddhiLearner() {
+    public SiddhiLearner(int monitorThreshold) {
         this.inStreamDefinition = "define stream inputStream (tt long, tt1 long); " +
                 "define stream outputStream (tt double, tt1 double);";
-        this.query = "@info(name = 'query1') " + "from inputStream#window.lengthBatch(1000) " +
+        this.query = "@info(name = 'query1') " + "from inputStream#window.lengthBatch("+monitorThreshold+") " +
                 "select learner:latency(tt) as tt, learner:latency(tt1) as tt1 insert into filteredOutputStream";
 
 

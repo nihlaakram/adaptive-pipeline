@@ -5,7 +5,7 @@ import org.wso2.siddhi.core.event.Event;
 
 public class Analyser {
 
-    SiddhiLearner siddhi = new SiddhiLearner();
+    private SiddhiLearner siddhi;
     private int noOfStages;
     private int noOfSummarizer;
     private int monitorThreshold;
@@ -15,6 +15,7 @@ public class Analyser {
         this.noOfStages = noOfStages;
         this.monitorThreshold = monitorThreshold;
         this.noOfSummarizer = getNoOfStages();
+        this.siddhi = new SiddhiLearner(this.monitorThreshold);
 
         //initPerfSummarizer();
 
@@ -30,10 +31,6 @@ public class Analyser {
 
     public int getNoOfStages() {
         return this.noOfStages;
-    }
-
-    public int getMonitorThreshold() {
-        return this.monitorThreshold;
     }
 
 
