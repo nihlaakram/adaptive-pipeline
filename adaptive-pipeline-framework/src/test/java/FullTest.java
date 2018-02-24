@@ -1,6 +1,7 @@
 import lk.ac.iit.core.Monitor;
 import lk.ac.iit.data.StageData;
 import lk.ac.iit.data.StageHandler;
+import lk.ac.iit.data.TerminationMessage;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -21,13 +22,21 @@ class SampleProducer extends Thread {
 
     @Override
     public void run() {
-        for (int i = 0; i < 1001; i++) {
+        for (int i = 0; i < 6000; i++) {
             try {
                 this.in.put(new SampleData(2, new Integer(i)));
+                //System.out.println(i);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
+        }
+
+        try {
+            this.in.put(new TerminationMessage());
+           // this.in.put(new TerminationMessage());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
 
@@ -36,33 +45,44 @@ class SampleProducer extends Thread {
 
 class SampleStageHandler extends StageHandler {
 
-    int count = 0;
-
     public SampleStageHandler(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
         super(inQueue, outQueue);
     }
 
     public void run() {
         while (true) {
-            StageData val = getInQueue().poll();
-            if (val != null) {
-                count++;
-                if (count > 1000) {
+
+
+            if (getInQueue().size() > 0) {
+                StageData val1 = getInQueue().poll();
+                if (val1.getDataObject() != null) {
+
+                    //System.out.println(val1.getDataObject() + "\t" + val1.getTimestamp()[0]);
+                    val1.setTimestamp(1);
+                    try {
+
+                        getOutQueue().put(val1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        for(int i =0; i<5; i++){
+                            getOutQueue().put(new TerminationMessage());
+                        }
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(val1 + "\t" + getInQueue().size());
                     break;
                 }
-                //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[0]);
-                val.setTimestamp(1);
-                //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[1] + "\n------------------");
-                try {
-                    getOutQueue().put(val);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+//
 
+            }
         }
 
-        //System.out.println("Stage shutting down");
+        System.out.println("Stage shutting down");
 
 
     }
@@ -70,12 +90,13 @@ class SampleStageHandler extends StageHandler {
 }
 
 
-class Terminator extends Thread {
+class Terminator implements Cloneable, Runnable  {
 
     private LinkedBlockingQueue<StageData> inQueue;
     private LinkedBlockingQueue<StageData> outQueue;
     private Monitor monitor;
 
+    static int count =0;
 
     public Terminator(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue, Monitor monitor) {
         this.inQueue = inQueue;
@@ -84,27 +105,33 @@ class Terminator extends Thread {
     }
 
     public void run() {
-        int count = 0;
-        while (true) {
-            StageData val = this.inQueue.poll();
-            if (val != null) {
-                count++;
-                //System.out.println(count);
 
-                //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[0]);
-                val.setTimestamp(2);
-                monitor.setTimestamp(val.getTimestamp());
-                if (count == 1000) {
-                    //System.out.println("Terminator shutting down");
+        while (true) {
+            if(inQueue.size()>0){
+                StageData val = this.inQueue.poll();
+                if (val.getDataObject() != null) {
+                    count++;
+                    val.setTimestamp(2);
+                    monitor.setTimestamp(val.getTimestamp());
+
+                   // System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[1] + "\n------------------");
+
+                } else {
+                    //System.out.println(val + "\t" + getInQueue().size());
                     break;
                 }
-                //System.out.println(val.getDataObject() + "\t" + val.getTimestamp()[1] + "\n------------------");
-
             }
 
+
         }
+        System.out.println("Terminator shutting down");
 
 
+    }
+
+    public Object clone() throws CloneNotSupportedException{
+        Terminator t = (Terminator) super.clone();
+        return  t;
     }
 
 }
@@ -125,13 +152,35 @@ public class FullTest {
 
 
         Terminator term = new Terminator(out, null, monitor);
-        term.start();
+        Thread t2 = new Thread(term);
+        t2.start();
 
         SampleStageHandler stage = new SampleStageHandler(in, out);
-        stage.start();
+        Thread t1 = new Thread(stage);
+        t1.start();
 
         SampleProducer producer = new SampleProducer(in);
         producer.start();
+
+        while (true){
+            if (term.count>=1000){
+                Terminator term1 = null;
+                try {
+                    term1 = (Terminator) term.clone();
+                    Thread t = new Thread(term1);
+                    t.start();
+
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+
+        }
+
+        //System.out.println(term+"\t"+term1);
+
+
 
 
     }

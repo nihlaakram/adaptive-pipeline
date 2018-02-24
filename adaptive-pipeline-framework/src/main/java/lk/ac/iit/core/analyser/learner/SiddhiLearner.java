@@ -25,6 +25,7 @@ public class SiddhiLearner {
 
 
         this.siddhiManager = new SiddhiManager();
+        this.siddhiManager.setExtension("learner:latency", LatencyAttributeAggregator.class);
         this.siddhiAppRuntime = this.siddhiManager.
                 createSiddhiAppRuntime(inStreamDefinition + query);
         this.inputHandler = this.siddhiAppRuntime.getInputHandler("inputStream");
@@ -42,8 +43,6 @@ public class SiddhiLearner {
                     System.out.println(ev);//(double) ev.getData()[0], (double) ev.getData()[2]
                     double val = (double) ev.getData()[0];
                     double val2 = (double) ev.getData()[1];
-                    System.out.println(ev.getData()[0]);
-
                     AnalyserData analyserData = new AnalyserData(new double[]{1000.0, 250.0}, new double[]{val, val2});
                     Planner planner = new Planner(analyserData, 5);
                     PlannerData plannerData = planner.plan();
@@ -58,7 +57,6 @@ public class SiddhiLearner {
 
     public void publish(Event obj) {
         try {
-
             inputHandler.send(obj);
         } catch (InterruptedException e) {
 
