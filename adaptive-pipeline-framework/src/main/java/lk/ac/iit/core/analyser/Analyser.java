@@ -18,8 +18,8 @@ public class Analyser {
 
         this.noOfStages = noOfStages;
         this.monitorThreshold = monitorThreshold;
-        this.siddhi = new SiddhiLearner(this.monitorThreshold, this.noOfStages);
         this.objLength  = 2*this.noOfStages;
+        this.siddhi = new SiddhiLearner(this.monitorThreshold, this.objLength);
 
     }
 

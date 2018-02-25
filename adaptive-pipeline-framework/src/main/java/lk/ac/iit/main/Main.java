@@ -174,3 +174,15 @@ public class Main {
 
     }
 }
+
+//for(int i=1; i<noOfParameters; i++){
+//        in = in.concat(", tt"+i+" long");
+//        out = out.concat(", tt"+i+" double");
+//        if(i<noOfParameters/2){
+//        query = query.concat(", learner:latency(tt"+i+") as tt"+i);
+//        } else {
+//        query = query.concat(", learner:tps(tt"+i+") as tt"+i);
+//        }
+//
+//
+//        }

@@ -20,13 +20,25 @@ public class SiddhiLearner {
     private SiddhiAppRuntime siddhiAppRuntime;
 
 
-    public SiddhiLearner(int monitorThreshold, int noOfStages) {
+    public SiddhiLearner(int monitorThreshold, int noOfParameters) {
         TpsAttributeAggregator.monitorThreshold = monitorThreshold;
-        this.inStreamDefinition = "define stream inputStream (tt long, tt1 long, tt2 long, tt3 long); " +
-                "define stream outputStream (tt double, tt1 double, tt2 double, tt3 double);";
+        String in ="tt long";
+        String out = "tt double";
+        String autoQuery ="learner:latency(tt) as tt";;
+        for(int i=1; i<noOfParameters; i++){
+            in = in.concat(",tt"+i+" long");
+            out = out.concat(",tt"+i+" double");
+            if(i<noOfParameters/2){
+                autoQuery = autoQuery.concat(", learner:latency(tt"+i+") as tt"+i);
+            } else {
+                autoQuery = autoQuery.concat(", learner:tps(tt"+i+") as tt"+i);
+            }
+        }
+        System.out.println(autoQuery);
+        this.inStreamDefinition = "define stream inputStream ("+in+"); " +
+                "define stream outputStream ("+out+");";
         this.query = "@info(name = 'query1') " + "from inputStream#window.lengthBatch("+monitorThreshold+") " +
-                "select learner:latency(tt) as tt, learner:latency(tt1) as tt1, learner:tps(tt2) as tt2 , " +
-                "learner:tps(tt3) as tt3 insert into filteredOutputStream";
+                "select "+autoQuery+" insert into filteredOutputStream";
 
 
         this.siddhiManager = new SiddhiManager();
