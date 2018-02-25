@@ -2,7 +2,6 @@ package lk.ac.iit.core;
 
 
 import lk.ac.iit.core.analyser.Analyser;
-import lk.ac.iit.core.analyser.learner.SiddhiLearner;
 
 //
 public class Monitor {

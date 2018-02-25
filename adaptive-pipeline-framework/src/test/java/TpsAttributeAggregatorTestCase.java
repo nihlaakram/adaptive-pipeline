@@ -1,8 +1,5 @@
-import lk.ac.iit.core.Monitor;
-import lk.ac.iit.core.analyser.learner.LatencyAttributeAggregator;
-import lk.ac.iit.core.analyser.learner.TpsAttributeAggregator;
+import lk.ac.iit.core.analyser.learner.extension.TpsAttributeAggregator;
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;

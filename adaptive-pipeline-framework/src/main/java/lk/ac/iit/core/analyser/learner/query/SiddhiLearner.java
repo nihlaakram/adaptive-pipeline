@@ -1,7 +1,9 @@
-package lk.ac.iit.core.analyser.learner;
+package lk.ac.iit.core.analyser.learner.query;
 
 import lk.ac.iit.core.Monitor;
 import lk.ac.iit.core.analyser.AnalyserData;
+import lk.ac.iit.core.analyser.learner.extension.LatencyAttributeAggregator;
+import lk.ac.iit.core.analyser.learner.extension.TpsAttributeAggregator;
 import lk.ac.iit.core.planner.Planner;
 import lk.ac.iit.core.planner.PlannerData;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
@@ -9,8 +11,6 @@ import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.StreamCallback;
-
-import java.util.Set;
 
 public class SiddhiLearner {
     private final InputHandler inputHandler;

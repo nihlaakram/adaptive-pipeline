@@ -1,4 +1,4 @@
-import lk.ac.iit.core.analyser.learner.LatencyAttributeAggregator;
+import lk.ac.iit.core.analyser.learner.extension.LatencyAttributeAggregator;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.wso2.siddhi.core.SiddhiAppRuntime;

@@ -1,6 +1,5 @@
-package lk.ac.iit.core.analyser.learner;
+package lk.ac.iit.core.analyser.learner.extension;
 
-import lk.ac.iit.core.Monitor;
 import org.wso2.siddhi.annotation.Example;
 import org.wso2.siddhi.annotation.Extension;
 import org.wso2.siddhi.annotation.Parameter;
@@ -17,12 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Extension(
-        name = "tps",
+        name = "latency",
         namespace = "learner",
-        description = "This extension returns the throughput of aggregated events.",
+        description = "This extension returns the latency of aggregated events.",
         parameters = {
                 @Parameter(name = "data",
-                        description = "The value that needs to be aggregated for the throughput.",
+                        description = "The value that needs to be aggregated for the latency.",
                         type = {DataType.LONG})
 
         },
@@ -31,20 +30,17 @@ import java.util.Map;
                 type = {DataType.DOUBLE}),
         examples = @Example(
                 syntax = "from inputStream#window.length(5)" +
-                        "\nselect learner:tps(value) as tpsOfValues" +
+                        "\nselect learner:latency(value) as latencyOfValues" +
                         "\ninsert into outputStream;",
-                description = "This will returns the throughput of aggregated values as a double " +
+                description = "This will returns the latency of aggregated values as a double " +
                         "value for each event arrival and expiry of fixed window length 5."
         )
 )
 
-public class TpsAttributeAggregator extends AttributeAggregator {
+public class LatencyAttributeAggregator extends AttributeAggregator {
 
     private int count = 0;
-    private long startTime;
-    private long endTime;
-    public static int monitorThreshold = 0;
-
+    private double totalLatency = 0;
 
     protected void init(ExpressionExecutor[] expressionExecutors, ConfigReader configReader,
                         SiddhiAppContext siddhiAppContext) {
@@ -64,32 +60,24 @@ public class TpsAttributeAggregator extends AttributeAggregator {
     }
 
     public Object processAdd(Object data) {
-        if(count ==0){
-            this.startTime = (long) data;
-            count++;
-            return this.startTime;
-        } else if(count== this.monitorThreshold-1){
-            this.count++;
-            this.endTime = (long) data;
-            return ((monitorThreshold)/((this.endTime-this.startTime)/1000.0));
-        } else {
-            this.count++;
-            return null;
-        }
+        this.count++;
 
+        this.totalLatency += (long) data;
+        return (this.totalLatency / this.count);
     }
 
 
     public Object processAdd(Object[] data) {
 
-        return new IllegalStateException("Throughput cannot process data array, but found " + data);
+        return new IllegalStateException("Latency cannot process data array, but found " + data);
 
     }
 
 
     public Object processRemove(Object data) {
         this.count--;
-        return null;
+        this.totalLatency -= (double) data;
+        return (this.totalLatency / this.count);
 
 
     }
@@ -103,12 +91,13 @@ public class TpsAttributeAggregator extends AttributeAggregator {
     @Override
     public boolean canDestroy() {
 
-        return this.count == 0;
+        return this.count == 0 && this.totalLatency == 0.0;
     }
 
     public Object reset() {
         this.count = 0;
-        return this.count;
+        this.totalLatency = 0.0;
+        return this.totalLatency;
     }
 
     public void start() {
@@ -119,15 +108,18 @@ public class TpsAttributeAggregator extends AttributeAggregator {
 
     public Map<String, Object> currentState() {
         Map<String, Object> state = new HashMap<>();
+        state.put("Latency", this.totalLatency);
         state.put("Count", this.count);
         return state;
     }
 
     public void restoreState(Map<String, Object> state) {
+        this.totalLatency = (Double) state.get("Median");
         this.count = (Integer) state.get("Count");
 
     }
 
 
 }
+
 
