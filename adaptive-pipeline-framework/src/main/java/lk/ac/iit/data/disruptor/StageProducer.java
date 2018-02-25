@@ -6,17 +6,19 @@ import lk.ac.iit.data.StageEvent;
 public class StageProducer {
 
     private final RingBuffer<StageEvent> ringBuffer;
+    private int noOfStages;
 
-    public StageProducer(RingBuffer<StageEvent> ringBuffer) {
+    public StageProducer(RingBuffer<StageEvent> ringBuffer,  int noOfStages) {
         this.ringBuffer = ringBuffer;
+        this.noOfStages = noOfStages;
     }
 
-    public void onData(StageEvent stageEvent, long id) {
+    public void onData(long id, StageEvent stageEvent) {
         long sequence = ringBuffer.next();  // Grab the next sequence
         try {
             StageEvent event = ringBuffer.get(sequence); // Get the entry in the Disruptor
             // for the sequence
-            //event.set(stageEvent.getLong(0), id);  // Fill with data
+            event.setDataObject(id, noOfStages, stageEvent);  // Fill with data
         } finally {
             ringBuffer.publish(sequence);
         }
