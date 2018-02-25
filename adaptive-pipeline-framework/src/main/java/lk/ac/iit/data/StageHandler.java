@@ -5,21 +5,21 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class StageHandler implements Cloneable, Runnable {
 
 
-    private LinkedBlockingQueue<StageData> inQueue;
-    private LinkedBlockingQueue<StageData> outQueue;
+    private LinkedBlockingQueue<StageEvent> inQueue;
+    private LinkedBlockingQueue<StageEvent> outQueue;
 
 
-    public StageHandler(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
+    public StageHandler(LinkedBlockingQueue<StageEvent> inQueue, LinkedBlockingQueue<StageEvent> outQueue) {
         this.inQueue = inQueue;
         this.outQueue = outQueue;
     }
 
 
-    public LinkedBlockingQueue<StageData> getInQueue() {
+    public LinkedBlockingQueue<StageEvent> getInQueue() {
         return inQueue;
     }
 
-    public LinkedBlockingQueue<StageData> getOutQueue() {
+    public LinkedBlockingQueue<StageEvent> getOutQueue() {
         return outQueue;
     }
 

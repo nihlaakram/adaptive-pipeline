@@ -1,22 +1,22 @@
 import lk.ac.iit.core.Monitor;
-import lk.ac.iit.data.StageData;
+import lk.ac.iit.data.StageEvent;
 import lk.ac.iit.data.StageHandler;
 import lk.ac.iit.data.TerminationMessage;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
 
-class SampleData extends StageData {
+class SampleEvent extends StageEvent {
 
-    public SampleData(int noOfStages, Object data) {
+    public SampleEvent(int noOfStages, Object data) {
         super(noOfStages, data);
     }
 }
 
 class SampleProducer extends Thread {
-    LinkedBlockingQueue<StageData> in;
+    LinkedBlockingQueue<StageEvent> in;
 
-    public SampleProducer(LinkedBlockingQueue<StageData> in) {
+    public SampleProducer(LinkedBlockingQueue<StageEvent> in) {
         this.in = in;
     }
 
@@ -24,7 +24,7 @@ class SampleProducer extends Thread {
     public void run() {
         for (int i = 0; i < 100000; i++) {
             try {
-                this.in.put(new SampleData(2, new Integer(i)));
+                this.in.put(new SampleEvent(2, new Integer(i)));
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -45,7 +45,7 @@ class SampleProducer extends Thread {
 
 class SampleStageHandler extends StageHandler {
 
-    public SampleStageHandler(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
+    public SampleStageHandler(LinkedBlockingQueue<StageEvent> inQueue, LinkedBlockingQueue<StageEvent> outQueue) {
         super(inQueue, outQueue);
     }
 
@@ -54,7 +54,7 @@ class SampleStageHandler extends StageHandler {
 
 
             if (getInQueue().size() > 0) {
-                StageData val1 = getInQueue().poll();
+                StageEvent val1 = getInQueue().poll();
                 if (val1.getDataObject() != null) {
 
 
@@ -98,7 +98,7 @@ class Terminator extends StageHandler  {
 
     static int count =0;
 
-    public Terminator(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue, Monitor monitor) {
+    public Terminator(LinkedBlockingQueue<StageEvent> inQueue, LinkedBlockingQueue<StageEvent> outQueue, Monitor monitor) {
         super(inQueue, outQueue);
         this.monitor = monitor;
     }
@@ -107,7 +107,7 @@ class Terminator extends StageHandler  {
 
         while (true) {
             if(getInQueue().size()>0){
-                StageData val = this.getInQueue().poll();
+                StageEvent val = this.getInQueue().poll();
                 if (val.getDataObject() != null) {
                     for(int i=0; i<10000; i++){
                         //do nothing
@@ -140,8 +140,8 @@ public class FullTest {
         Monitor monitor = Monitor.getMonitor1();
         // monitor.start();
 
-        LinkedBlockingQueue<StageData> in = new LinkedBlockingQueue<>();
-        LinkedBlockingQueue<StageData> out = new LinkedBlockingQueue<>();
+        LinkedBlockingQueue<StageEvent> in = new LinkedBlockingQueue<>();
+        LinkedBlockingQueue<StageEvent> out = new LinkedBlockingQueue<>();
         //producer
 
 

@@ -1,6 +1,6 @@
 package lk.ac.iit.data;
 
-public class TerminationMessage extends StageData {
+public class TerminationMessage extends StageEvent {
 
 
     public TerminationMessage() {

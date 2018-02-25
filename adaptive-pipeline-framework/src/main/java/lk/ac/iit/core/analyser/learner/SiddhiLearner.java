@@ -20,8 +20,10 @@ public class SiddhiLearner {
     private SiddhiAppRuntime siddhiAppRuntime;
 
 
+
     public SiddhiLearner(int monitorThreshold, int noOfParameters) {
         TpsAttributeAggregator.monitorThreshold = monitorThreshold;
+
         String in ="tt long";
         String out = "tt double";
         String autoQuery ="learner:latency(tt) as tt";;
@@ -40,39 +42,38 @@ public class SiddhiLearner {
         this.query = "@info(name = 'query1') " + "from inputStream#window.lengthBatch("+monitorThreshold+") " +
                 "select "+autoQuery+" insert into filteredOutputStream";
 
-
         this.siddhiManager = new SiddhiManager();
         this.siddhiManager.setExtension("learner:latency", LatencyAttributeAggregator.class);
         this.siddhiManager.setExtension("learner:tps", TpsAttributeAggregator.class);
         this.siddhiAppRuntime = this.siddhiManager.
                 createSiddhiAppRuntime(inStreamDefinition + query);
         this.inputHandler = this.siddhiAppRuntime.getInputHandler("inputStream");
-        initCallback();
+        initCallback(noOfParameters);
         this.siddhiAppRuntime.start();
 
 
     }
 
-    private void initCallback() {
+    private void initCallback(int noOfParameters) {
         this.siddhiAppRuntime.addCallback("filteredOutputStream", new StreamCallback() {
             @Override
             public void receive(org.wso2.siddhi.core.event.Event[] events) {
                 for (Event ev : events) {
                     System.out.println(ev);//(double) ev.getData()[0], (double) ev.getData()[2]
-                    double val = (double) ev.getData()[0];
-                    double val2 = (double) ev.getData()[1];
-                    double val3 = (double) ev.getData()[2];
-                    double val4 = (double) ev.getData()[3];
-                    AnalyserData analyserData = new AnalyserData(new double[]{val3, val4}, new double[]{val, val2});
-                    Planner planner = new Planner(analyserData, 5);
+
+                    double[] latency = new double[noOfParameters/2];
+                    double[] tps = new double[noOfParameters/2];
+
+                    //preprocessed attributes for latency and tps
+                    for(int i=0; i<noOfParameters/2; i++){
+                        latency[i] = (double) ev.getData()[i];
+                        tps[i] = (double) ev.getData()[i+(noOfParameters/2)];
+                    }
+
+                    Planner planner = new Planner(new AnalyserData(tps, latency), 5);
                     PlannerData plannerData = planner.plan();
                     System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID() + "\t"+planner.getNoOfThread());
 
-//                    Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-//                    Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
-//                    for(int i=0; i<threadArray.length;i++){
-//                        System.out.println(threadArray[i]);
-//                    }
                     if (plannerData.isScalability()) {
                        Monitor.getMonitor1().getExecutor().executeScaling(plannerData.getStageID());
 
