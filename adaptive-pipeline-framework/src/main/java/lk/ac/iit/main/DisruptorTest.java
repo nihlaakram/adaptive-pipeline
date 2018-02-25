@@ -3,7 +3,7 @@ package lk.ac.iit.main;
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
-import lk.ac.iit.core.Producer;
+import lk.ac.iit.core.Producer1;
 import lk.ac.iit.core.Stage_1;
 import lk.ac.iit.data.LongEvent;
 
@@ -41,7 +41,7 @@ public class DisruptorTest {
         // Get the ring buffer from the Disruptor to be used for publishing.
         RingBuffer<LongEvent> ringBuffer = disruptor.getRingBuffer();
 
-        Producer producer = new Producer(ringBuffer);
+        Producer1 producer1 = new Producer1(ringBuffer);
 
         System.out.println(Thread.activeCount());
 
@@ -50,7 +50,7 @@ public class DisruptorTest {
 
         {
             bb.putLong(0, l);
-            producer.onData(bb, l);
+            producer1.onData(bb, l);
             if (l == 500) {
                 Thread.sleep(1000);
                 Stage_1.setNum(3);

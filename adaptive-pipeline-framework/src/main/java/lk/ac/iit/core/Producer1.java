@@ -5,11 +5,11 @@ import lk.ac.iit.data.LongEvent;
 
 import java.nio.ByteBuffer;
 
-public class Producer {
+public class Producer1 {
 
     private final RingBuffer<LongEvent> ringBuffer;
 
-    public Producer(RingBuffer<LongEvent> ringBuffer) {
+    public Producer1(RingBuffer<LongEvent> ringBuffer) {
         this.ringBuffer = ringBuffer;
     }
 
