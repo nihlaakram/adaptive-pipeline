@@ -8,7 +8,7 @@ public interface Data {
 
     public Object getDataObject();
 
-    public void setDataObject(Object dataObject);
+    public void setDataObject(long id, int noOfStages, Object data);
 
 
 }

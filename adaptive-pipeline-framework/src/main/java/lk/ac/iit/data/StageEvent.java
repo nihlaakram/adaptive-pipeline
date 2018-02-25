@@ -4,15 +4,8 @@ public class StageEvent implements Data {
 
     private long[] timestampArr;
     private Object data;
+    private long id;
 
-    public StageEvent(int noOfStages, Object data) {
-        this.timestampArr = new long[noOfStages + 1];
-        if (noOfStages > 0) {
-            this.timestampArr[0] = System.currentTimeMillis();
-        }
-
-        this.data = data;
-    }
 
     @Override
     public long[] getTimestamp() {
@@ -30,7 +23,17 @@ public class StageEvent implements Data {
     }
 
     @Override
-    public void setDataObject(Object dataObject) {
-        this.data = dataObject;
+    public void setDataObject(long id, int noOfStages, Object data) {
+        this.id = id;
+        this.data = data;
+        this.timestampArr = new long[noOfStages + 1];
+        if (noOfStages > 0) {
+            this.timestampArr[0] = System.currentTimeMillis();
+        }
+
+    }
+
+    public long getId() {
+        return this.id;
     }
 }
