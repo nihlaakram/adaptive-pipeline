@@ -1,8 +1,11 @@
 package lk.ac.iit.data;
 
+import com.lmax.disruptor.EventFactory;
+import com.lmax.disruptor.EventHandler;
+
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class StageHandler implements Cloneable, Runnable {
+public class StageHandler implements EventHandler<StageEvent> {
 
 
     private LinkedBlockingQueue<StageEvent> inQueue;
@@ -23,20 +26,24 @@ public class StageHandler implements Cloneable, Runnable {
         return outQueue;
     }
 
+//    @Override
+//    public void run() {
+//    }
+//
+//    public StageHandler clone() {
+//
+//        StageHandler t = null;
+//        try {
+//            t = (StageHandler) super.clone();
+//        } catch (CloneNotSupportedException e) {
+//
+//        }
+//
+//        return t;
+//    }
+
     @Override
-    public void run() {
+    public void onEvent(StageEvent stageEvent, long l, boolean b) throws Exception {
+
     }
-
-    public StageHandler clone() {
-
-        StageHandler t = null;
-        try {
-            t = (StageHandler) super.clone();
-        } catch (CloneNotSupportedException e) {
-
-        }
-
-        return t;
-    }
-
 }
