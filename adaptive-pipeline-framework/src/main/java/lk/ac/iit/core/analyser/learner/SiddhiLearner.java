@@ -20,7 +20,7 @@ public class SiddhiLearner {
     private SiddhiAppRuntime siddhiAppRuntime;
 
 
-    public SiddhiLearner(int monitorThreshold) {
+    public SiddhiLearner(int monitorThreshold, int noOfStages) {
         TpsAttributeAggregator.monitorThreshold = monitorThreshold;
         this.inStreamDefinition = "define stream inputStream (tt long, tt1 long, tt2 long, tt3 long); " +
                 "define stream outputStream (tt double, tt1 double, tt2 double, tt3 double);";
