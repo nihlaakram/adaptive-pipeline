@@ -8,18 +8,10 @@ import lk.ac.iit.data.StageEvent;
 public class IntermediateStageHandler implements EventHandler<StageEvent> {
 
 
-    public synchronized static long getNum() {
-        return num;
-    }
-
-    public synchronized static void setNum(long num) {
-        IntermediateStageHandler.num = num;
-    }
-
     private static long num;
-    public Monitor monitor;
-    public RingBuffer<StageEvent> ring;
-    public long id;
+    private Monitor monitor;
+    private RingBuffer<StageEvent> ring;
+    private long id;
 
 
 
@@ -38,5 +30,26 @@ public class IntermediateStageHandler implements EventHandler<StageEvent> {
 
 
     public void process(StageEvent stageEvent, long sequence){}
+
+    public synchronized static long getNum() {
+        return num;
+    }
+
+    public synchronized static void setNum(long num) {
+        IntermediateStageHandler.num = num;
+    }
+
+    public Monitor getMonitor() {
+        return monitor;
+    }
+
+    public RingBuffer<StageEvent> getRing() {
+        return ring;
+    }
+
+    public long getId() {
+        return id;
+    }
+
 }
 

@@ -20,27 +20,27 @@ class SampleHadler1 extends IntermediateStageHandler {
     @Override
     public void process(StageEvent stageEvent, long sequence) {
 
-        if (stageEvent.getId() % getNum() == this.id) {
+        if (stageEvent.getId() % getNum() == this.getId()) {
             stageEvent.setTimestamp(1);
             StageEvent event = stageEvent;
-            event = ring.get(sequence);
+            event = getRing().get(sequence);
             event.setBack(event.getId(), event);
-            ring.publish(sequence);
+            getRing().publish(sequence);
            // monitor.setTimestamp(stageEvent.getTimestamp());
         }
     }
 }
 
 class SampleHadler2 extends FinalStageHandler {
-    public SampleHadler2(long id, long num, Monitor monitor) {
+    public SampleHadler2(long id, long num,Monitor monitor) {
         super(id, num, monitor);
     }
-    public void process(StageEvent stageEvent) {
 
-        if (stageEvent.getId() % getNum() == this.id) {
-            stageEvent.setTimestamp(2);
-            monitor.setTimestamp(stageEvent.getTimestamp());
-        }
+    @Override
+    public void process(StageEvent stageEvent) {
+        //do nothing
+        stageEvent.setTimestamp(2);
+
     }
 }
 public class Main {
@@ -70,7 +70,7 @@ public class Main {
 
         FinalStageHandler[] arrHandler2 = new SampleHadler2[2];
         for (int i = 0; i < 2; i++) {
-            arrHandler2[i] = new SampleHadler2(i, 1, monitor1);
+            arrHandler2[i] = new SampleHadler2(i, 1,  monitor1);
         }
 
         disruptor.handleEventsWith(arrHandler1);
