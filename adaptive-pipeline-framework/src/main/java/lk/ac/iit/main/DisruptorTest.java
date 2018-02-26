@@ -3,16 +3,16 @@ package lk.ac.iit.main;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import lk.ac.iit.core.Monitor;
-import lk.ac.iit.data.disruptor.handler.FinalHandler;
+import lk.ac.iit.data.disruptor.handler.FinalStageHandler;
 import lk.ac.iit.data.StageEvent;
 import lk.ac.iit.data.disruptor.StageEventFactory;
-import lk.ac.iit.data.disruptor.StageProducer;
+import lk.ac.iit.data.disruptor.handler.InitialStageHandler;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-class SampleHadler extends FinalHandler {
+class SampleHadler extends FinalStageHandler {
     public SampleHadler(long id, long num, Monitor monitor) {
         super(id, num, monitor);
     }
@@ -48,7 +48,7 @@ public class DisruptorTest {
 
         // Construct the Disruptor
         Disruptor<StageEvent> disruptor = new Disruptor<>(factory, bufferSize, executor);
-        FinalHandler[] arrHandler = new SampleHadler[2];
+        FinalStageHandler[] arrHandler = new SampleHadler[2];
         for (int i = 0; i < 2; i++) {
             arrHandler[i] = new SampleHadler(i, 1, monitor1);
         }
@@ -58,7 +58,7 @@ public class DisruptorTest {
 
         RingBuffer<StageEvent> ringBuffer = disruptor.getRingBuffer();
 
-        StageProducer producer1 = new StageProducer(ringBuffer);
+        InitialStageHandler producer1 = new InitialStageHandler(ringBuffer);
 
         System.out.println(Thread.activeCount());
 

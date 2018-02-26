@@ -3,17 +3,17 @@ package lk.ac.iit.main;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import lk.ac.iit.core.Monitor;
-import lk.ac.iit.data.disruptor.handler.FinalHandler;
+import lk.ac.iit.data.disruptor.handler.FinalStageHandler;
 import lk.ac.iit.data.StageEvent;
-import lk.ac.iit.data.disruptor.handler.IntermediateHandler;
+import lk.ac.iit.data.disruptor.handler.IntermediateStageHandler;
 import lk.ac.iit.data.disruptor.StageEventFactory;
-import lk.ac.iit.data.disruptor.StageProducer;
+import lk.ac.iit.data.disruptor.handler.InitialStageHandler;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-class SampleHadler1 extends IntermediateHandler {
+class SampleHadler1 extends IntermediateStageHandler {
     public SampleHadler1(long id, long num, Monitor monitor, RingBuffer<StageEvent> ring) {
         super(id, num, monitor, ring);
     }
@@ -31,7 +31,7 @@ class SampleHadler1 extends IntermediateHandler {
     }
 }
 
-class SampleHadler2 extends FinalHandler {
+class SampleHadler2 extends FinalStageHandler {
     public SampleHadler2(long id, long num, Monitor monitor) {
         super(id, num, monitor);
     }
@@ -63,12 +63,12 @@ public class Main {
         Disruptor<StageEvent> disruptor = new Disruptor<>(factory, bufferSize, executor);
         RingBuffer<StageEvent> ringBuffer = disruptor.getRingBuffer();
 
-        IntermediateHandler[] arrHandler1 = new SampleHadler1[2];
+        IntermediateStageHandler[] arrHandler1 = new SampleHadler1[2];
         for (int i = 0; i < 2; i++) {
             arrHandler1[i] = new SampleHadler1(i, 1, monitor1, ringBuffer);
         }
 
-        FinalHandler[] arrHandler2 = new SampleHadler2[2];
+        FinalStageHandler[] arrHandler2 = new SampleHadler2[2];
         for (int i = 0; i < 2; i++) {
             arrHandler2[i] = new SampleHadler2(i, 1, monitor1);
         }
@@ -80,7 +80,7 @@ public class Main {
 
 
 
-        StageProducer producer1 = new StageProducer(ringBuffer);
+        InitialStageHandler producer1 = new InitialStageHandler(ringBuffer);
 
         System.out.println(Thread.activeCount());
 

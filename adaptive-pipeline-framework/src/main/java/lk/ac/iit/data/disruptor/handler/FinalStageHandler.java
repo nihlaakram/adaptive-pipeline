@@ -4,13 +4,13 @@ import com.lmax.disruptor.EventHandler;
 import lk.ac.iit.core.Monitor;
 import lk.ac.iit.data.StageEvent;
 
-public class FinalHandler implements EventHandler<StageEvent> {
+public class FinalStageHandler implements EventHandler<StageEvent> {
 
     private static long num;
     public Monitor monitor;
     public long id;
 
-    public FinalHandler(long id, long num, Monitor monitor) {
+    public FinalStageHandler(long id, long num, Monitor monitor) {
         this.id = id;
         this.num = num;
         this.monitor = monitor;
@@ -21,7 +21,7 @@ public class FinalHandler implements EventHandler<StageEvent> {
     }
 
     public synchronized static void setNum(long num) {
-        FinalHandler.num = num;
+        FinalStageHandler.num = num;
     }
 
     @Override

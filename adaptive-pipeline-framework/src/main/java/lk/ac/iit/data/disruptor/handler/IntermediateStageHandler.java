@@ -5,7 +5,7 @@ import com.lmax.disruptor.RingBuffer;
 import lk.ac.iit.core.Monitor;
 import lk.ac.iit.data.StageEvent;
 
-public class IntermediateHandler implements EventHandler<StageEvent> {
+public class IntermediateStageHandler implements EventHandler<StageEvent> {
 
 
     public synchronized static long getNum() {
@@ -13,7 +13,7 @@ public class IntermediateHandler implements EventHandler<StageEvent> {
     }
 
     public synchronized static void setNum(long num) {
-        IntermediateHandler.num = num;
+        IntermediateStageHandler.num = num;
     }
 
     private static long num;
@@ -23,7 +23,7 @@ public class IntermediateHandler implements EventHandler<StageEvent> {
 
 
 
-    public IntermediateHandler(long id, long num, Monitor monitor, RingBuffer<StageEvent> ringBuffer) {
+    public IntermediateStageHandler(long id, long num, Monitor monitor, RingBuffer<StageEvent> ringBuffer) {
         this.id = id;
         this.num = num;
         this.monitor = monitor;

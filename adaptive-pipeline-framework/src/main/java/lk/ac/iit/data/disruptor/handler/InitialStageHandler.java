@@ -1,15 +1,15 @@
-package lk.ac.iit.data.disruptor;
+package lk.ac.iit.data.disruptor.handler;
 
 import com.lmax.disruptor.RingBuffer;
 import lk.ac.iit.data.StageEvent;
 
 
-public class StageProducer {
+public class InitialStageHandler {
 
 
     private final RingBuffer<StageEvent> ringBuffer;
 
-    public StageProducer(RingBuffer<StageEvent> ringBuffer) {
+    public InitialStageHandler(RingBuffer<StageEvent> ringBuffer) {
         this.ringBuffer = ringBuffer;
     }
 

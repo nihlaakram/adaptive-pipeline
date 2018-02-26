@@ -1,6 +1,6 @@
 //import lk.ac.iit.core.Monitor;
 //import lk.ac.iit.data.StageEvent_;
-//import lk.ac.iit.data.disruptor.handler.FinalHandler;
+//import lk.ac.iit.data.disruptor.handler.FinalStageHandler;
 //import lk.ac.iit.data.TerminationMessage;
 //
 //import java.util.concurrent.LinkedBlockingQueue;
@@ -43,7 +43,7 @@
 //    }
 //}
 //
-//class SampleStageHandler extends FinalHandler {
+//class SampleStageHandler extends FinalStageHandler {
 //
 //    public SampleStageHandler(LinkedBlockingQueue<StageEvent_> inQueue, LinkedBlockingQueue<StageEvent_> outQueue) {
 //        super(inQueue, outQueue);
@@ -92,7 +92,7 @@
 //}
 //
 //
-//class Terminator extends FinalHandler  {
+//class Terminator extends FinalStageHandler  {
 //
 //    private Monitor monitor;
 //
