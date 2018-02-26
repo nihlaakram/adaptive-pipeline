@@ -2,6 +2,7 @@ package lk.ac.iit.core;
 
 import lk.ac.iit.data.disruptor.handler.FinalStageHandler;
 import lk.ac.iit.data.disruptor.handler.IntermediateStageHandler;
+import lk.ac.iit.data.disruptor.handler.StageHandler;
 
 public class Executor {
 
@@ -24,7 +25,21 @@ public class Executor {
        // finalStageHandlers[count].setNum(count + 1);
 
         count++;
-        IntermediateStageHandler.setNum(2);
+        if (count<=2){
+
+            if(stageID==1){
+                IntermediateStageHandler.setNum(2);
+                System.out.println("Scaling1");
+            } else {
+                FinalStageHandler.setNum(2);
+                System.out.println("Scaling2");
+            }
+        }
+
+
+        //
+        //
+        //StageHandler.setNum(2);
 
     }
 

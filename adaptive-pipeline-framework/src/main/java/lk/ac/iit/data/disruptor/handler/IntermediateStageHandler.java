@@ -5,31 +5,45 @@ import com.lmax.disruptor.RingBuffer;
 import lk.ac.iit.core.Monitor;
 import lk.ac.iit.data.StageEvent;
 
+
 public class IntermediateStageHandler implements EventHandler<StageEvent> {
 
 
     private static long num;
-    private Monitor monitor;
     private RingBuffer<StageEvent> ring;
     private long id;
+    private StageEvent event;
 
 
 
-    public IntermediateStageHandler(long id, long num, Monitor monitor, RingBuffer<StageEvent> ringBuffer) {
+    public IntermediateStageHandler(long id, long num, RingBuffer<StageEvent> ringBuffer) {
         this.id = id;
         this.num = num;
-        this.monitor = monitor;
         this.ring = ringBuffer;
     }
 
 
     @Override
-    public void onEvent(StageEvent stageEvent, long l, boolean b) throws Exception {
-        process( stageEvent, l);
+    public void onEvent(StageEvent stageEvent, long sequence, boolean b) throws Exception {
+        //okay
+
+        if (stageEvent.getId() % this.getNum() == this.getId()) {
+            //System.out.println(sequence+"\t--"+getNum());
+            event = process(stageEvent);
+
+
+            event = getRing().get(sequence);
+            event.setBack(event.getId(), event);
+            getRing().publish(sequence);
+        }
+
     }
 
 
-    public void process(StageEvent stageEvent, long sequence){}
+    public StageEvent process(StageEvent inEvent){
+        //inEvent.setTimestamp(1);
+        return inEvent;
+    }
 
     public synchronized static long getNum() {
         return num;
@@ -39,9 +53,6 @@ public class IntermediateStageHandler implements EventHandler<StageEvent> {
         IntermediateStageHandler.num = num;
     }
 
-    public Monitor getMonitor() {
-        return monitor;
-    }
 
     public RingBuffer<StageEvent> getRing() {
         return ring;

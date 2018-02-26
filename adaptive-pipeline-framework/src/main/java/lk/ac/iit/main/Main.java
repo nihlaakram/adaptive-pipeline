@@ -8,26 +8,30 @@ import lk.ac.iit.data.StageEvent;
 import lk.ac.iit.data.disruptor.handler.IntermediateStageHandler;
 import lk.ac.iit.data.disruptor.StageEventFactory;
 import lk.ac.iit.data.disruptor.handler.InitialStageHandler;
+import lk.ac.iit.data.disruptor.handler.StageHandler;
 
+import java.awt.*;
 import java.nio.ByteBuffer;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 class SampleHadler1 extends IntermediateStageHandler {
-    public SampleHadler1(long id, long num, Monitor monitor, RingBuffer<StageEvent> ring) {
-        super(id, num, monitor, ring);
+    public SampleHadler1(long id, long num, RingBuffer<StageEvent> ring) {
+        super(id, num, ring);
     }
-    @Override
-    public void process(StageEvent stageEvent, long sequence) {
 
-        if (stageEvent.getId() % getNum() == this.getId()) {
-            stageEvent.setTimestamp(1);
+    @Override
+    public StageEvent process(StageEvent stageEvent) {
+
+
+            for (int i=0; i<10000; i++){
+                i++;
+                i--;
+            }
             StageEvent event = stageEvent;
-            event = getRing().get(sequence);
-            event.setBack(event.getId(), event);
-            getRing().publish(sequence);
-           // monitor.setTimestamp(stageEvent.getTimestamp());
-        }
+            event.setTimestamp(1);
+            return event;
+
     }
 }
 
@@ -36,18 +40,17 @@ class SampleHadler2 extends FinalStageHandler {
         super(id, num, monitor);
     }
 
-    @Override
     public void process(StageEvent stageEvent) {
-        //do nothing
-        stageEvent.setTimestamp(2);
+        //System.out.println("Hello");
 
+        stageEvent.setTimestamp(2);
     }
 }
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        Monitor.initMonitor(2, 1000);
+        Monitor.initMonitor(2, 5000);
 
         //Monitor.getMonitor1();
         Monitor monitor1 = Monitor.getMonitor1();
@@ -65,7 +68,7 @@ public class Main {
 
         IntermediateStageHandler[] arrHandler1 = new SampleHadler1[2];
         for (int i = 0; i < 2; i++) {
-            arrHandler1[i] = new SampleHadler1(i, 1, monitor1, ringBuffer);
+            arrHandler1[i] = new SampleHadler1(i, 1, ringBuffer);
         }
 
         FinalStageHandler[] arrHandler2 = new SampleHadler2[2];
@@ -76,16 +79,18 @@ public class Main {
         disruptor.handleEventsWith(arrHandler1);
         disruptor.after(arrHandler1).handleEventsWith(arrHandler2);
         monitor1.getExecutor().addHandler(arrHandler2);
+        //disruptor.handleEventsWith(arrHandler2);
         disruptor.start();
 
 
 
         InitialStageHandler producer1 = new InitialStageHandler(ringBuffer);
 
-        System.out.println(Thread.activeCount());
+        //System.out.println(Thread.activeCount());
 
         ByteBuffer bb = ByteBuffer.allocate(8);
-        for (long l = 0; l < 2000; l++)
+        long time = System.currentTimeMillis();
+        for (long l = 0; System.currentTimeMillis() < time+600; l++)
 
         {
             bb.putLong(0, l);

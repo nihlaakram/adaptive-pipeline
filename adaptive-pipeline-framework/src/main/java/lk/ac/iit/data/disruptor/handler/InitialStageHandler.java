@@ -14,6 +14,7 @@ public class InitialStageHandler {
     }
 
     public void onData(Object object, long id) {
+
         long sequence = ringBuffer.next();  // Grab the next sequence
         try {
             StageEvent event = ringBuffer.get(sequence); // Get the entry in the Disruptor
