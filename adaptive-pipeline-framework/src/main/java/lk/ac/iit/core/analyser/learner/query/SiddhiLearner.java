@@ -20,27 +20,27 @@ public class SiddhiLearner {
     private SiddhiAppRuntime siddhiAppRuntime;
 
 
-
     public SiddhiLearner(int monitorThreshold, int noOfParameters) {
         TpsAttributeAggregator.monitorThreshold = monitorThreshold;
 
-        String in ="tt long";
+        String in = "tt long";
         String out = "tt double";
-        String autoQuery ="learner:latency(tt) as tt";;
-        for(int i=1; i<noOfParameters; i++){
-            in = in.concat(",tt"+i+" long");
-            out = out.concat(",tt"+i+" double");
-            if(i<noOfParameters/2){
-                autoQuery = autoQuery.concat(", learner:latency(tt"+i+") as tt"+i);
+        String autoQuery = "learner:latency(tt) as tt";
+        ;
+        for (int i = 1; i < noOfParameters; i++) {
+            in = in.concat(",tt" + i + " long");
+            out = out.concat(",tt" + i + " double");
+            if (i < noOfParameters / 2) {
+                autoQuery = autoQuery.concat(", learner:latency(tt" + i + ") as tt" + i);
             } else {
-                autoQuery = autoQuery.concat(", learner:tps(tt"+i+") as tt"+i);
+                autoQuery = autoQuery.concat(", learner:tps(tt" + i + ") as tt" + i);
             }
         }
-        System.out.println(autoQuery);
-        this.inStreamDefinition = "define stream inputStream ("+in+"); " +
-                "define stream outputStream ("+out+");";
-        this.query = "@info(name = 'query1') " + "from inputStream#window.lengthBatch("+monitorThreshold+") " +
-                "select "+autoQuery+" insert into filteredOutputStream";
+
+        this.inStreamDefinition = "define stream inputStream (" + in + "); " +
+                "define stream outputStream (" + out + ");";
+        this.query = "@info(name = 'query1') " + "from inputStream#window.lengthBatch(" + monitorThreshold + ") " +
+                "select " + autoQuery + " insert into filteredOutputStream";
 
         this.siddhiManager = new SiddhiManager();
         this.siddhiManager.setExtension("learner:latency", LatencyAttributeAggregator.class);
@@ -61,21 +61,21 @@ public class SiddhiLearner {
                 for (Event ev : events) {
                     System.out.println(ev);//(double) ev.getData()[0], (double) ev.getData()[2]
 
-                    double[] latency = new double[noOfParameters/2];
-                    double[] tps = new double[noOfParameters/2];
+                    double[] latency = new double[noOfParameters / 2];
+                    double[] tps = new double[noOfParameters / 2];
 
                     //preprocessed attributes for latency and tps
-                    for(int i=0; i<noOfParameters/2; i++){
+                    for (int i = 0; i < noOfParameters / 2; i++) {
                         latency[i] = (double) ev.getData()[i];
-                        tps[i] = (double) ev.getData()[i+(noOfParameters/2)];
+                        tps[i] = (double) ev.getData()[i + (noOfParameters / 2)];
                     }
 
-                    Planner planner = new Planner(new AnalyserData(tps, latency), 5);
+                    Planner planner = new Planner(new AnalyserData(tps, latency), 10);
                     PlannerData plannerData = planner.plan();
-                    System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID() + "\t"+planner.getNoOfThread());
+                    System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID() + "\t" + planner.getNoOfThread());
 
                     if (plannerData.isScalability()) {
-                       Monitor.getMonitor1().getExecutor().executeScaling(plannerData.getStageID());
+                        Monitor.getMonitor1().getExecutor().executeScaling(plannerData.getStageID());
 
                     }
 

@@ -14,6 +14,11 @@ public class Producer implements Runnable {
     private int messageCount;
 
 
+    public Producer(LinkedBlockingQueue<XMLMessage> inQueue, int messageCount) {
+        this.inQueue = inQueue;
+        this.messageCount = messageCount;
+    }
+
     public void run() {
         try {
             for (int i = 0; i < this.messageCount; i++) {
@@ -34,10 +39,5 @@ public class Producer implements Runnable {
             e.printStackTrace();
         }
 
-    }
-
-    public Producer(LinkedBlockingQueue<XMLMessage> inQueue, int messageCount) {
-        this.inQueue = inQueue;
-        this.messageCount = messageCount;
     }
 }

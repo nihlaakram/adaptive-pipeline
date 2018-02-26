@@ -1,12 +1,12 @@
 //import lk.ac.iit.core.Monitor;
-//import lk.ac.iit.data.StageEvent;
-//import lk.ac.iit.data.StageHandler;
+//import lk.ac.iit.data.StageEvent_;
+//import lk.ac.iit.data.disruptor.handler.FinalHandler;
 //import lk.ac.iit.data.TerminationMessage;
 //
 //import java.util.concurrent.LinkedBlockingQueue;
 //
 //
-//class SampleEvent extends StageEvent {
+//class SampleEvent extends StageEvent_ {
 //
 //    public SampleEvent(int noOfStages, Object data) {
 //        super(noOfStages, data);
@@ -14,9 +14,9 @@
 //}
 //
 //class SampleProducer extends Thread {
-//    LinkedBlockingQueue<StageEvent> in;
+//    LinkedBlockingQueue<StageEvent_> in;
 //
-//    public SampleProducer(LinkedBlockingQueue<StageEvent> in) {
+//    public SampleProducer(LinkedBlockingQueue<StageEvent_> in) {
 //        this.in = in;
 //    }
 //
@@ -43,9 +43,9 @@
 //    }
 //}
 //
-//class SampleStageHandler extends StageHandler {
+//class SampleStageHandler extends FinalHandler {
 //
-//    public SampleStageHandler(LinkedBlockingQueue<StageEvent> inQueue, LinkedBlockingQueue<StageEvent> outQueue) {
+//    public SampleStageHandler(LinkedBlockingQueue<StageEvent_> inQueue, LinkedBlockingQueue<StageEvent_> outQueue) {
 //        super(inQueue, outQueue);
 //    }
 //
@@ -54,7 +54,7 @@
 //
 //
 //            if (getInQueue().size() > 0) {
-//                StageEvent val1 = getInQueue().poll();
+//                StageEvent_ val1 = getInQueue().poll();
 //                if (val1.getDataObject() != null) {
 //
 //
@@ -92,13 +92,13 @@
 //}
 //
 //
-//class Terminator extends StageHandler  {
+//class Terminator extends FinalHandler  {
 //
 //    private Monitor monitor;
 //
 //    static int count =0;
 //
-//    public Terminator(LinkedBlockingQueue<StageEvent> inQueue, LinkedBlockingQueue<StageEvent> outQueue, Monitor monitor) {
+//    public Terminator(LinkedBlockingQueue<StageEvent_> inQueue, LinkedBlockingQueue<StageEvent_> outQueue, Monitor monitor) {
 //        super(inQueue, outQueue);
 //        this.monitor = monitor;
 //    }
@@ -107,7 +107,7 @@
 //
 //        while (true) {
 //            if(getInQueue().size()>0){
-//                StageEvent val = this.getInQueue().poll();
+//                StageEvent_ val = this.getInQueue().poll();
 //                if (val.getDataObject() != null) {
 //                    for(int i=0; i<10000; i++){
 //                        //do nothing
@@ -140,8 +140,8 @@
 //        Monitor monitor = Monitor.getMonitor1();
 //        // monitor.start();
 //
-//        LinkedBlockingQueue<StageEvent> in = new LinkedBlockingQueue<>();
-//        LinkedBlockingQueue<StageEvent> out = new LinkedBlockingQueue<>();
+//        LinkedBlockingQueue<StageEvent_> in = new LinkedBlockingQueue<>();
+//        LinkedBlockingQueue<StageEvent_> out = new LinkedBlockingQueue<>();
 //        //producer
 //
 //

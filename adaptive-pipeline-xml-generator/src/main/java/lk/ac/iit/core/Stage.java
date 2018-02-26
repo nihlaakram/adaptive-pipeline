@@ -1,9 +1,9 @@
 package lk.ac.iit.core;
 
 import lk.ac.iit.data.XMLMessage;
+import org.apache.commons.text.RandomStringGenerator;
 
 import java.util.concurrent.LinkedBlockingQueue;
-import org.apache.commons.text.RandomStringGenerator;
 
 public class Stage implements Runnable {
 
@@ -13,6 +13,11 @@ public class Stage implements Runnable {
     private int charCount;
 
 
+    public Stage(LinkedBlockingQueue<XMLMessage> inQueue, LinkedBlockingQueue<XMLMessage> outQueue, int charCount) {
+        this.inQueue = inQueue;
+        this.outQueue = outQueue;
+        this.charCount = charCount;
+    }
 
     public void run() {
         while (true) {
@@ -51,13 +56,6 @@ public class Stage implements Runnable {
         }
 
 
-    }
-
-
-    public Stage(LinkedBlockingQueue<XMLMessage> inQueue, LinkedBlockingQueue<XMLMessage> outQueue, int charCount) {
-        this.inQueue = inQueue;
-        this.outQueue = outQueue;
-        this.charCount = charCount;
     }
 
 }

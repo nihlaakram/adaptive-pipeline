@@ -1,4 +1,6 @@
-import java.io.File;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -8,13 +10,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
 public class WriteXMLFile {
 
-//    <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+    //    <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 //<company>
 //	<staff id="1">
 //		<firstname>yong</firstname>
@@ -81,7 +79,7 @@ public class WriteXMLFile {
             // Output to console for testing
             StreamResult result = new StreamResult(System.out);
 
-              transformer.transform(source, result);
+            transformer.transform(source, result);
 //
 //            System.out.println("File saved!");
 

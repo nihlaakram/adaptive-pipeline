@@ -10,6 +10,12 @@ public class XMLMessage {
     private Document message;
     private Element rootNode;
 
+    public XMLMessage(long timestamp, Document message, Element root) {
+        this.timestamp = timestamp;
+        this.message = message;
+        this.rootNode = root;
+    }
+
     public long getTimestamp() {
         return timestamp;
     }
@@ -23,12 +29,6 @@ public class XMLMessage {
         element.appendChild(this.message.createTextNode(message));
         this.rootNode.appendChild(element);
 
-    }
-
-    public XMLMessage(long timestamp, Document message, Element root) {
-        this.timestamp = timestamp;
-        this.message = message;
-        this.rootNode = root;
     }
 
 

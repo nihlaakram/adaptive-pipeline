@@ -18,7 +18,7 @@ public class Analyser {
 
         this.noOfStages = noOfStages;
         this.monitorThreshold = monitorThreshold;
-        this.objLength  = 2*this.noOfStages;
+        this.objLength = 2 * this.noOfStages;
         this.siddhi = new SiddhiLearner(this.monitorThreshold, this.objLength);
 
     }
@@ -26,24 +26,21 @@ public class Analyser {
 
     public void analyse(long[] timestamp) {
 
-        Object[] latencyPreprocessed = new Object[this.objLength/2];
-        Object[] tpsPreprocessed = new Object[this.objLength/2];
+        Object[] latencyPreprocessed = new Object[this.objLength / 2];
+        Object[] tpsPreprocessed = new Object[this.objLength / 2];
 
         //preprocessed attributes for latency and tps
-        for(int i=0; i<this.objLength/2; i++){
-            latencyPreprocessed[i] = timestamp[i+1]- timestamp[i];
+        for (int i = 0; i < this.objLength / 2; i++) {
+            latencyPreprocessed[i] = timestamp[i + 1] - timestamp[i];
             tpsPreprocessed[i] = timestamp[i];
         }
         List list = new ArrayList(Arrays.asList(latencyPreprocessed));
         list.addAll(Arrays.asList(tpsPreprocessed));
-        Object [] obj = list.toArray();
+        Object[] obj = list.toArray();
 
         siddhi.publish(new Event(System.currentTimeMillis(), obj));
 
     }
-
-
-
 
 
 }

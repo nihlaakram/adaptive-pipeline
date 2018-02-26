@@ -1,66 +1,83 @@
 package lk.ac.iit.main;
 
-import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
-import lk.ac.iit.core.Producer1;
-import lk.ac.iit.core.Stage_1;
-import lk.ac.iit.data.LongEvent;
+import lk.ac.iit.core.Monitor;
+import lk.ac.iit.data.disruptor.handler.FinalHandler;
+import lk.ac.iit.data.StageEvent;
+import lk.ac.iit.data.disruptor.StageEventFactory;
+import lk.ac.iit.data.disruptor.StageProducer;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+class SampleHadler extends FinalHandler {
+    public SampleHadler(long id, long num, Monitor monitor) {
+        super(id, num, monitor);
+    }
 
-class LongEventFactory implements EventFactory<LongEvent> {
-    public LongEvent newInstance() {
-        return new LongEvent();
+    public void process(StageEvent stageEvent) {
+        //System.out.println(stageEvent.getId()+"\t"+this.num+"\t"+this.id+"\t"+(stageEvent.getId() % this.num == this.id));
+
+//        if (stageEvent.getId() % num == this.id) {
+//
+//        }
+
+        if (stageEvent.getId() % getNum() == this.id) {
+            //System.out.println(id+ "\t"+ stageEvent.getId());
+            stageEvent.setTimestamp(1);
+//        stageEvent.setTimestamp(2);
+            monitor.setTimestamp(stageEvent.getTimestamp());
+        }
     }
 }
-
 public class DisruptorTest {
 
     public static void main(String[] args) throws InterruptedException {
 
+        Monitor.initMonitor(1, 1000);
+
+        //Monitor.getMonitor1();
+        Monitor monitor1 = Monitor.getMonitor1();
+
         // Executor that will be used to construct new threads for consumers
         Executor executor = Executors.newCachedThreadPool();
-        LongEventFactory factory = new LongEventFactory();
-        int bufferSize = 1024;
+        StageEventFactory factory = new StageEventFactory();
+        int bufferSize = 256;
 
         // Construct the Disruptor
-        Disruptor<LongEvent> disruptor = new Disruptor<>(factory, bufferSize, executor);
-        Stage_1[] arrHandler = new Stage_1[3];
-        for (int i = 0; i < 3; i++) {
-            arrHandler[i] = new Stage_1(i + "", i, 1);
+        Disruptor<StageEvent> disruptor = new Disruptor<>(factory, bufferSize, executor);
+        FinalHandler[] arrHandler = new SampleHadler[2];
+        for (int i = 0; i < 2; i++) {
+            arrHandler[i] = new SampleHadler(i, 1, monitor1);
         }
         disruptor.handleEventsWith(arrHandler);
-
-        // Start the Disruptor, starts all threads running
+        monitor1.getExecutor().addHandler(arrHandler);
         disruptor.start();
 
-        // Get the ring buffer from the Disruptor to be used for publishing.
-        RingBuffer<LongEvent> ringBuffer = disruptor.getRingBuffer();
+        RingBuffer<StageEvent> ringBuffer = disruptor.getRingBuffer();
 
-        Producer1 producer1 = new Producer1(ringBuffer);
+        StageProducer producer1 = new StageProducer(ringBuffer);
 
         System.out.println(Thread.activeCount());
 
         ByteBuffer bb = ByteBuffer.allocate(8);
-        for (long l = 0; l < 1000; l++)
+        for (long l = 0; l < 2000; l++)
 
         {
             bb.putLong(0, l);
             producer1.onData(bb, l);
-            if (l == 500) {
-                Thread.sleep(1000);
-                Stage_1.setNum(3);
-                System.out.println("=======================");
-            }
-//            if(l==1000){
+//            if (l == 500) {
 //                Thread.sleep(1000);
-//                Stage_1.setNum(2);
+//                Stage_1.setNum(3);
 //                System.out.println("=======================");
 //            }
+////            if(l==1000){
+////                Thread.sleep(1000);
+////                Stage_1.setNum(2);
+////                System.out.println("=======================");
+////            }
 
         }
     }

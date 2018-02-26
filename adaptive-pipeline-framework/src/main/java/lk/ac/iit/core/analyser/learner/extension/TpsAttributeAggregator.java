@@ -1,6 +1,5 @@
 package lk.ac.iit.core.analyser.learner.extension;
 
-import lk.ac.iit.core.Monitor;
 import org.wso2.siddhi.annotation.Example;
 import org.wso2.siddhi.annotation.Extension;
 import org.wso2.siddhi.annotation.Parameter;
@@ -40,11 +39,10 @@ import java.util.Map;
 
 public class TpsAttributeAggregator extends AttributeAggregator {
 
+    public static int monitorThreshold = 0;
     private int count = 0;
     private long startTime;
     private long endTime;
-    public static int monitorThreshold = 0;
-
 
     protected void init(ExpressionExecutor[] expressionExecutors, ConfigReader configReader,
                         SiddhiAppContext siddhiAppContext) {
@@ -64,14 +62,14 @@ public class TpsAttributeAggregator extends AttributeAggregator {
     }
 
     public Object processAdd(Object data) {
-        if(count ==0){
+        if (count == 0) {
             this.startTime = (long) data;
             count++;
             return this.startTime;
-        } else if(count== this.monitorThreshold-1){
+        } else if (count == this.monitorThreshold - 1) {
             this.count++;
             this.endTime = (long) data;
-            return ((monitorThreshold)/((this.endTime-this.startTime)/1000.0));
+            return ((monitorThreshold) / ((this.endTime - this.startTime) / 1000.0));
         } else {
             this.count++;
             return null;
