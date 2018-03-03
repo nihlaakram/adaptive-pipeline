@@ -1,5 +1,4 @@
 package lk.ac.iit.core.analyser;
-
 public class AnalyserData {
 
 
