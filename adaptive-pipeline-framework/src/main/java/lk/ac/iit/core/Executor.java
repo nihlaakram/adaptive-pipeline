@@ -1,44 +1,49 @@
 package lk.ac.iit.core;
 
+import lk.ac.iit.data.StageEvent;
 import lk.ac.iit.data.disruptor.handler.FinalStageHandler;
 import lk.ac.iit.data.disruptor.handler.IntermediateStageHandler;
 
 public class Executor {
 
-    int count = 0;
-    private FinalStageHandler[] finalStageHandlers;
+    private int noOfHandlers;
+    private IntermediateStageHandler[] stageHandlers;
+    private FinalStageHandler[] finalStageHandler;
 
+    private Class[] classes;
     public Executor(int noOfHandlers) {
-        finalStageHandlers = new FinalStageHandler[noOfHandlers];
+       this.noOfHandlers = noOfHandlers;
     }
 
-    public void addHandler(FinalStageHandler... handlers) {
-        this.finalStageHandlers = handlers;
+    public void addIntermediateHandler(IntermediateStageHandler ... handlers) {
+       this.stageHandlers = handlers;
     }
+
+    public void addFinalHandler(FinalStageHandler ... handler) {
+        this.finalStageHandler = handler;
+    }
+
+    public void addHandler(Class clazz) {
+    }
+
 
     public void executeScaling(int stageID) {
-//        FinalStageHandler stageHandler = this.finalStageHandlers[stageID - 1].clone();
-//        Thread t1 = new Thread(stageHandler);
-//        t1.start();
+        System.out.println("Scaling "+noOfHandlers);
+//        if(stageID == this.noOfHandlers)(
+//                this.finalStageHandler[0].
+//                )
 
-        // finalStageHandlers[count].setNum(count + 1);
-
-        count++;
-        if (count <= 2) {
-
-            if (stageID == 1) {
-                IntermediateStageHandler.setNum(2);
-                System.out.println("Scaling1");
-            } else {
-//                FinalStageHandler.setNum(2);
-//                System.out.println("Scaling2");
-            }
-        }
-
-
-        //
-        //
-        //StageHandler.setNum(2);
+//        count++;
+//        if (count <= 2) {
+//
+//            if (stageID == 1) {
+//                IntermediateStageHandler.setNum(2);
+//                System.out.println("Scaling1");
+//            } else {
+////                FinalStageHandler.setNum(2);
+////                System.out.println("Scaling2");
+//            }
+//        }
 
     }
 

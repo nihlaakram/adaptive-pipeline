@@ -92,7 +92,8 @@ public class Main {
 
         disruptor.handleEventsWith(arrHandler1);
         disruptor.after(arrHandler1).handleEventsWith(arrHandler2);
-        monitor1.getExecutor().addHandler(arrHandler2);
+        monitor1.getExecutor().addIntermediateHandler(arrHandler1);
+        monitor1.getExecutor().addFinalHandler(arrHandler2);
         //disruptor.handleEventsWith(arrHandler2);
         disruptor.start();
 
