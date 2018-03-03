@@ -3,7 +3,7 @@ import lk.ac.iit.core.Monitor;
 public class MonitorTest {
 
     public static void main(String[] args) {
-        Monitor.initMonitor(2, 1000);
+        Monitor.initMonitor(2, 1000, 5, true, false);
 
         //Monitor.getMonitor1();
         Monitor monitor1 = Monitor.getMonitor();

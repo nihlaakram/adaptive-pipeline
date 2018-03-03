@@ -65,7 +65,7 @@ public class Main {
     //vertical scaling
     public static void main(String[] args) throws InterruptedException {
 
-        Monitor.initMonitor(2, 10000);
+        Monitor.initMonitor(2, 10000, 5, true, false);
 
         //Monitor.getMonitor1();
         Monitor monitor1 = Monitor.getMonitor();

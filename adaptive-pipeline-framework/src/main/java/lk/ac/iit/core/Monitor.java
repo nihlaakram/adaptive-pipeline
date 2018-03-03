@@ -11,9 +11,16 @@ public class Monitor {
     private Executor executor;
 
 
-    public Monitor(int noOfStage, int monitorThreshold) {
+    public Monitor(int noOfStage, int learningThreshold, int maxThreads, boolean isScale, boolean isVisualize) {
         //StaticBlockSingleton
-        this.analyser = new Analyser(noOfStage, monitorThreshold);
+        this.analyser = new Analyser(noOfStage, learningThreshold);
+        this.executor = new Executor(noOfStage);
+
+    }
+
+    public Monitor(int noOfStage, int learningThreshold, boolean isScale, boolean isVisualize) {
+        //StaticBlockSingleton
+        this.analyser = new Analyser(noOfStage, learningThreshold);
         this.executor = new Executor(noOfStage);
 
     }
@@ -23,9 +30,15 @@ public class Monitor {
         return monitor;
     }
 
-    public static void initMonitor(int stageCount, int monitorCount) {
+    public static void initMonitor(int stageCount, int learningThreshold, int maxThreads, boolean isScale, boolean isVisalize) {
         if (monitor == null) {//lazy thread safe
-            monitor = new Monitor(stageCount, monitorCount);
+            monitor = new Monitor(stageCount, learningThreshold, maxThreads, isScale, isVisalize );
+        }
+    }
+
+    public static void initMonitor(int stageCount, int learningThreshold, boolean isScale, boolean isVisualize) {
+        if (monitor == null) {//lazy thread safe
+            monitor = new Monitor(stageCount, learningThreshold, isScale, isVisualize );
         }
     }
 
