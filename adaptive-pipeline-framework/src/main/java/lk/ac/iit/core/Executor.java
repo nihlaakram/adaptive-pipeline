@@ -2,37 +2,25 @@ package lk.ac.iit.core;
 
 import lk.ac.iit.core.planner.Planner;
 
-public class Executor implements Runnable {
+import lk.ac.iit.data.StageHandler;
 
-    private static Executor executor;
-    private Planner planner;
-    private boolean terminate;
+public class Executor {
 
-    private Executor() {
-        this.planner = new Planner();
-        this.terminate = false;
+    private StageHandler[] stageHandlers;
+
+    public Executor(int noOfHandlers) {
+        stageHandlers = new StageHandler[noOfHandlers];
     }
 
-    public synchronized static Executor getExecutor() {
-        if (executor == null) {
-            executor = new Executor();
-        }
-        return executor;
+    public void addHandler(StageHandler... handlers) {
+        this.stageHandlers = handlers;
     }
 
-    @Override
-    public void run() {
-        //runs until application terminates
-        while (!this.terminate) {
-
-            //plan scaling
-
-            //execute scaling
-
-        }
+    public void executeScaling(int stageID) {
+        StageHandler stageHandler = this.stageHandlers[stageID - 1].clone();
+        Thread t1 = new Thread(stageHandler);
+        t1.start();
     }
 
-    public void setTerminate() {
-        this.terminate = true;
-    }
+
 }
