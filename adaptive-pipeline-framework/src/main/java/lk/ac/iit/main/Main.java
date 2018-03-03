@@ -68,7 +68,7 @@ public class Main {
         Monitor.initMonitor(2, 10000);
 
         //Monitor.getMonitor1();
-        Monitor monitor1 = Monitor.getMonitor1();
+        Monitor monitor1 = Monitor.getMonitor();
 
 
         // Executor that will be used to construct new threads for consumers
@@ -99,7 +99,8 @@ public class Main {
 
         InitialStageHandler producer1 = new InitialStageHandler(ringBuffer);
 
-        //System.out.println(Thread.activeCount());
+        //java -jar -Xms2g -Xmx2g  adaptive-pipeline-framework/target/adaptive-pipeline-framework-1.0-SNAPSHOT-jar-with-dependencies.jar
+
 
 
         //ByteBuffer bb = ByteBuffer.allocate(8);

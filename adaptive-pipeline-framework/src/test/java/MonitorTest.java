@@ -6,7 +6,7 @@ public class MonitorTest {
         Monitor.initMonitor(2, 1000);
 
         //Monitor.getMonitor1();
-        Monitor monitor1 = Monitor.getMonitor1();
+        Monitor monitor1 = Monitor.getMonitor();
 
         //monitor1.start();
         for (int i = 0; i < 1000; i++) {

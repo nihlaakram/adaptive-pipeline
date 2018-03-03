@@ -75,7 +75,7 @@ public class SiddhiLearner {
                     System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID());
 
                     if (plannerData.isScalability()) {
-                        Monitor.getMonitor1().getExecutor().executeScaling(plannerData.getStageID());
+                        Monitor.getMonitor().getExecutor().executeScaling(plannerData.getStageID());
 
                     }
 
