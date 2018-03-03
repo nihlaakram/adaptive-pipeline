@@ -60,7 +60,7 @@ class SampleStageHandler extends StageHandler {
 
                     val1.setTimestamp(1);
                     try {
-                        for(int i=0; i<100; i++){
+                        for(int i=0; i<1000000; i++){
                             //do nothing
                         }
                         getOutQueue().put(val1);
@@ -136,8 +136,8 @@ public class FullTest {
 
         int stageCount = 2;
         //mape
-        Monitor.initMonitor(stageCount, 10000);
-        Monitor monitor = Monitor.getMonitor1();
+        Monitor.initMonitor(stageCount, 10000, 5, true, false);
+        Monitor monitor = Monitor.getMonitor();
         // monitor.start();
 
         LinkedBlockingQueue<StageData> in = new LinkedBlockingQueue<>();
