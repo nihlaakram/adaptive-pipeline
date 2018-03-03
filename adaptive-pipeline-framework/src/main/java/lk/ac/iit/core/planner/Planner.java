@@ -2,7 +2,10 @@ package lk.ac.iit.core.planner;
 
 import lk.ac.iit.core.analyser.AnalyserData;
 
+import lk.ac.iit.core.analyser.AnalyserData;
+
 public class Planner {
+
 
     private final int MAX_THREADS;
     private AnalyserData data;

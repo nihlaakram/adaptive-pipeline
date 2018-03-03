@@ -1,6 +1,7 @@
 package lk.ac.iit.core.planner;
 
 public class PlannerData {
+
     private boolean scalability;
     private int stageID;
 
