@@ -2,15 +2,13 @@ package lk.ac.iit.core.planner;
 
 import lk.ac.iit.core.analyser.AnalyserData;
 
-import lk.ac.iit.core.analyser.AnalyserData;
-
 public class Planner {
 
 
     private final int MAX_THREADS;
     private int noOfThread;
 
-    public Planner( int maxThread) {
+    public Planner(int maxThread) {
         MAX_THREADS = maxThread;
         this.noOfThread = Thread.activeCount() - 1;
     }

@@ -60,7 +60,7 @@ class SampleStageHandler extends StageHandler {
 
                     val1.setTimestamp(1);
                     try {
-                        for(int i=0; i<1000000; i++){
+                        for (int i = 0; i < 1000000; i++) {
                             //do nothing
                         }
                         getOutQueue().put(val1);
@@ -69,7 +69,7 @@ class SampleStageHandler extends StageHandler {
                     }
                 } else {
                     try {
-                        for(int i =0; i<5; i++){
+                        for (int i = 0; i < 5; i++) {
                             getOutQueue().put(new TerminationMessage());
                         }
 
@@ -92,11 +92,10 @@ class SampleStageHandler extends StageHandler {
 }
 
 
-class Terminator extends StageHandler  {
+class Terminator extends StageHandler {
 
+    static int count = 0;
     private Monitor monitor;
-
-    static int count =0;
 
     public Terminator(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue, Monitor monitor) {
         super(inQueue, outQueue);
@@ -106,10 +105,10 @@ class Terminator extends StageHandler  {
     public void run() {
 
         while (true) {
-            if(getInQueue().size()>0){
+            if (getInQueue().size() > 0) {
                 StageData val = this.getInQueue().poll();
                 if (val.getDataObject() != null) {
-                    for(int i=0; i<1000; i++){
+                    for (int i = 0; i < 1000; i++) {
                         //do nothing
                     }
                     val.setTimestamp(2);
@@ -157,8 +156,6 @@ public class FullTest {
 
         SampleProducer producer = new SampleProducer(in);
         producer.start();
-
-
 
 
     }

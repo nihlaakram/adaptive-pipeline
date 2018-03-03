@@ -76,7 +76,7 @@ public class SiddhiLearner {
 
                     //Planner planner = new Planner(new AnalyserData(tps, latency), 10);
                     PlannerData plannerData = planner.plan(new AnalyserData(tps, latency));
-                    System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID() +"\t"+Thread.activeCount());
+                    System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID() + "\t" + Thread.activeCount());
 
                     if (isScale && plannerData.isScalability()) {
                         Monitor.getMonitor().getExecutor().executeScaling(plannerData.getStageID());

@@ -1,7 +1,5 @@
 package lk.ac.iit.core;
 
-import lk.ac.iit.core.planner.Planner;
-
 import lk.ac.iit.data.StageHandler;
 
 public class Executor {
