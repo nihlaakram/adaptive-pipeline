@@ -102,9 +102,8 @@ public class Main {
         //java -jar -Xms2g -Xmx2g  adaptive-pipeline-framework/target/adaptive-pipeline-framework-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 
-
         //ByteBuffer bb = ByteBuffer.allocate(8);
-        for (int l = 0; l < 22000; l++)
+        for (int l = 0; l < 20000; l++)
 
         {
             //bb.putLong(0, l);

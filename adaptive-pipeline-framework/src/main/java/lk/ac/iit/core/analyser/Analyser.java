@@ -1,6 +1,7 @@
 package lk.ac.iit.core.analyser;
 
 import lk.ac.iit.core.analyser.learner.query.SiddhiLearner;
+import lk.ac.iit.core.planner.Planner;
 import org.wso2.siddhi.core.event.Event;
 
 import java.util.ArrayList;
@@ -10,21 +11,20 @@ import java.util.List;
 public class Analyser {
 
     private SiddhiLearner siddhi;
-    private int noOfStages;
     private int monitorThreshold;
     private int objLength;
+    private Planner planner;
 
-    public Analyser(int noOfStages, int monitorThreshold) {
-
-        this.noOfStages = noOfStages;
+    public Analyser(int noOfStages, int monitorThreshold, Planner planner) {
         this.monitorThreshold = monitorThreshold;
-        this.objLength = 2 * this.noOfStages;
-        this.siddhi = new SiddhiLearner(this.monitorThreshold, this.objLength);
+        this.objLength = 2 * noOfStages;
+        this.planner = planner;
+        this.siddhi = new SiddhiLearner(this.monitorThreshold, this.objLength, this.planner);
 
     }
 
 
-    public void analyse(long[] timestamp) {
+    public void analyse(long... timestamp) {
 
         Object[] latencyPreprocessed = new Object[this.objLength / 2];
         Object[] tpsPreprocessed = new Object[this.objLength / 2];

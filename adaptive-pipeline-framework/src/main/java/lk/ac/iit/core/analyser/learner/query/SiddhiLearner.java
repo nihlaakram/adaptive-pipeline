@@ -18,11 +18,13 @@ public class SiddhiLearner {
     private final String inStreamDefinition;
     private final SiddhiManager siddhiManager;
     private SiddhiAppRuntime siddhiAppRuntime;
+    private Planner planner;
 
 
-    public SiddhiLearner(int monitorThreshold, int noOfParameters) {
+    public SiddhiLearner(int monitorThreshold, int noOfParameters, Planner planner) {
+
         TpsAttributeAggregator.monitorThreshold = monitorThreshold;
-
+        this.planner = planner;
         String in = "tt long";
         String out = "tt double";
         String autoQuery = "learner:latency(tt) as tt";
@@ -70,8 +72,8 @@ public class SiddhiLearner {
                         tps[i] = (double) ev.getData()[i + (noOfParameters / 2)];
                     }
 
-                    Planner planner = new Planner(new AnalyserData(tps, latency), 10);
-                    PlannerData plannerData = planner.plan();
+                    //Planner planner = new Planner(new AnalyserData(tps, latency), 10);
+                    PlannerData plannerData = planner.plan(new AnalyserData(tps, latency));
                     System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID());
 
                     if (plannerData.isScalability()) {
