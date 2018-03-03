@@ -16,7 +16,7 @@ public class TpsAttributeAggregatorTestCase {
     public void test1() throws InterruptedException {
 
         log.info("Tps Double Fixed Length Window TestCase");
-        TpsAttributeAggregator.monitorThreshold =1000;
+        TpsAttributeAggregator.monitorThreshold = 1000;
         SiddhiManager siddhiManager = new SiddhiManager();
 
         String inStreamDefinition = "define stream inputStream (tt long); " +
@@ -61,7 +61,7 @@ public class TpsAttributeAggregatorTestCase {
 
         InputHandler inputHandler = siddhiAppRuntime.getInputHandler("inputStream");
         siddhiAppRuntime.start();
-        for(int i=0; i<999; i++){
+        for (int i = 0; i < 999; i++) {
             inputHandler.send(new Object[]{0l});
         }
         inputHandler.send(new Object[]{1l});

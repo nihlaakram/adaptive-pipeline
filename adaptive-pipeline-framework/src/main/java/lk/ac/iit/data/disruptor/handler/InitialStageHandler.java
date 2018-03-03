@@ -13,7 +13,7 @@ public class InitialStageHandler {
         this.ringBuffer = ringBuffer;
     }
 
-    public void onData(Object object, long id) {
+    public void onData(long id, Object object) {
 
         long sequence = ringBuffer.next();  // Grab the next sequence
         try {

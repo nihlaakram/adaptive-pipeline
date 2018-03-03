@@ -44,8 +44,6 @@ public class StageEvent {
 
     }
 
-//    public StageEvent_(String str){}
-
     public long getId() {
         return this.id;
     }

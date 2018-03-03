@@ -16,7 +16,13 @@ public class StageHandler implements EventHandler<StageEvent> {
         this.monitor = monitor;
     }
 
+    public synchronized static long getNum() {
+        return num;
+    }
 
+    public synchronized static void setNum(long num) {
+        StageHandler.num = num;
+    }
 
     @Override
     public void onEvent(StageEvent stageEvent, long sequence, boolean b) throws Exception {
@@ -29,18 +35,9 @@ public class StageHandler implements EventHandler<StageEvent> {
 
     }
 
-
-    public void process(StageEvent inEvent){
+    public void process(StageEvent inEvent) {
         //inEvent.setTimestamp(1);
         //return inEvent;
-    }
-
-    public synchronized static long getNum() {
-        return num;
-    }
-
-    public synchronized static void setNum(long num) {
-        StageHandler.num = num;
     }
 
 }
