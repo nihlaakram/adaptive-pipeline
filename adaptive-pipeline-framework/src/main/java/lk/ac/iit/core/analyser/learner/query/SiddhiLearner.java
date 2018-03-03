@@ -19,12 +19,14 @@ public class SiddhiLearner {
     private final SiddhiManager siddhiManager;
     private SiddhiAppRuntime siddhiAppRuntime;
     private Planner planner;
+    private boolean isScale;
 
 
-    public SiddhiLearner(int monitorThreshold, int noOfParameters, Planner planner) {
+    public SiddhiLearner(int monitorThreshold, int noOfParameters, Planner planner, boolean isScale) {
 
         TpsAttributeAggregator.monitorThreshold = monitorThreshold;
         this.planner = planner;
+        this.isScale = isScale;
         String in = "tt long";
         String out = "tt double";
         String autoQuery = "learner:latency(tt) as tt";
@@ -61,7 +63,7 @@ public class SiddhiLearner {
             @Override
             public void receive(org.wso2.siddhi.core.event.Event[] events) {
                 for (Event ev : events) {
-                    System.out.println(ev);//(double) ev.getData()[0], (double) ev.getData()[2]
+                    System.out.println(ev);
 
                     double[] latency = new double[noOfParameters / 2];
                     double[] tps = new double[noOfParameters / 2];
@@ -76,7 +78,7 @@ public class SiddhiLearner {
                     PlannerData plannerData = planner.plan(new AnalyserData(tps, latency));
                     System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID());
 
-                    if (plannerData.isScalability()) {
+                    if (isScale && plannerData.isScalability()) {
                         Monitor.getMonitor().getExecutor().executeScaling(plannerData.getStageID());
 
                     }

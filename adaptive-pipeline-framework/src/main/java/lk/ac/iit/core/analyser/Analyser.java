@@ -15,11 +15,11 @@ public class Analyser {
     private int objLength;
     private Planner planner;
 
-    public Analyser(int noOfStages, int monitorThreshold, Planner planner) {
+    public Analyser(int noOfStages, int monitorThreshold, Planner planner, boolean isScale) {
         this.monitorThreshold = monitorThreshold;
         this.objLength = 2 * noOfStages;
         this.planner = planner;
-        this.siddhi = new SiddhiLearner(this.monitorThreshold, this.objLength, this.planner);
+        this.siddhi = new SiddhiLearner(this.monitorThreshold, this.objLength, this.planner, isScale);
 
     }
 
