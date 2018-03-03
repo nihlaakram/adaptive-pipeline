@@ -1,66 +1,197 @@
-//package lk.ac.iit.main;
+package lk.ac.iit.main;
+
+import lk.ac.iit.core.Executor;
+import lk.ac.iit.core.Monitor;
+import lk.ac.iit.data.StageData;
+import lk.ac.iit.data.StageHandler;
+import lk.ac.iit.data.TerminationMessage;
+import lk.ac.iit.data.XMLMessage;
+import org.apache.commons.text.RandomStringGenerator;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class DisruptorTest {
+
+    public static void main(String[] args) {
+
+        int stageCount = 2;
+        //mape
+        Monitor.initMonitor(stageCount, 100000, 5, true, false);
+        Monitor monitor = Monitor.getMonitor();
+        // monitor.start();
+
+        LinkedBlockingQueue<StageData> in = new LinkedBlockingQueue<>();
+        LinkedBlockingQueue<StageData> out = new LinkedBlockingQueue<>();
+        //producer
+
+
+//        Terminator term = new Terminator(out, null, monitor);
+//        Thread t2 = new Thread(term);
+//        t2.start();
+
+        SampleStageHandler1 stage = new SampleStageHandler1(in, out);
+        Thread t1 = new Thread(stage);
+        t1.start();
+
+        //monitor.getExecutor().addHandler(stage, term);
+
+        SampleProducer1 producer = new SampleProducer1(in);
+        producer.start();
+
+
+    }
+}
+
+
+class SampleProducer1 extends Thread {
+    LinkedBlockingQueue<StageData> in;
+
+    public SampleProducer1(LinkedBlockingQueue<StageData> in) {
+        this.in = in;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i <20000; i++) {
+            try {
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+                // root elements
+                Document doc = docBuilder.newDocument();
+                Element rootElement = doc.createElement("XML_MESSAGE");
+                doc.appendChild(rootElement);
+                //this.in.put(new StageData(2, new XMLmessage(doc, rootElement)));
+                StageData data = new StageData(2, new Integer(1));
+                //System.out.println("=="+data);
+                this.in.put(data);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        try {
+            StageData data = new StageData(-1, null);
+            data.setTerminate();
+            this.in.put(data);
+            System.out.println("Adding Termination");
+            // this.in.put(new TerminationMessage());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+}
+
+class SampleStageHandler1 implements Runnable{
+
+    LinkedBlockingQueue<StageData> out;
+    LinkedBlockingQueue<StageData> in;
+    public SampleStageHandler1(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
+        in = inQueue;
+        out = outQueue;
+    }
+
+    public void run() {
+        while (true) {
+
+
+            if (in.size() > 0) {
+                StageData val1 = in.poll();
+                //System.out.println()
+                if (val1.equals(null) ){
+                    System.out.println("null");
+                } else if (!val1.getTerminate()) {
+//                    XMLmessage msg = (XMLmessage) val1.getDataObject();
 //
-//import com.lmax.disruptor.EventFactory;
-//import com.lmax.disruptor.RingBuffer;
-//import com.lmax.disruptor.dsl.Disruptor;
-//import lk.ac.iit.core.Producer;
-//import lk.ac.iit.core.Stage_1;
-//import lk.ac.iit.data.LongEvent;
 //
-//import java.nio.ByteBuffer;
-//import java.util.concurrent.Executor;
-//import java.util.concurrent.Executors;
+//                    try {
+//                        RandomStringGenerator random = new RandomStringGenerator.Builder()
+//                                .withinRange('0', 'z').build();
+//                        String charList = random.generate(100);
+//                        msg.addToMessage(charList);
+//                        val1.setTimestamp(1);
+//                        // System.out.println(msg.getMessage()+"\t"+charList);
+//                        out.put(val1);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                } else {
+                    try {
+                        for (int i = 0; i < 5; i++) {
+                            //getOutQueue().put(new TerminationMessage());
+                            StageData data = new StageData(-1, null);
+                            data.setTerminate();
+                           out.put(data);
+                        }
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                }
 //
+
+            }
+        }
+
+       // System.out.println("Stage shutting down");
+
+
+    }
+
+}
+
+
+//class Terminator extends StageHandler {
 //
-//class LongEventFactory implements EventFactory<LongEvent> {
-//    public LongEvent newInstance() {
-//        return new LongEvent();
+//    static int count = 0;
+//    private Monitor monitor;
+//
+//    public Terminator(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue, Monitor monitor) {
+//        super(inQueue, outQueue);
+//        this.monitor = monitor;
 //    }
-//}
 //
-//public class DisruptorTest {
+//    public void run() {
 //
-//    public static void main(String[] args) throws InterruptedException {
+//        while (true) {
+//            if (getInQueue().size() > 0) {
+//                StageData val = this.getInQueue().poll();
 //
-//        // Executor that will be used to construct new threads for consumers
-//        Executor executor = Executors.newCachedThreadPool();
-//        LongEventFactory factory = new LongEventFactory();
-//        int bufferSize = 1024;
 //
-//        // Construct the Disruptor
-//        Disruptor<LongEvent> disruptor = new Disruptor<>(factory, bufferSize, executor);
-//        Stage_1[] arrHandler = new Stage_1[3];
-//        for (int i = 0; i < 3; i++) {
-//            arrHandler[i] = new Stage_1(i + "", i, 1);
-//        }
-//        disruptor.handleEventsWith(arrHandler);
+//                if (val!= null ){
+//                    System.out.println("null1");
+//                } else if (!val.getTerminate() ) {
+//                    val.setTimestamp(2);
+//                    monitor.setTimestamp(val.getTimestamp());
+//                } else {
 //
-//        // Start the Disruptor, starts all threads running
-//        disruptor.start();
+//                    break;
+//                }
 //
-//        // Get the ring buffer from the Disruptor to be used for publishing.
-//        RingBuffer<LongEvent> ringBuffer = disruptor.getRingBuffer();
 //
-//        Producer producer = new Producer(ringBuffer);
-//
-//        ByteBuffer bb = ByteBuffer.allocate(8);
-//        for (long l = 0; l < 1000; l++)
-//
-//        {
-//            bb.putLong(0, l);
-//            producer.onData(bb, l);
-//            if (l == 500) {
-//                Thread.sleep(1000);
-//                Stage_1.setNum(3);
-//                System.out.println("=======================");
 //            }
-////            if(l==1000){
-////                Thread.sleep(1000);
-////                Stage_1.setNum(2);
-////                System.out.println("=======================");
-////            }
+//
 //
 //        }
-//    }
-//}
+//        System.out.println("Terminator shutting down");
 //
+//
+//    }
+//
+//
+//}
+
+

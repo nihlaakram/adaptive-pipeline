@@ -15,10 +15,10 @@ public class Executor {
     }
 
     public void executeScaling(int stageID) {
-        System.out.println("Hello");
         StageHandler stageHandler = this.stageHandlers[stageID - 1].clone();
         Thread t1 = new Thread(stageHandler);
         t1.start();
+
     }
 
 

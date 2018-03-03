@@ -3,22 +3,17 @@ package lk.ac.iit.data;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class XMLMessage {
+public class XMLMessage  {
 
-
-    private long timestamp;
     private Document message;
     private Element rootNode;
 
-    public XMLMessage(long timestamp, Document message, Element root) {
-        this.timestamp = timestamp;
+    public XMLMessage( Document message, Element root) {
         this.message = message;
         this.rootNode = root;
     }
 
-    public long getTimestamp() {
-        return timestamp;
-    }
+
 
     public Document getMessage() {
         return message;

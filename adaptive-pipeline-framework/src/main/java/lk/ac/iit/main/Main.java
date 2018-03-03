@@ -1,10 +1,18 @@
 package lk.ac.iit.main;
 
+import lk.ac.iit.core.Executor;
 import lk.ac.iit.core.Monitor;
 import lk.ac.iit.data.StageData;
 import lk.ac.iit.data.StageHandler;
 import lk.ac.iit.data.TerminationMessage;
+import lk.ac.iit.data.XMLMessage;
+import org.apache.commons.text.RandomStringGenerator;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Main {
@@ -39,10 +47,26 @@ public class Main {
     }
 }
 
-class SampleData extends StageData {
+class XMLmessage  {
+    private Document message;
+    private Element rootNode;
 
-    public SampleData(int noOfStages, Object data) {
-        super(noOfStages, data);
+    public XMLmessage( Document message, Element root) {
+        this.message = message;
+        this.rootNode = root;
+    }
+
+
+
+    public Document getMessage() {
+        return message;
+    }
+
+    public void addToMessage(String message) {
+        Element element = this.message.createElement("RANDOM_CONTENT");
+        element.appendChild(this.message.createTextNode(message));
+        this.rootNode.appendChild(element);
+
     }
 }
 
@@ -55,18 +79,31 @@ class SampleProducer extends Thread {
 
     @Override
     public void run() {
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i <20000; i++) {
             try {
-                this.in.put(new SampleData(2, new Integer(i)));
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+                // root elements
+                Document doc = docBuilder.newDocument();
+                Element rootElement = doc.createElement("XML_MESSAGE");
+                doc.appendChild(rootElement);
+                this.in.put(new StageData(2, new XMLmessage(doc, rootElement)));
+                //this.in.put(new StageData(2, new Integer(1)));
 
             } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
                 e.printStackTrace();
             }
 
         }
 
         try {
-            this.in.put(new TerminationMessage());
+            StageData data = new StageData(-1, null);
+            data.setTerminate();
+            this.in.put(data);
+            System.out.println("Adding Termination");
             // this.in.put(new TerminationMessage());
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -88,32 +125,43 @@ class SampleStageHandler extends StageHandler {
 
             if (getInQueue().size() > 0) {
                 StageData val1 = getInQueue().poll();
-                if (val1.getDataObject() != null) {
+
+                try {
+
+                    if (!val1.getTerminate()) {
+                        XMLmessage msg = (XMLmessage) val1.getDataObject();
 
 
-                    val1.setTimestamp(1);
-                    try {
-                        for (int i = 0; i < 1000000; i++) {
-                            //do nothing
+                        try {
+                            RandomStringGenerator random = new RandomStringGenerator.Builder()
+                                    .withinRange('0', 'z').build();
+                            String charList = random.generate(100);
+                            msg.addToMessage(charList);
+                            val1.setTimestamp(1);
+                            // System.out.println(msg.getMessage()+"\t"+charList);
+                            getOutQueue().put(val1);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                        getOutQueue().put(val1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    try {
-                        for (int i = 0; i < 5; i++) {
-                            getOutQueue().put(new TerminationMessage());
+                    } else {
+                        try {
+                            for (int i = 0; i < 5; i++) {
+                                //getOutQueue().put(new TerminationMessage());
+                                StageData data = new StageData(-1, null);
+                                data.setTerminate();
+                                this.getOutQueue().put(data);
+                            }
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
 
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        break;
                     }
-
-                    break;
-                }
 //
-
+                } catch (NullPointerException e) {
+                    //do nothing
+                }
             }
         }
 
@@ -138,18 +186,26 @@ class Terminator extends StageHandler {
     public void run() {
 
         while (true) {
-            if (getInQueue().size() > 0) {
-                StageData val = this.getInQueue().poll();
-                if (val.getDataObject() != null) {
-                    for (int i = 0; i < 1000; i++) {
-                        //do nothing
-                    }
-                    val.setTimestamp(2);
-                    monitor.setTimestamp(val.getTimestamp());
-                } else {
+            try {
+                if (getInQueue().size() > 0) {
+                    StageData val = this.getInQueue().poll();
 
-                    break;
+
+                    if (val.equals(null)) {
+                        System.out.println("null1");
+                    } else if (!val.getTerminate()) {
+                        val.setTimestamp(2);
+                        monitor.setTimestamp(val.getTimestamp());
+                    } else {
+
+                        break;
+                    }
+
+
                 }
+
+            } catch (NullPointerException e){
+                //do nothing
             }
 
 

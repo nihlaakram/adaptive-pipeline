@@ -4,6 +4,7 @@ public class StageData implements Data {
 
     private long[] timestampArr;
     private Object data;
+    private boolean isTerminate = false;
 
     public StageData(int noOfStages, Object data) {
         this.timestampArr = new long[noOfStages + 1];
@@ -32,5 +33,13 @@ public class StageData implements Data {
     @Override
     public void setDataObject(Object dataObject) {
         this.data = dataObject;
+    }
+
+    public void setTerminate(){
+        this.isTerminate=true;
+    }
+
+    public boolean getTerminate() {
+        return this.isTerminate;
     }
 }
