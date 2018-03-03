@@ -1,5 +1,7 @@
 package lk.ac.iit.core;
 
+import lk.ac.iit.core.planner.Planner;
+
 public class Executor implements Runnable {
 
     private static Executor executor;
