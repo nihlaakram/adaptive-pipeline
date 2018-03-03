@@ -2,10 +2,7 @@ package lk.ac.iit.core;
 
 
 import lk.ac.iit.core.analyser.Analyser;
-import lk.ac.iit.core.analyser.AnalyserData;
 
-import lk.ac.iit.core.analyser.Analyser;
-import lk.ac.iit.core.analyser.learner.SiddhiLearner;
 import lk.ac.iit.core.planner.Planner;
 
 //

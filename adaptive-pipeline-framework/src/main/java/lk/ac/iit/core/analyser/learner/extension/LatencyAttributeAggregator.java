@@ -1,4 +1,4 @@
-package lk.ac.iit.core.analyser.learner;
+package lk.ac.iit.core.analyser.learner.extension;
 
 
         import org.wso2.siddhi.annotation.Example;

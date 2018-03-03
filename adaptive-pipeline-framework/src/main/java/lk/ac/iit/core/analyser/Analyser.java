@@ -1,6 +1,6 @@
 package lk.ac.iit.core.analyser;
 
-import lk.ac.iit.core.analyser.learner.SiddhiLearner;
+import lk.ac.iit.core.analyser.learner.query.SiddhiLearner;
 import lk.ac.iit.core.planner.Planner;
 import org.wso2.siddhi.core.event.Event;
 
