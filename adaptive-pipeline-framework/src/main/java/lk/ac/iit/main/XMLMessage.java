@@ -1,14 +1,13 @@
-package lk.ac.iit.data;
+package lk.ac.iit.main;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class XMLMessage  {
-
+class XMLmessage  {
     private Document message;
     private Element rootNode;
 
-    public XMLMessage( Document message, Element root) {
+    public XMLmessage( Document message, Element root) {
         this.message = message;
         this.rootNode = root;
     }
@@ -25,6 +24,4 @@ public class XMLMessage  {
         this.rootNode.appendChild(element);
 
     }
-
-
 }

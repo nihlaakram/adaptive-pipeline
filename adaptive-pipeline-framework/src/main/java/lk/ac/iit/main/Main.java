@@ -4,8 +4,6 @@ import lk.ac.iit.core.Executor;
 import lk.ac.iit.core.Monitor;
 import lk.ac.iit.data.StageData;
 import lk.ac.iit.data.StageHandler;
-import lk.ac.iit.data.TerminationMessage;
-import lk.ac.iit.data.XMLMessage;
 import org.apache.commons.text.RandomStringGenerator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -47,28 +45,7 @@ public class Main {
     }
 }
 
-class XMLmessage  {
-    private Document message;
-    private Element rootNode;
 
-    public XMLmessage( Document message, Element root) {
-        this.message = message;
-        this.rootNode = root;
-    }
-
-
-
-    public Document getMessage() {
-        return message;
-    }
-
-    public void addToMessage(String message) {
-        Element element = this.message.createElement("RANDOM_CONTENT");
-        element.appendChild(this.message.createTextNode(message));
-        this.rootNode.appendChild(element);
-
-    }
-}
 
 class SampleProducer extends Thread {
     LinkedBlockingQueue<StageData> in;
@@ -183,6 +160,14 @@ class Terminator extends StageHandler {
         this.monitor = monitor;
     }
 
+    public synchronized static int incCount() {
+        return count++;
+    }
+
+    public synchronized static int getCount() {
+        return count;
+    }
+
     public void run() {
 
         while (true) {
@@ -196,6 +181,7 @@ class Terminator extends StageHandler {
                     } else if (!val.getTerminate()) {
                         val.setTimestamp(2);
                         monitor.setTimestamp(val.getTimestamp());
+                        incCount();
                     } else {
 
                         break;
@@ -210,7 +196,7 @@ class Terminator extends StageHandler {
 
 
         }
-        System.out.println("Terminator shutting down");
+        System.out.println("Terminator shutting down"+getCount());
 
 
     }

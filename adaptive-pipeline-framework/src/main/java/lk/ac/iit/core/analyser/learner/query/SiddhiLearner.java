@@ -82,7 +82,7 @@ public class SiddhiLearner {
                         Monitor.getMonitor().getExecutor().executeScaling(plannerData.getStageID());
 
                     }
-
+                    System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID() +"\t"+Thread.activeCount());
 
                 }
             }

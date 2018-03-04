@@ -19,29 +19,7 @@ public class DisruptorTest {
 
     public static void main(String[] args) {
 
-        int stageCount = 2;
-        //mape
-        Monitor.initMonitor(stageCount, 100000, 5, true, false);
-        Monitor monitor = Monitor.getMonitor();
-        // monitor.start();
-
-        LinkedBlockingQueue<StageData> in = new LinkedBlockingQueue<>();
-        LinkedBlockingQueue<StageData> out = new LinkedBlockingQueue<>();
-        //producer
-
-
-//        Terminator term = new Terminator(out, null, monitor);
-//        Thread t2 = new Thread(term);
-//        t2.start();
-
-        SampleStageHandler1 stage = new SampleStageHandler1(in, out);
-        Thread t1 = new Thread(stage);
-        t1.start();
-
-        //monitor.getExecutor().addHandler(stage, term);
-
-        SampleProducer1 producer = new SampleProducer1(in);
-        producer.start();
+        System.out.println(Thread.activeCount());
 
 
     }
