@@ -22,7 +22,7 @@ public class Main {
         //producer
 
 
-        Terminator term = new Terminator(out, null, monitor);
+        HandlerStage term = new SampleTerminationStage(out, monitor);
         Thread t2 = new Thread(term);
         t2.start();
 
@@ -37,61 +37,6 @@ public class Main {
 
 
     }
-}
-
-
-class Terminator extends HandlerStage {
-
-    static int count = 0;
-    private Monitor monitor;
-
-    public Terminator(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue, Monitor monitor) {
-        super(inQueue, outQueue);
-        this.monitor = monitor;
-    }
-
-    public synchronized static int incCount() {
-        return count++;
-    }
-
-    public synchronized static int getCount() {
-        return count;
-    }
-
-    public void run() {
-
-        while (true) {
-            try {
-                if (getInQueue().size() > 0) {
-                    StageData val = this.getInQueue().poll();
-
-
-                    if (val.equals(null)) {
-                        System.out.println("null1");
-                    } else if (!val.getTerminate()) {
-                        val.setTimestamp(2);
-                        monitor.setTimestamp(val.getTimestamp());
-                        incCount();
-                    } else {
-
-                        break;
-                    }
-
-
-                }
-
-            } catch (NullPointerException e) {
-                //do nothing
-            }
-
-
-        }
-        System.out.println("Terminator shutting down" + getCount());
-
-
-    }
-
-
 }
 
 

@@ -17,6 +17,10 @@ public class HandlerStage implements Cloneable, Runnable {
         this.outQueue = outQueue;
     }
 
+    public HandlerStage(LinkedBlockingQueue<StageData> inQueue) {
+        this.inQueue = inQueue;
+    }
+
 
     public LinkedBlockingQueue<StageData> getInQueue() {
         return inQueue;
