@@ -2,6 +2,7 @@ package lk.ac.iit.main;
 
 import lk.ac.iit.core.Executor;
 import lk.ac.iit.core.Monitor;
+import lk.ac.iit.data.ProducerStage;
 import lk.ac.iit.data.StageData;
 import lk.ac.iit.data.StageHandler;
 import org.apache.commons.text.RandomStringGenerator;
@@ -38,53 +39,8 @@ public class Main {
 
         monitor.getExecutor().addHandler(stage, term);
 
-        SampleProducer producer = new SampleProducer(in);
+        ProducerStage producer = new SampleProducer(5, in);
         producer.start();
-
-
-    }
-}
-
-
-
-class SampleProducer extends Thread {
-    LinkedBlockingQueue<StageData> in;
-
-    public SampleProducer(LinkedBlockingQueue<StageData> in) {
-        this.in = in;
-    }
-
-    @Override
-    public void run() {
-        for (int i = 0; i <20000; i++) {
-            try {
-                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-                // root elements
-                Document doc = docBuilder.newDocument();
-                Element rootElement = doc.createElement("XML_MESSAGE");
-                doc.appendChild(rootElement);
-                this.in.put(new StageData(2, new XMLmessage(doc, rootElement)));
-                //this.in.put(new StageData(2, new Integer(1)));
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        try {
-            StageData data = new StageData(-1, null);
-            data.setTerminate();
-            this.in.put(data);
-            System.out.println("Adding Termination");
-            // this.in.put(new TerminationMessage());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
 
     }
