@@ -1,9 +1,9 @@
 package lk.ac.iit.main;
 
 import lk.ac.iit.core.Monitor;
-import lk.ac.iit.data.HandlerStage;
-import lk.ac.iit.data.ProducerStage;
 import lk.ac.iit.data.StageData;
+import lk.ac.iit.stage.HandlerStage;
+import lk.ac.iit.stage.ProducerStage;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -38,9 +38,6 @@ public class Main {
 
     }
 }
-
-
-
 
 
 class Terminator extends HandlerStage {
@@ -83,13 +80,13 @@ class Terminator extends HandlerStage {
 
                 }
 
-            } catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 //do nothing
             }
 
 
         }
-        System.out.println("Terminator shutting down"+getCount());
+        System.out.println("Terminator shutting down" + getCount());
 
 
     }

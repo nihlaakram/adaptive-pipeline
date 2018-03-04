@@ -1,4 +1,7 @@
-package lk.ac.iit.data;
+package lk.ac.iit.stage;
+
+import lk.ac.iit.data.StageData;
+import lk.ac.iit.data.TerminationMessage;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -17,12 +20,11 @@ public class ProducerStage extends Thread {
         addTermination();
 
 
-
     }
 
     private void addTermination() {
         try {
-            for(int i =0; i<this.maxThreads; i++){
+            for (int i = 0; i < this.maxThreads; i++) {
                 StageData data = new TerminationMessage();
                 this.inQueue.put(data);
             }

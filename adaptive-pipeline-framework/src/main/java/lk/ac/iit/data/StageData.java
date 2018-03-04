@@ -35,8 +35,8 @@ public class StageData implements Data {
         this.data = dataObject;
     }
 
-    public void setTerminate(){
-        this.isTerminate=true;
+    public void setTerminate() {
+        this.isTerminate = true;
     }
 
     public boolean getTerminate() {

@@ -15,7 +15,7 @@ public class Planner {
 
     public Planner() {
         MAX_THREADS = Runtime.getRuntime().availableProcessors() * 2;
-        this.noOfThread = Thread.activeCount() -1;
+        this.noOfThread = Thread.activeCount() - 1;
     }
 
 
@@ -24,7 +24,7 @@ public class Planner {
     }
 
     public int getNoOfThread() {
-        return this.noOfThread = Thread.activeCount()-1;
+        return this.noOfThread = Thread.activeCount() - 1;
     }
 
     //check is the system can scale

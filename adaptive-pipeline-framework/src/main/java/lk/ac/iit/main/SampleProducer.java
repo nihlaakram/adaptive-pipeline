@@ -1,7 +1,7 @@
 package lk.ac.iit.main;
 
-import lk.ac.iit.data.ProducerStage;
 import lk.ac.iit.data.StageData;
+import lk.ac.iit.stage.ProducerStage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -19,7 +19,7 @@ public class SampleProducer extends ProducerStage {
 
     @Override
     public void addInput() {
-        for (int i = 0; i <20000; i++) {
+        for (int i = 0; i < 20000; i++) {
             try {
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();

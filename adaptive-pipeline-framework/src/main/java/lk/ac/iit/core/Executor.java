@@ -1,6 +1,6 @@
 package lk.ac.iit.core;
 
-import lk.ac.iit.data.HandlerStage;
+import lk.ac.iit.stage.HandlerStage;
 
 public class Executor {
 

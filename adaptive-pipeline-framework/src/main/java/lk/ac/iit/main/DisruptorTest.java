@@ -29,7 +29,7 @@ class SampleProducer1 extends Thread {
 
     @Override
     public void run() {
-        for (int i = 0; i <20000; i++) {
+        for (int i = 0; i < 20000; i++) {
             try {
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -65,10 +65,11 @@ class SampleProducer1 extends Thread {
     }
 }
 
-class SampleStageHandler1 implements Runnable{
+class SampleStageHandler1 implements Runnable {
 
     LinkedBlockingQueue<StageData> out;
     LinkedBlockingQueue<StageData> in;
+
     public SampleStageHandler1(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
         in = inQueue;
         out = outQueue;
@@ -81,7 +82,7 @@ class SampleStageHandler1 implements Runnable{
             if (in.size() > 0) {
                 StageData val1 = in.poll();
                 //System.out.println()
-                if (val1.equals(null) ){
+                if (val1.equals(null)) {
                     System.out.println("null");
                 } else if (!val1.getTerminate()) {
 //                    XMLmessage msg = (XMLmessage) val1.getDataObject();
@@ -104,7 +105,7 @@ class SampleStageHandler1 implements Runnable{
                             //getOutQueue().put(new TerminationMessage());
                             StageData data = new StageData(-1, null);
                             data.setTerminate();
-                           out.put(data);
+                            out.put(data);
                         }
 
                     } catch (InterruptedException e) {
@@ -118,7 +119,7 @@ class SampleStageHandler1 implements Runnable{
             }
         }
 
-       // System.out.println("Stage shutting down");
+        // System.out.println("Stage shutting down");
 
 
     }

@@ -1,4 +1,6 @@
-package lk.ac.iit.data;
+package lk.ac.iit.stage;
+
+import lk.ac.iit.data.StageData;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
