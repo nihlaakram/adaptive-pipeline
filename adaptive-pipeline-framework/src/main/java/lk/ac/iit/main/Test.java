@@ -3,7 +3,7 @@
 //import lk.ac.iit.core.Executor;
 //import lk.ac.iit.core.Monitor;
 //import lk.ac.iit.data.StageData;
-//import lk.ac.iit.data.StageHandler;
+//import lk.ac.iit.data.HandlerStage;
 //import lk.ac.iit.data.TerminationMessage;
 //import lk.ac.iit.data.XMLMessage;
 //import org.apache.commons.text.RandomStringGenerator;
@@ -113,7 +113,7 @@
 //    }
 //}
 //
-//class SampleStageHandler extends StageHandler {
+//class SampleStageHandler extends HandlerStage {
 //
 //    public SampleStageHandler(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
 //        super(inQueue, outQueue);
@@ -170,7 +170,7 @@
 //}
 //
 //
-//class Terminator extends StageHandler {
+//class Terminator extends HandlerStage {
 //
 //    static int count = 0;
 //    private Monitor monitor;

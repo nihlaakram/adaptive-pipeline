@@ -1,22 +1,22 @@
 package lk.ac.iit.core;
 
-import lk.ac.iit.data.StageHandler;
+import lk.ac.iit.data.HandlerStage;
 
 public class Executor {
 
-    private StageHandler[] stageHandlers;
+    private HandlerStage[] handlerStages;
 
     public Executor(int noOfHandlers) {
-        stageHandlers = new StageHandler[noOfHandlers];
+        handlerStages = new HandlerStage[noOfHandlers];
     }
 
-    public void addHandler(StageHandler... handlers) {
-        this.stageHandlers = handlers;
+    public void addHandler(HandlerStage... handlers) {
+        this.handlerStages = handlers;
     }
 
     public void executeScaling(int stageID) {
-        StageHandler stageHandler = this.stageHandlers[stageID - 1].clone();
-        Thread t1 = new Thread(stageHandler);
+        HandlerStage handlerStage = this.handlerStages[stageID - 1].clone();
+        Thread t1 = new Thread(handlerStage);
         t1.start();
 
     }

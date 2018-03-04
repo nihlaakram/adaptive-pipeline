@@ -1,12 +1,6 @@
 package lk.ac.iit.main;
 
-import lk.ac.iit.core.Executor;
-import lk.ac.iit.core.Monitor;
 import lk.ac.iit.data.StageData;
-import lk.ac.iit.data.StageHandler;
-import lk.ac.iit.data.TerminationMessage;
-import lk.ac.iit.data.XMLMessage;
-import org.apache.commons.text.RandomStringGenerator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -132,7 +126,7 @@ class SampleStageHandler1 implements Runnable{
 }
 
 
-//class Terminator extends StageHandler {
+//class Terminator extends HandlerStage {
 //
 //    static int count = 0;
 //    private Monitor monitor;
