@@ -15,7 +15,7 @@ public class SampleHandlerStage extends HandlerStage {
     public void onEvent(StageData data) {
 
 
-        XMLmessage msg = (XMLmessage) data.getDataObject();
+        XMLMessage msg = (XMLMessage) data.getDataObject();
 
 
         try {

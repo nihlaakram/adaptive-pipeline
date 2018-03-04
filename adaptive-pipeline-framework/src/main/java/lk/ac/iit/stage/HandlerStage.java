@@ -3,13 +3,14 @@ package lk.ac.iit.stage;
 import lk.ac.iit.data.StageData;
 import lk.ac.iit.data.TerminationMessage;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class HandlerStage implements Cloneable, Runnable {
 
 
-    private LinkedBlockingQueue<StageData> inQueue;
-    private LinkedBlockingQueue<StageData> outQueue;
+    private BlockingQueue<StageData> inQueue;
+    private BlockingQueue<StageData> outQueue;
 
 
     public HandlerStage(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
@@ -22,11 +23,11 @@ public class HandlerStage implements Cloneable, Runnable {
     }
 
 
-    public LinkedBlockingQueue<StageData> getInQueue() {
+    public BlockingQueue<StageData> getInQueue() {
         return inQueue;
     }
 
-    public LinkedBlockingQueue<StageData> getOutQueue() {
+    public BlockingQueue<StageData> getOutQueue() {
         return outQueue;
     }
 
@@ -48,7 +49,7 @@ public class HandlerStage implements Cloneable, Runnable {
                 }
             }
         }
-        System.out.println("Stage shutting down");
+
 
 
     }

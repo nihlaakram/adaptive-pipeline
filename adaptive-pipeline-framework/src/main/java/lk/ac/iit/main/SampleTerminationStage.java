@@ -26,11 +26,9 @@ public class SampleTerminationStage extends HandlerStage {
 
     public void onEvent(StageData data) {
 
-
         data.setTimestamp(2);
-
         monitor.setTimestamp(data.getTimestamp());
-        incCount();
+
 
 
     }

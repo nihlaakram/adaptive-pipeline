@@ -1,75 +1,84 @@
-//package lk.ac.iit.main;
+package lk.ac.iit.main;
+
+import lk.ac.iit.core.Executor;
+import lk.ac.iit.core.Monitor;
+import lk.ac.iit.data.StageData;
+import lk.ac.iit.stage.HandlerStage;
+import lk.ac.iit.stage.ProducerStage;
+import org.apache.commons.text.RandomStringGenerator;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class Test {
+
+    public static void main(String[] args) {
+
+        int stageCount = 3;
+        int learningThreshold = 10000;
+        int maxThreads = 7;
+        boolean isScale = true;
+        boolean isVisualize = false;
+        Monitor.initMonitor(stageCount, learningThreshold, maxThreads, isScale, isVisualize);
+        Monitor monitor = Monitor.getMonitor();
+
+
+        LinkedBlockingQueue<StageData> in = new LinkedBlockingQueue<>();
+        LinkedBlockingQueue<StageData> middle = new LinkedBlockingQueue<>();
+        LinkedBlockingQueue<StageData> out = new LinkedBlockingQueue<>();
+        //producer
+
+
+        HandlerStage term = new SampleTerminationStage(out, monitor);
+        HandlerStage stage1 = new SampleHandlerStage1(middle, out);
+        HandlerStage stage = new SampleHandlerStage(in, middle);
+        ProducerStage producer = new SampleProducer(stageCount, maxThreads, in);
+
+
+        monitor.getExecutor().addProducer(producer);
+        monitor.getExecutor().addHandler(stage, stage1, term);
+        monitor.getExecutor().start();
+
+
+    }
+}
+
+ class SampleHandlerStage1 extends HandlerStage {
+
+    public SampleHandlerStage1(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
+        super(inQueue, outQueue);
+    }
+
+    public void onEvent(StageData data) {
+
+
+        XMLMessage msg = (XMLMessage) data.getDataObject();
+
+
+        try {
+            RandomStringGenerator random = new RandomStringGenerator.Builder()
+                    .withinRange('0', 'z').build();
+            String charList = random.generate(10);
+            msg.addToMessage(charList);
+            data.setTimestamp(2);
+            // System.out.println(msg.getMessage()+"\t"+charList);
+            getOutQueue().put(data);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 //
-//import lk.ac.iit.core.Executor;
-//import lk.ac.iit.core.Monitor;
-//import lk.ac.iit.data.StageData;
-//import lk.ac.iit.handler.HandlerStage;
-//import lk.ac.iit.data.TerminationMessage;
-//import lk.ac.iit.data.XMLMessage;
-//import org.apache.commons.text.RandomStringGenerator;
-//import org.w3c.dom.Document;
-//import org.w3c.dom.Element;
-//
-//import javax.xml.parsers.DocumentBuilder;
-//import javax.xml.parsers.DocumentBuilderFactory;
-//import javax.xml.parsers.ParserConfigurationException;
-//import java.util.concurrent.LinkedBlockingQueue;
-//
-//public class Test {
-//
-//    public static void main(String[] args) {
-//
-//        int stageCount = 2;
-//        //mape
-//        Monitor.initMonitor(stageCount, 1000, 5, true, false);
-//        Monitor monitor = Monitor.getMonitor();
-//        // monitor.start();
-//
-//        LinkedBlockingQueue<StageData> in = new LinkedBlockingQueue<>();
-//        LinkedBlockingQueue<StageData> out = new LinkedBlockingQueue<>();
-//        //producer
-//
-//
-//        Terminator term = new Terminator(out, null, monitor);
-//        Thread t2 = new Thread(term);
-//        t2.start();
-//
-//        SampleStageHandler stage = new SampleStageHandler(in, out);
-//        Thread t1 = new Thread(stage);
-//        t1.start();
-//
-//        monitor.getExecutor().addHandler(stage, term);
-//
-//        SampleProducer producer = new SampleProducer(in);
-//        producer.start();
-//
-//
-//    }
-//}
-//
-//class XMLmessage  {
-//    private Document message;
-//    private Element rootNode;
-//
-//    public XMLmessage( Document message, Element root) {
-//        this.message = message;
-//        this.rootNode = root;
-//    }
-//
-//
-//
-//    public Document getMessage() {
-//        return message;
-//    }
-//
-//    public void addToMessage(String message) {
-//        Element element = this.message.createElement("RANDOM_CONTENT");
-//        element.appendChild(this.message.createTextNode(message));
-//        this.rootNode.appendChild(element);
-//
-//    }
-//}
-//
+
+    }
+
+
+}
+
+
 //class SampleProducer extends Thread {
 //    LinkedBlockingQueue<StageData> in;
 //
@@ -224,5 +233,5 @@
 //
 //
 //}
-//
-//
+
+

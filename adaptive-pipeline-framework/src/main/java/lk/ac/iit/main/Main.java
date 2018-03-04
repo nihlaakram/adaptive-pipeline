@@ -12,10 +12,13 @@ public class Main {
     public static void main(String[] args) {
 
         int stageCount = 2;
-        //mape
-        Monitor.initMonitor(stageCount, 10000, 5, true, false);
+        int learningThreshold = 10000;
+        int maxThreads = 5;
+        boolean isScale = true;
+        boolean isVisualize = false;
+        Monitor.initMonitor(stageCount, learningThreshold, maxThreads, isScale, isVisualize);
         Monitor monitor = Monitor.getMonitor();
-        // monitor.start();
+
 
         LinkedBlockingQueue<StageData> in = new LinkedBlockingQueue<>();
         LinkedBlockingQueue<StageData> out = new LinkedBlockingQueue<>();
@@ -23,17 +26,15 @@ public class Main {
 
 
         HandlerStage term = new SampleTerminationStage(out, monitor);
-        Thread t2 = new Thread(term);
-        t2.start();
-
         HandlerStage stage = new SampleHandlerStage(in, out);
-        Thread t1 = new Thread(stage);
-        t1.start();
+        ProducerStage producer = new SampleProducer(stageCount, maxThreads, in);
 
+
+        monitor.getExecutor().addProducer(producer);
         monitor.getExecutor().addHandler(stage, term);
+        monitor.getExecutor().start();
 
-        ProducerStage producer = new SampleProducer(5, in);
-        producer.start();
+
 
 
     }

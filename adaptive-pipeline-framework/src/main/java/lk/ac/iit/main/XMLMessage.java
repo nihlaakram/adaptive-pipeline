@@ -3,11 +3,11 @@ package lk.ac.iit.main;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-class XMLmessage {
+class XMLMessage {
     private Document message;
     private Element rootNode;
 
-    public XMLmessage(Document message, Element root) {
+    public XMLMessage(Document message, Element root) {
         this.message = message;
         this.rootNode = root;
     }

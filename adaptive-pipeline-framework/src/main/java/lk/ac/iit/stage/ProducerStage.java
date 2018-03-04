@@ -3,15 +3,18 @@ package lk.ac.iit.stage;
 import lk.ac.iit.data.StageData;
 import lk.ac.iit.data.TerminationMessage;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ProducerStage extends Thread {
-    private LinkedBlockingQueue<StageData> inQueue;
+    private BlockingQueue<StageData> inQueue;
     private int maxThreads;
+    private int noOfStages;
 
-    public ProducerStage(int maxThreads, LinkedBlockingQueue<StageData> in) {
+    public ProducerStage(int noOfStages, int maxThreads, LinkedBlockingQueue<StageData> in) {
         this.inQueue = in;
         this.maxThreads = maxThreads;
+        this.noOfStages = noOfStages;
     }
 
     @Override
@@ -38,7 +41,11 @@ public class ProducerStage extends Thread {
     public void addInput() {
     }
 
-    public LinkedBlockingQueue<StageData> getInQueue() {
+    public BlockingQueue<StageData> getInQueue() {
         return this.inQueue;
+    }
+
+    public int getNoOfStages() {
+        return this.noOfStages;
     }
 }
