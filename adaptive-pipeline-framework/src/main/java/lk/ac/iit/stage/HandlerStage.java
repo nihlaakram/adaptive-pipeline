@@ -1,6 +1,7 @@
 package lk.ac.iit.stage;
 
 import lk.ac.iit.data.StageData;
+import lk.ac.iit.data.TerminationMessage;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -30,22 +31,36 @@ public class HandlerStage implements Cloneable, Runnable {
         while (true) {
             if (getInQueue().size() > 0) {
                 try {
-                    process();
+                    StageData data = getInQueue().poll();
+                    if(!data.getTerminate()){
+                        onEvent(data);
+                    } else{
+                        terminate();
+                        break;
+                    }
 
                 } catch (NullPointerException e) {
                     //do nothing
                 }
             }
         }
+        System.out.println("Stage shutting down");
 
 
     }
-
 
     private void terminate() {
+        try {
+            StageData data = new TerminationMessage();
+            this.outQueue.put(data);
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void process() {
+    public void onEvent(StageData data) {
     }
 
     public HandlerStage clone() {
