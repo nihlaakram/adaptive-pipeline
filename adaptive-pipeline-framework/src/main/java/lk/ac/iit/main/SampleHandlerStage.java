@@ -15,27 +15,24 @@ public class SampleHandlerStage extends HandlerStage {
     public void onEvent(StageData data) {
 
 
-                        XMLmessage msg = (XMLmessage) data.getDataObject();
+        XMLmessage msg = (XMLmessage) data.getDataObject();
 
 
-                        try {
-                            RandomStringGenerator random = new RandomStringGenerator.Builder()
-                                    .withinRange('0', 'z').build();
-                            String charList = random.generate(100);
-                            msg.addToMessage(charList);
-                            data.setTimestamp(1);
-                            // System.out.println(msg.getMessage()+"\t"+charList);
-                            getOutQueue().put(data);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+        try {
+            RandomStringGenerator random = new RandomStringGenerator.Builder()
+                    .withinRange('0', 'z').build();
+            String charList = random.generate(100);
+            msg.addToMessage(charList);
+            data.setTimestamp(1);
+            // System.out.println(msg.getMessage()+"\t"+charList);
+            getOutQueue().put(data);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 //
 
-        }
-
-
-
+    }
 
 
 }

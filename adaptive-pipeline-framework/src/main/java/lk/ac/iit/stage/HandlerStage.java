@@ -36,9 +36,9 @@ public class HandlerStage implements Cloneable, Runnable {
             if (getInQueue().size() > 0) {
                 try {
                     StageData data = getInQueue().poll();
-                    if(!data.getTerminate()){
+                    if (!data.getTerminate()) {
                         onEvent(data);
-                    } else{
+                    } else {
                         terminate();
                         break;
                     }
