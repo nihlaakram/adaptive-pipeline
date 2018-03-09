@@ -11,16 +11,15 @@ public class HandlerStage implements Cloneable, Runnable {
 
     private BlockingQueue<StageData> inQueue;
     private BlockingQueue<StageData> outQueue;
+    private int stageID;
 
 
-    public HandlerStage(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue) {
+    public HandlerStage(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue, int stageID) {
         this.inQueue = inQueue;
         this.outQueue = outQueue;
+        this.stageID = stageID;
     }
 
-    public HandlerStage(LinkedBlockingQueue<StageData> inQueue) {
-        this.inQueue = inQueue;
-    }
 
 
     public BlockingQueue<StageData> getInQueue() {
@@ -31,6 +30,7 @@ public class HandlerStage implements Cloneable, Runnable {
         return outQueue;
     }
 
+
     @Override
     public void run() {
         while (true) {
@@ -38,7 +38,9 @@ public class HandlerStage implements Cloneable, Runnable {
                 try {
                     StageData data = getInQueue().poll();
                     if (!data.getTerminate()) {
-                        onEvent(data);
+                        data = onEvent(data);
+                        data.setTimestamp(this.stageID);
+                        getOutQueue().put(data);
                     } else {
                         terminate();
                         break;
@@ -46,6 +48,8 @@ public class HandlerStage implements Cloneable, Runnable {
 
                 } catch (NullPointerException e) {
                     //do nothing
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -65,7 +69,8 @@ public class HandlerStage implements Cloneable, Runnable {
         }
     }
 
-    public void onEvent(StageData data) {
+    public StageData onEvent(StageData data) {
+        return  null;
     }
 
     public HandlerStage clone() {
