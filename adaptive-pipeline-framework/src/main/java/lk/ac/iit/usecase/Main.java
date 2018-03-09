@@ -50,8 +50,6 @@ public class Main {
         monitor.getExecutor().start();
 
 
-
-
     }
 }
 
@@ -115,7 +113,6 @@ class SampleProducer extends ProducerStage {
 }
 
 class SampleTerminationStage extends TerminationStage {
-
 
 
     public SampleTerminationStage(LinkedBlockingQueue<StageData> inQueue, Monitor monitor) {

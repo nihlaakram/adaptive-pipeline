@@ -1,6 +1,6 @@
 package lk.ac.iit.core.analyser.workload;
 
-public class WorkloadModel implements BaseModel{
+public class WorkloadModel implements BaseModel {
 
     private double[][] pastResults;
 
@@ -13,7 +13,8 @@ public class WorkloadModel implements BaseModel{
         this.pastResults = new double[3][noOfResults];
     }
 
-    /** Returns the resuls of the Workload model
+    /**
+     * Returns the resuls of the Workload model
      *
      * @return past results of the model
      */

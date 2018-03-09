@@ -2,8 +2,8 @@ package lk.ac.iit.usecase.usecase1.stage;
 
 import lk.ac.iit.data.StageData;
 import lk.ac.iit.stage.HandlerStage;
-import org.apache.commons.text.RandomStringGenerator;
 import lk.ac.iit.usecase.usecase1.data.Message;
+import org.apache.commons.text.RandomStringGenerator;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,7 +29,6 @@ public class SampleHandlerStage extends HandlerStage {
         String charList = random.generate(this.messageSize.get());
         msg.addToMessage(charList);
         return data;
-
 
 
     }

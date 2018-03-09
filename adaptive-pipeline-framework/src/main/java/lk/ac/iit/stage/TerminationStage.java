@@ -9,7 +9,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TerminationStage implements Runnable {
 
 
-
     private BlockingQueue<StageData> inQueue;
     private Monitor monitor;
 

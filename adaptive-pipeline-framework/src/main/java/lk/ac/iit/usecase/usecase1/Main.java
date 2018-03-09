@@ -6,8 +6,8 @@ import lk.ac.iit.stage.HandlerStage;
 import lk.ac.iit.stage.ProducerStage;
 import lk.ac.iit.stage.TerminationStage;
 import lk.ac.iit.usecase.usecase1.stage.SampleHandlerStage;
-import lk.ac.iit.usecase.usecase1.stage.SampleTerminationStage;
 import lk.ac.iit.usecase.usecase1.stage.SampleProducerStage;
+import lk.ac.iit.usecase.usecase1.stage.SampleTerminationStage;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -18,9 +18,9 @@ public class Main {
 
         int stageCount = Integer.parseInt(args[0]);
         int messageSize = Integer.parseInt(args[1]);
-        messageSize = messageSize/stageCount;
+        messageSize = messageSize / stageCount;
 
-        switch (stageCount){
+        switch (stageCount) {
             case 2:
                 twoStages(stageCount, messageSize);
                 break;
@@ -36,12 +36,9 @@ public class Main {
         }
 
 
-
-
-
     }
 
-    private static void twoStages(int stageCount,int messageSize){
+    private static void twoStages(int stageCount, int messageSize) {
         int learningThreshold = 10000;//five hundred thousand
         int maxThreads = 10;
         boolean isScale = true;
@@ -70,7 +67,7 @@ public class Main {
 
     }
 
-    private static void threeStages(int stageCount,int messageSize){
+    private static void threeStages(int stageCount, int messageSize) {
         int learningThreshold = 10000;//five hundred thousand
         int maxThreads = 10;
         boolean isScale = true;
@@ -101,7 +98,7 @@ public class Main {
 
     }
 
-    private static void fourStages(int stageCount,int messageSize){
+    private static void fourStages(int stageCount, int messageSize) {
         int learningThreshold = 10000;//five hundred thousand
         int maxThreads = 10;
         boolean isScale = true;
@@ -135,7 +132,7 @@ public class Main {
     }
 
 
-    private static void fiveStages(int stageCount,int messageSize){
+    private static void fiveStages(int stageCount, int messageSize) {
         int learningThreshold = 10000;//five hundred thousand
         int maxThreads = 10;
         boolean isScale = true;
@@ -169,11 +166,6 @@ public class Main {
         monitor.getExecutor().start();
 
     }
-
-
-
-
-
 
 
 }

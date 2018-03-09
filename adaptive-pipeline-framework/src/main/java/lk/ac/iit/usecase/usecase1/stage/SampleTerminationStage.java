@@ -10,7 +10,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class SampleTerminationStage extends TerminationStage {
 
 
-
     public SampleTerminationStage(LinkedBlockingQueue<StageData> inQueue, Monitor monitor) {
         super(inQueue, monitor);
 

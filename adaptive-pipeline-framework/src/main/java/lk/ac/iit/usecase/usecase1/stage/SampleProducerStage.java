@@ -2,9 +2,9 @@ package lk.ac.iit.usecase.usecase1.stage;
 
 import lk.ac.iit.data.StageData;
 import lk.ac.iit.stage.ProducerStage;
+import lk.ac.iit.usecase.usecase1.data.Message;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import lk.ac.iit.usecase.usecase1.data.Message;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

@@ -21,11 +21,10 @@ public class Executor {
     public void executeScaling(int stageID) {
 
 
-            HandlerStage handlerStage = this.handlerStages[stageID - 1].clone();
-            Thread t1 = new Thread(handlerStage);
-            t1.start();
-            System.out.println("Scaling Stage :"+stageID);
-
+        HandlerStage handlerStage = this.handlerStages[stageID - 1].clone();
+        Thread t1 = new Thread(handlerStage);
+        t1.start();
+        System.out.println("Scaling Stage :" + stageID);
 
 
     }
@@ -35,7 +34,7 @@ public class Executor {
         this.producerStage = producer;
     }
 
-    public void start(){
+    public void start() {
         //Start producer
         this.producerStage.start();
 
@@ -44,8 +43,8 @@ public class Executor {
         term.start();
 
         //Start the handlers
-        for(int i=0; i<this.handlerStages.length; i++){
-            Thread thread = new Thread(this.handlerStages[i], "handler-thread-"+(i+1));
+        for (int i = 0; i < this.handlerStages.length; i++) {
+            Thread thread = new Thread(this.handlerStages[i], "handler-thread-" + (i + 1));
             thread.start();
         }
     }

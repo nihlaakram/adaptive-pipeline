@@ -21,7 +21,6 @@ public class HandlerStage implements Cloneable, Runnable {
     }
 
 
-
     public BlockingQueue<StageData> getInQueue() {
         return inQueue;
     }
@@ -55,7 +54,6 @@ public class HandlerStage implements Cloneable, Runnable {
         }
 
 
-
     }
 
     private void terminate() {
@@ -70,7 +68,7 @@ public class HandlerStage implements Cloneable, Runnable {
     }
 
     public StageData onEvent(StageData data) {
-        return  null;
+        return null;
     }
 
     public HandlerStage clone() {

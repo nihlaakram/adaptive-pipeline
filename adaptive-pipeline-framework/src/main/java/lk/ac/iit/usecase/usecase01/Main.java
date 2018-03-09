@@ -10,12 +10,13 @@ class Key {
 
     public int a;
     public int b;
-    public  Key(int a, int b){
+
+    public Key(int a, int b) {
         this.a = a;
         this.b = b;
     }
 
-    public Key getKey(){
+    public Key getKey() {
         return null;
     }
 
@@ -25,14 +26,13 @@ class Key {
 
             Key p = (Key) obj;
 
-            return ((this.a==p.a) && (this.b==p.b));
+            return ((this.a == p.a) && (this.b == p.b));
 
         }
 
         return false;
 
     }
-
 
 
     public int hashCode() {
@@ -42,8 +42,8 @@ class Key {
     }
 
 
-
 }
+
 public class Main {
     public static void main(String[] args) {
 
@@ -54,7 +54,7 @@ public class Main {
 //        m1.put("Mahnaz", "31");
 //        m1.put("Ayan", "12");
 //        m1.put("Daisy", "14");
-        m1.put(new Key(1,1), 100);
+        m1.put(new Key(1, 1), 100);
 
         System.out.println(m1.size());
         System.out.println(" Map Elements");
