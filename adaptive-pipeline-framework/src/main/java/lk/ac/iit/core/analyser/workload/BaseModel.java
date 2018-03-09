@@ -16,7 +16,7 @@ public interface BaseModel {
      *
      * @param baseModel the workload model
      */
-    void setModel(WorkloadModel baseModel);
+    void setModel(WorkLoadModel baseModel);
 
     /**
      * Add past experiment results to the model

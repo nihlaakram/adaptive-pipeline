@@ -3,7 +3,7 @@ package lk.ac.iit.core.analyser.workload;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WorkloadModel implements BaseModel {
+public class WorkLoadModel implements BaseModel {
 
     private Map<WorkLoadKey, Integer> pastResults;
 
@@ -11,7 +11,7 @@ public class WorkloadModel implements BaseModel {
      * Creates a WorkLoadModel with past data
      *
      */
-    public WorkloadModel() {
+    public WorkLoadModel() {
         this.pastResults = new HashMap<>();
     }
 
@@ -36,7 +36,7 @@ public class WorkloadModel implements BaseModel {
      * See BaseModel#setModel
      */
     @Override
-    public void setModel(WorkloadModel baseModel) {
+    public void setModel(WorkLoadModel baseModel) {
         this.pastResults = baseModel.getPastResults();
     }
 

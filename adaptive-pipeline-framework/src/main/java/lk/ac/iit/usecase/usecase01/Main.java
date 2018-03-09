@@ -1,9 +1,6 @@
 package lk.ac.iit.usecase.usecase01;
 
-import lk.ac.iit.core.analyser.workload.WorkloadModel;
-
-import java.util.HashMap;
-import java.util.Map;
+import lk.ac.iit.core.analyser.workload.WorkLoadModel;
 
 
 class Key {
@@ -47,7 +44,7 @@ class Key {
 public class Main {
     public static void main(String[] args) {
 
-        WorkloadModel model = new WorkloadModel();
+        WorkLoadModel model = new WorkLoadModel();
         model.addWorkers(1, 10, 1);//10b
         model.addWorkers(1, 100, 1);//100b
         model.addWorkers(1, 1000, 1);//1kb
