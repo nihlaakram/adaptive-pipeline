@@ -47,17 +47,17 @@ class Key {
 public class Main {
     public static void main(String[] args) {
 
-        WorkloadModel model = new WorkloadModel(7);
+        WorkloadModel model = new WorkloadModel();
+        model.addWorkers(1, 10, 1);//10b
+        model.addWorkers(1, 100, 1);//100b
+        model.addWorkers(1, 1000, 1);//1kb
+        model.addWorkers(1, 10000, 5);//10kb
+        model.addWorkers(1, 100000, 5);//100kb
+        model.addWorkers(1, 1000000, 5);//1mb
+        model.addWorkers(1, 10000000, 5);//0mb
+        System.out.println(model.getWorkers(1, 10000000));
 
-        Map<Key, Integer> m1 = new HashMap();
-//        m1.put("Zara", "8");
-//        m1.put("Mahnaz", "31");
-//        m1.put("Ayan", "12");
-//        m1.put("Daisy", "14");
-        m1.put(new Key(1, 1), 100);
 
-        System.out.println(m1.size());
-        System.out.println(" Map Elements");
-        System.out.print("\t" + m1.get(new Key(1, 1)));
+
     }
 }
