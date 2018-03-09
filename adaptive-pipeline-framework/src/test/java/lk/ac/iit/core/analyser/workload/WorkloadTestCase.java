@@ -1,3 +1,5 @@
+package lk.ac.iit.core.analyser.workload;
+
 import lk.ac.iit.core.analyser.workload.WorkloadModel;
 import org.junit.Assert;
 
