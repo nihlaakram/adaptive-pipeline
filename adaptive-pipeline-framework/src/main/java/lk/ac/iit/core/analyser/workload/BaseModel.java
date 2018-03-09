@@ -14,5 +14,5 @@ public interface BaseModel {
      *
      * @param baseModel the workload model
      */
-    public void setModel(BaseModel baseModel);
+    public void setModel(WorkloadModel baseModel);
 }

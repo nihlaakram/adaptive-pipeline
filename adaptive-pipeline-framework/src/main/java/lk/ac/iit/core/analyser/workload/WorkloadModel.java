@@ -13,13 +13,21 @@ public class WorkloadModel implements BaseModel{
         this.pastResults = new double[3][noOfResults];
     }
 
+    /** Returns the resuls of the Workload model
+     *
+     * @return past results of the model
+     */
+    public double[][] getPastResults() {
+        return this.pastResults;
+    }
+
     @Override
     public double getWorkers(double inputRate, double workLoadParam) {
         return 0;
     }
 
     @Override
-    public void setModel(BaseModel baseModel) {
-
+    public void setModel(WorkloadModel baseModel) {
+        this.pastResults = baseModel.getPastResults();
     }
 }
