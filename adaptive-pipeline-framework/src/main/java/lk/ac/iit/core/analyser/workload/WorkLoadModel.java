@@ -33,11 +33,27 @@ public class WorkLoadModel implements BaseModel {
     }
 
     /**
+     * See BaseModel#getWorkers
+     */
+    @Override
+    public int getWorkers(int workLoadParam) {
+        return this.pastResults.get(new WorkLoadKey(1, workLoadParam));
+    }
+
+    /**
      * See BaseModel#setModel
      */
     @Override
     public void setModel(WorkLoadModel baseModel) {
         this.pastResults = baseModel.getPastResults();
+    }
+
+    /**
+     * See BaseModel#addWorkers
+     */
+    @Override
+    public void addWorkers( int workLoadParam, int workers) {
+        this.pastResults.put(new WorkLoadKey(1, workLoadParam), workers);
     }
 
     /**

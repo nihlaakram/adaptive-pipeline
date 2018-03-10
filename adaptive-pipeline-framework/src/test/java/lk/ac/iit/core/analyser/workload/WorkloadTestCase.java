@@ -8,8 +8,6 @@ public class WorkloadTestCase {
 
     private static final Logger log = Logger.getLogger(String.valueOf(WorkLoadModel.class));
 
-
-
     @org.junit.Test
     public void Test1() throws InterruptedException {
 
