@@ -13,7 +13,7 @@ public class Monitor {
     private Planner planner;
 
 
-    public Monitor(int noOfStage, int learningThreshold, int maxThreads, boolean isScale, boolean isVisualize) {
+    private Monitor(int noOfStage, int learningThreshold, int maxThreads, boolean isScale, boolean isVisualize) {
         //StaticBlockSingleton
         this.planner = new Planner(maxThreads);
         this.analyser = new Analyser(noOfStage, learningThreshold, this.planner, isScale);
@@ -21,7 +21,7 @@ public class Monitor {
 
     }
 
-    public Monitor(int noOfStage, int learningThreshold, boolean isScale, boolean isVisualize) {
+    private Monitor(int noOfStage, int learningThreshold, boolean isScale, boolean isVisualize) {
         //StaticBlockSingleton
         this.planner = new Planner();
         this.analyser = new Analyser(noOfStage, learningThreshold, this.planner, isScale);
