@@ -29,7 +29,7 @@ public class AdaptiveInputQueue {
     }
 
 
-    /** Creates a new instance of the queue or reurns the existing instance for a given size.
+    /** Creates a new instance of the queue or returns the existing instance for a given size.
      *
      * @param size the size of the queue
      * @return the queue
@@ -41,7 +41,7 @@ public class AdaptiveInputQueue {
         return inQueue;
     }
 
-    /** Creates a new instance of the queue or reurns the existing instance.
+    /** Creates a new instance of the queue or returns the existing instance.
      *
      * @return the queue
      */
