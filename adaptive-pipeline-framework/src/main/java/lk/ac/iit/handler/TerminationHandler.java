@@ -1,83 +1,51 @@
 package lk.ac.iit.handler;
 
+import lk.ac.iit.data.WorkLoadData;
 import lk.ac.iit.usecase.usecase01.XMLMessage;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import org.apache.log4j.Logger;
 
 public class TerminationHandler implements Runnable {
 
-    private LinkedBlockingQueue<XMLMessage> inQueue;
+
+    private BlockingQueue<XMLMessage> inQueue;
     private int messageCount;
     private long startTime;
 
+    private static final Logger log = Logger.getLogger(TerminationHandler.class);
 
-    public TerminationHandler(LinkedBlockingQueue<XMLMessage> inQueue, long startTime, int messageCount) {
+
+
+    /** Constructor
+     *
+     * @param inQueue the input queue
+     * @param startTime the start time of the application
+     */
+    public TerminationHandler(LinkedBlockingQueue<XMLMessage> inQueue, long startTime) {
         this.inQueue = inQueue;
         this.startTime = startTime;
-
     }
 
     public void run() {
 
-        long latencyTotal = 0;
+        long totalLatency = 0;
         while (true) {
-
-
-            //check queue size
             if (this.inQueue.size() > 0) {
-
-                //take item from inQueue
                 XMLMessage msg = this.inQueue.poll();
 
-                //check if last element
-                if (msg.getTimestamp() == -1) {
-                    long endTime = System.currentTimeMillis();
-
-                    double latency = latencyTotal / messageCount;
-                    double runTime = (endTime - startTime) / 1000.0;
-
-                    double throughput = messageCount / runTime;
-                    System.out.println(" Latency : " + latency + " milli sec " +
-                            "\n TPS :" + throughput + " req per sec" +
-                            "\n Runtime :" + runTime + " s" +
-                            "\n Count : " + messageCount);
-                    latencyTotal = 0;
-                    messageCount =0;
-
-                } else if (msg.getTimestamp() == -2) {
-                    long endTime = System.currentTimeMillis();
-
-                    double latency = latencyTotal / messageCount;
-                    double runTime = (endTime - startTime) / 1000.0;
-
-                    double throughput = messageCount / runTime;
-                    System.out.println(" Latency : " + latency + " milli sec " +
-                            "\n TPS :" + throughput + " req per sec" +
-                            "\n Runtime :" + runTime + " s" +
-                            "\n Count : " + messageCount);
+                if (msg.getTimestamp() == -WorkLoadData.scale()) {
+                    calculatePerformance(totalLatency);
+                    totalLatency = 0;
+                } else if (msg.getTimestamp() == WorkLoadData.termination()) {
+                    calculatePerformance(totalLatency);
                     break;
-
                 }
                 else {
                     this.messageCount++;
-                    latencyTotal += (System.currentTimeMillis() - msg.getTimestamp());
-//                    TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//                        Transformer transformer = null;
-//                        try {
-//                            transformer = transformerFactory.newTransformer();
-//                            DOMSource source = new DOMSource(msg.getMessage());
-//                            // Output to console for testing
-//                            StreamResult result = new StreamResult(System.out);
-//                            transformer.transform(source, result);
-//                        } catch (TransformerConfigurationException e) {
-//                            e.printStackTrace();
-//                        } catch (TransformerException e) {
-//                            e.printStackTrace();
-//                        }
-//                    System.out.println();
-
-
-
+                    totalLatency += (System.currentTimeMillis() - msg.getTimestamp());
                 }
 
 
@@ -86,6 +54,23 @@ public class TerminationHandler implements Runnable {
 
         }
 
+    }
+
+    private void calculatePerformance(long totalLatency){
+
+        long endTime = System.currentTimeMillis();
+
+        double latency = totalLatency / this.messageCount;
+        double runTime = (endTime - this.startTime) / 1000.0;
+
+        double throughput = this.messageCount / runTime;
+
+        log.debug("Latency : " + latency + " milli sec ");
+        log.info("TPS :" + throughput + " req per sec");
+        log.info("Count : " + this.messageCount);
+
+        this.messageCount =0;
+        this.startTime = System.currentTimeMillis();
 
     }
 }
