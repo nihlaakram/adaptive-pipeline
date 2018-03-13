@@ -9,7 +9,6 @@ public class WorkLoadModel implements BaseModel {
 
     /**
      * Creates a WorkLoadModel with past data
-     *
      */
     public WorkLoadModel() {
         this.pastResults = new HashMap<>();
@@ -52,7 +51,7 @@ public class WorkLoadModel implements BaseModel {
      * See BaseModel#addWorkers
      */
     @Override
-    public void addWorkers( int workLoadParam, int workers) {
+    public void addWorkers(int workLoadParam, int workers) {
         this.pastResults.put(new WorkLoadKey(1, workLoadParam), workers);
     }
 

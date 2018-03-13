@@ -1,9 +1,10 @@
 package lk.ac.iit.usecase.usecase01;
 
+import lk.ac.iit.data.PipeData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class XMLMessage {
+public class XMLMessage implements PipeData {
 
 
     private long timestamp;
@@ -18,14 +19,17 @@ public class XMLMessage {
         this.workload = workload;
     }
 
+    @Override
     public long getTimestamp() {
         return timestamp;
     }
+
 
     public Document getMessage() {
         return message;
     }
 
+    @Override
     public int getWorkload() {
         return this.workload;
     }

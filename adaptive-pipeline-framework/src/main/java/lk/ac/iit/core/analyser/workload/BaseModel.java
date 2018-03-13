@@ -17,15 +17,14 @@ public interface BaseModel {
      * @param workLoadParam the workload parameter of the worker/workers
      * @return the recommended number of workers
      */
-    int getWorkers( int workLoadParam);
+    int getWorkers(int workLoadParam);
 
 
     /**
      * Add past experiment results to the model
      *
      * @param workLoadParam the workload parameter of the worker/workers
-     * @param workers the number of recommended workers
-     *
+     * @param workers       the number of recommended workers
      */
     void addWorkers(int workLoadParam, int workers);
 
@@ -41,8 +40,7 @@ public interface BaseModel {
      *
      * @param inputRate     the rate at which input is pumped in to the worker/workers
      * @param workLoadParam the workload parameter of the worker/workers
-     * @param workers the number of recommended workers
-     *
+     * @param workers       the number of recommended workers
      */
     void addWorkers(int inputRate, int workLoadParam, int workers);
 

@@ -11,42 +11,46 @@ public class AdaptiveInputQueue {
     private static AdaptiveInputQueue inputQueue;
 
 
-    /** Constructor
-     *
+    /**
+     * Constructor
+     * <p>
      * Creates the output queue with maximum size
      */
-    private AdaptiveInputQueue(){
+    private AdaptiveInputQueue() {
         this.inQueue = new LinkedBlockingQueue();
     }
 
-    /** Constructor
+    /**
+     * Constructor
      * Creates the output queue with given size
      *
      * @param size the size of the queue
      */
-    private AdaptiveInputQueue(int size){
+    private AdaptiveInputQueue(int size) {
         this.inQueue = new LinkedBlockingQueue(size);
     }
 
 
-    /** Creates a new instance of the queue or returns the existing instance for a given size.
+    /**
+     * Creates a new instance of the queue or returns the existing instance for a given size.
      *
      * @param size the size of the queue
      * @return the queue
      */
     public synchronized static BlockingQueue<Data_Single> getInputQueue(int size) {
-        if(inputQueue == null){
+        if (inputQueue == null) {
             inputQueue = new AdaptiveInputQueue(size);
         }
         return inQueue;
     }
 
-    /** Creates a new instance of the queue or returns the existing instance.
+    /**
+     * Creates a new instance of the queue or returns the existing instance.
      *
      * @return the queue
      */
     public synchronized static BlockingQueue<Data_Single> getInputQueue() {
-        if(inputQueue == null){
+        if (inputQueue == null) {
             inputQueue = new AdaptiveInputQueue();
         }
         return inQueue;

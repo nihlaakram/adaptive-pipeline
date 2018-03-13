@@ -5,9 +5,10 @@ public class WorkLoadKey {
     private int inputRate;
     private int workLoadParam;
 
-    /** The key to access the WorkLoadModel
+    /**
+     * The key to access the WorkLoadModel
      *
-     * @param inputRate the rate at which input is pumped in to the worker/workers
+     * @param inputRate     the rate at which input is pumped in to the worker/workers
      * @param workLoadParam the workload parameter of the worker/workers
      */
     public WorkLoadKey(int inputRate, int workLoadParam) {

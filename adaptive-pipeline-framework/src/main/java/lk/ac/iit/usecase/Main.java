@@ -1,11 +1,5 @@
 package lk.ac.iit.usecase;
 
-import lk.ac.iit.core.Monitor;
-import lk.ac.iit.data.StageData;
-import lk.ac.iit.stage.HandlerStage;
-import lk.ac.iit.stage.ProducerStage;
-import lk.ac.iit.stage.TerminationStage;
-import org.apache.commons.text.RandomStringGenerator;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,8 +12,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
 
@@ -75,8 +67,6 @@ public class Main {
         transformer.transform(source, result);
 
         System.out.println("File saved!");
-
-
 
 
     }
