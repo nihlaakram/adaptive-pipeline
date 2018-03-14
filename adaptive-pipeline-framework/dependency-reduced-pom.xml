@@ -95,7 +95,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>lk.ac.iit.usecase.usecase1.Main</mainClass>
+              <mainClass>lk.ac.iit.usecase.usecase01.NeeMain</mainClass>
             </manifest>
           </archive>
         </configuration>

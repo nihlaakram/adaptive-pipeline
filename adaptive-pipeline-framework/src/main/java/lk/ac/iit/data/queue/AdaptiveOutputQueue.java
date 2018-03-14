@@ -1,13 +1,12 @@
 package lk.ac.iit.data.queue;
 
-import lk.ac.iit.data.Data_Single;
+import lk.ac.iit.data.PipeData;
 
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class AdaptiveOutputQueue {
 
-    private static BlockingQueue<Data_Single> outQueue;
+    private static LinkedBlockingQueue<PipeData> outQueue;
     private static AdaptiveOutputQueue outputQueue;
 
 
@@ -36,7 +35,7 @@ public class AdaptiveOutputQueue {
      * @param size the size of the queue
      * @return the queue
      */
-    public synchronized static BlockingQueue<Data_Single> getOutputQueue(int size) {
+    public synchronized static LinkedBlockingQueue<PipeData> getOutputQueue(int size) {
         if (outputQueue == null) {
             outputQueue = new AdaptiveOutputQueue(size);
         }
@@ -48,7 +47,7 @@ public class AdaptiveOutputQueue {
      *
      * @return the queue
      */
-    public synchronized static BlockingQueue<Data_Single> getOutputQueue() {
+    public synchronized static LinkedBlockingQueue<PipeData> getOutputQueue() {
         if (outputQueue == null) {
             outputQueue = new AdaptiveOutputQueue();
         }

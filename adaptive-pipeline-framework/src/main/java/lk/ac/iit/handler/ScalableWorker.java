@@ -27,6 +27,8 @@ public class ScalableWorker implements Runnable {
                     this.outQueue.put(msg);
                     break;
 
+                } else if (msg.getTimestamp() == WorkLoadData.cont()) {
+                    this.outQueue.put(msg);
                 } else {
                     RandomStringGenerator random = new RandomStringGenerator.Builder()
                             .withinRange('0', 'z').build();

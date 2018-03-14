@@ -33,7 +33,12 @@ public class PerformanceHandler implements Runnable {
         long totalLatency = 0;
         while (true) {
             if (this.inQueue.size() > 0) {
-                XMLMessage msg = (XMLMessage) this.inQueue.poll();
+                XMLMessage msg = null;
+                try {
+                    msg = (XMLMessage) this.inQueue.take();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 if (msg.getTimestamp() == WorkLoadData.scale()) {
                     calculatePerformance(totalLatency);
@@ -86,6 +91,7 @@ public class PerformanceHandler implements Runnable {
         double throughput = this.messageCount / runTime;
 
         logPerformance(latency, throughput);
+        //System.out.println(totalLatency);
 
         this.messageCount = 0;
         this.startTime = System.currentTimeMillis();

@@ -14,20 +14,18 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ProductionHandler implements Runnable {
 
     LinkedBlockingQueue<PipeData> inQueue;
-    LinkedBlockingQueue<PipeData> outQueue;
     int messageCount;
     int workload;
     int workers;
-    ScalableContextListner listner;
+    ScalableContextListener listner;
 
-    public ProductionHandler(LinkedBlockingQueue<PipeData> inQueue, LinkedBlockingQueue<PipeData> out,
-                             int messageCount, int workload, int workers, ScalableContextListner listner) {
+    public ProductionHandler(LinkedBlockingQueue<PipeData> inQueue,
+                             int messageCount, int workload, int workers, ScalableContextListener listner) {
         this.inQueue = inQueue;
         this.messageCount = messageCount;
         this.workload = workload;
         this.workers = workers;
         this.listner = listner;
-        this.outQueue = out;
     }
 
     @Override
@@ -51,12 +49,13 @@ public class ProductionHandler implements Runnable {
             System.out.println(messageCount);
             if (destroyed) {
                 System.out.println("destroyed :" + destroyed);
-                this.listner.contextInitialized(inQueue, outQueue, this.workers);
+                this.listner.contextInitialized(this.workers);
                 for (int i = 0; i < messageCount; i++) {
                     populate();
 
                 }
             }
+
 
             this.inQueue.put(new XMLMessage(-2, null, null, this.workload));
             this.listner.contextDestroyed(this.workers);

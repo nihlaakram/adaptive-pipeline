@@ -1,5 +1,5 @@
 import lk.ac.iit.data.PipeData;
-import lk.ac.iit.handler.ScalableContextListner;
+import lk.ac.iit.handler.ScalableContextListener;
 import lk.ac.iit.usecase.usecase01.XMLMessage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class ScalableContextListenerTestCase {
 
-    private static final Logger log = Logger.getLogger(String.valueOf(ScalableContextListner.class));
+    private static final Logger log = Logger.getLogger(String.valueOf(ScalableContextListener.class));
 
     @org.junit.Test
     public void Test1() throws InterruptedException {
@@ -37,8 +37,8 @@ public class ScalableContextListenerTestCase {
         LinkedBlockingQueue<PipeData> out = new LinkedBlockingQueue<>();
 
         //create the stages
-        ScalableContextListner listner = new ScalableContextListner();
-        listner.contextInitialized(in, out, stageCount);
+        ScalableContextListener listner = new ScalableContextListener(in, out);
+        listner.contextInitialized(stageCount);
 
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
