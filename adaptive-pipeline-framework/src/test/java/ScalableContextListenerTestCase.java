@@ -38,7 +38,7 @@ public class ScalableContextListenerTestCase {
 
         //create the stages
         ScalableContextListener listner = new ScalableContextListener(in, out);
-        listner.contextInitialized(stageCount);
+        listner.scaleUp(stageCount);
 
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();

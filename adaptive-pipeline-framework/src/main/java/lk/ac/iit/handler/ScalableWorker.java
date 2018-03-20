@@ -12,6 +12,11 @@ public class ScalableWorker implements Runnable {
     LinkedBlockingQueue<PipeData> inQueue;
     LinkedBlockingQueue<PipeData> outQueue;
 
+    /**Constructor
+     *
+     * @param inQueue Input queue
+     * @param outQueue Output queue
+     */
     public ScalableWorker(LinkedBlockingQueue<PipeData> inQueue, LinkedBlockingQueue<PipeData> outQueue) {
         this.inQueue = inQueue;
         this.outQueue = outQueue;
@@ -45,4 +50,5 @@ public class ScalableWorker implements Runnable {
         }
 
     }
+
 }

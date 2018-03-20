@@ -1,0 +1,257 @@
+-----------------===5 Worker---------10 b ----------------------
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [producer] INFO - Scaling up successful.
+ [performance] INFO - TPS :9216.589861751152 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :12722.64631043257 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :8912.6559714795 req per sec
+ [producer] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :11173.184357541899 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :8561.643835616438 req per sec
+ [producer] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :11614.401858304298 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :8650.519031141868 req per sec
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [producer] INFO - Scaling down successful.
+ [performance] INFO - TPS :11737.089201877934 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :7794.23226812159 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :10729.613733905579 req per sec
+-----------------===5 Worker---------100 b ----------------------
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :8431.703204047219 req per sec
+ [producer] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :11904.761904761905 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :7204.610951008646 req per sec
+ [producer] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :10050.251256281406 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :6697.923643670461 req per sec
+ [producer] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :12562.814070351758 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :6675.567423230975 req per sec
+ [producer] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :9633.911368015413 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :7007.70847932726 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :9737.098344693282 req per sec
+-----------------===5 Worker---------1kb ----------------------
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :7830.853563038372 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :11614.401858304298 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :7710.100231303008 req per sec
+ [producer] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :10449.320794148382 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :8103.727714748785 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :10695.1871657754 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :8389.261744966443 req per sec
+ [producer] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :10615.711252653928 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :8012.820512820513 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 0.0 milli sec 
+ [performance] INFO - TPS :13947.00139470014 req per sec
+-----------------===1 Worker---------10 kb ----------------------
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 676.0 milli sec 
+ [performance] INFO - TPS :4012.8410914927767 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 109.0 milli sec 
+ [performance] INFO - TPS :8431.703204047219 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 685.0 milli sec 
+ [performance] INFO - TPS :3987.2408293460926 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 269.0 milli sec 
+ [performance] INFO - TPS :8097.165991902833 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 636.0 milli sec 
+ [performance] INFO - TPS :4180.602006688963 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 338.0 milli sec 
+ [performance] INFO - TPS :8718.395815170008 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 566.0 milli sec 
+ [performance] INFO - TPS :4460.303300624442 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 199.0 milli sec 
+ [performance] INFO - TPS :8771.929824561405 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 575.0 milli sec 
+ [performance] INFO - TPS :4255.31914893617 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 203.0 milli sec 
+ [performance] INFO - TPS :8818.342151675486 req per sec
+-----------------===1 Worker---------100 kb ----------------------
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 7161.0 milli sec 
+ [performance] INFO - TPS :672.5854183481302 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 5018.0 milli sec 
+ [performance] INFO - TPS :1091.1074740861975 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 7399.0 milli sec 
+ [performance] INFO - TPS :648.4243288808195 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 4573.0 milli sec 
+ [performance] INFO - TPS :1104.3622308117062 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 7114.0 milli sec 
+ [performance] INFO - TPS :669.7923643670463 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 4516.0 milli sec 
+ [performance] INFO - TPS :1190.3344839900012 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 7197.0 milli sec 
+ [performance] INFO - TPS :660.676532769556 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 4773.0 milli sec 
+ [performance] INFO - TPS :1105.705440070765 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 7172.0 milli sec 
+ [performance] INFO - TPS :662.9541235746486 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 4705.0 milli sec 
+ [performance] INFO - TPS :1146.1318051575931 req per sec
+-----------------===1 Worker---------1 mb ----------------------
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 73495.0 milli sec 
+ [performance] INFO - TPS :67.33235925853606 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 48550.0 milli sec 
+ [performance] INFO - TPS :108.48222518740305 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 74327.0 milli sec 
+ [performance] INFO - TPS :66.51678218414506 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 48250.0 milli sec 
+ [performance] INFO - TPS :108.14435107982135 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 73441.0 milli sec 
+ [performance] INFO - TPS :67.53425675173732 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 49349.0 milli sec 
+ [performance] INFO - TPS :104.629871828407 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 73159.0 milli sec 
+ [performance] INFO - TPS :67.7185616577504 req per sec
+ [producer] INFO - Scaling down successful.
+ [performance] DEBUG - Latency : 46462.0 milli sec 
+ [performance] INFO - TPS :111.2557435777622 req per sec
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 72666.0 milli sec 
+ [performance] INFO - TPS :68.0767633583629 req per sec
+ [performance] DEBUG - Latency : 49932.0 milli sec 
+ [producer] INFO - Scaling down successful.
+ [performance] INFO - TPS :103.6409049923824 req per sec
+-----------------===1 Worker---------10 mb ----------------------
+ [main] INFO - Scaling up successful.
+ [producer] INFO - Scaling down successful.
+ [producer] INFO - Scaling up successful.
+ [performance] DEBUG - Latency : 742590.0 milli sec 
+ [performance] INFO - TPS :6.72972418225439 req per sec
+ [performance] DEBUG - Latency : 464687.0 milli sec 
+ [producer] INFO - Scaling down successful.
+ [performance] INFO - TPS :10.810506947912815 req per sec
+ [main] INFO - Scaling up successful.
+ [main] INFO - Scaling up successful.

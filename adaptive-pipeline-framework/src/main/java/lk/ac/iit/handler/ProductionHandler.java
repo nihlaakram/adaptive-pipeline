@@ -18,14 +18,17 @@ public class ProductionHandler implements Runnable {
     int workload;
     int workers;
     ScalableContextListener listner;
+    WorkLoadModel model;
 
     public ProductionHandler(LinkedBlockingQueue<PipeData> inQueue,
-                             int messageCount, int workload, int workers, ScalableContextListener listner) {
+                             int messageCount, int workload, int workers, ScalableContextListener listner,
+                             WorkLoadModel model) {
         this.inQueue = inQueue;
         this.messageCount = messageCount;
         this.workload = workload;
         this.workers = workers;
         this.listner = listner;
+        this.model=model;
     }
 
     @Override
@@ -37,19 +40,13 @@ public class ProductionHandler implements Runnable {
                 populate();
             }
             this.inQueue.put(new XMLMessage(-1, null, null, this.workload));
-            //this.inQueue.put(new XMLMessage(-2, null, null, this.workload));
-//            Thread.sleep(15000);
-//            while (this.outQueue.size()!=0 && this.outQueue.size()!=0){
-//                Thread.sleep(1000);
-//            }
-//
-            boolean destroyed = this.listner.contextDestroyed(this.workers);
+
+            boolean destroyed = this.listner.scaleDown(this.workers);
             //boolean destroyed = true;
-            this.workers = populateModel().getWorkers(this.workload);
-            System.out.println(messageCount);
+            this.workers = model.getWorkers(this.workload);
+            //System.out.println(messageCount);
             if (destroyed) {
-                System.out.println("destroyed :" + destroyed);
-                this.listner.contextInitialized(this.workers);
+                this.listner.scaleUp(this.workers);
                 for (int i = 0; i < messageCount; i++) {
                     populate();
 
@@ -58,24 +55,13 @@ public class ProductionHandler implements Runnable {
 
 
             this.inQueue.put(new XMLMessage(-2, null, null, this.workload));
-            this.listner.contextDestroyed(this.workers);
-            System.out.println("Done");
+            this.listner.scaleDown(this.workers);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public WorkLoadModel populateModel() {
-        WorkLoadModel model = new WorkLoadModel();
-        model.addWorkers(10, 1);//10b
-        model.addWorkers(100, 1);//100b
-        model.addWorkers(1000, 1);//1kb
-        model.addWorkers(10000, 5);//10kb
-        model.addWorkers(100000, 5);//100kb
-        model.addWorkers(1000000, 5);//1mb
-        model.addWorkers(10000000, 5);//0mb
-        return model;
-    }
 
     private void populate() {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();

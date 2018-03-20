@@ -4,6 +4,7 @@ import lk.ac.iit.core.analyser.workload.WorkLoadModel;
 import lk.ac.iit.data.PipeData;
 import lk.ac.iit.data.queue.AdaptiveInputQueue;
 import lk.ac.iit.data.queue.AdaptiveOutputQueue;
+import lk.ac.iit.usecase.usecase01.SampleWorker;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -14,7 +15,7 @@ public class JPipeScaler {
     private final WorkLoadModel workLoadModel;
     ScalableContextListener listner;
     ProductionHandler prod;
-    //private final PerformanceHandler performanceHandler;
+    private final PerformanceHandler performanceHandler;
     private boolean scale;
     private int workercount;
 
@@ -23,7 +24,7 @@ public class JPipeScaler {
         this.inputQueue = AdaptiveInputQueue.getInputQueue(inQueueSize);
         this.outputQueue = AdaptiveOutputQueue.getOutputQueue(outQueueSize);
         this.scale = scale;
-        //this.performanceHandler = new PerformanceHandler(this.inputQueue, System.currentTimeMillis());
+        this.performanceHandler = new PerformanceHandler(this.inputQueue, System.currentTimeMillis());
         //  initPerformanceHandler();
     }
 
@@ -36,18 +37,14 @@ public class JPipeScaler {
 
         //scale
         listner = new ScalableContextListener(this.inputQueue, this.outputQueue);
-        listner.contextInitialized(workerCount);
+        listner.scaleUp(workerCount);
 
-//        //perf
-//        this.performanceHandler = new PerformanceHandler(this.inputQueue, System.currentTimeMillis());
-
-        //prod
-
-        //create the stages
+      //perf
+        performanceHandler = new PerformanceHandler(this.outputQueue, System.currentTimeMillis());
 
 
         //fill data
-        prod = new ProductionHandler(inputQueue, messageCount, messageSize, workerCount, listner);
+        prod = new ProductionHandler( inputQueue, messageCount, messageSize, workerCount, listner, getWorkLoadModel());
 
     }
 
@@ -57,8 +54,7 @@ public class JPipeScaler {
         this.outputQueue = AdaptiveOutputQueue.getOutputQueue();
         this.scale = false;
 
-//        this.performanceHandler = new PerformanceHandler(this.inputQueue, System.currentTimeMillis());
-        // initPerformanceHandler();
+        this.performanceHandler = new PerformanceHandler(this.inputQueue, System.currentTimeMillis());
     }
 
 
@@ -78,27 +74,21 @@ public class JPipeScaler {
         return scale;
     }
 
-//    private void initPerformanceHandler(){
-//        Thread thread = new Thread(this.performanceHandler, "performance");
-//        thread.start();
-//    }
-
 
     public void start() {
-        startProduction(this.prod);
+        initPerformanceHandler();
+        initProductionHandler();
+    }
+
+    private void initPerformanceHandler() {
+        Thread t1 = new Thread(this.performanceHandler, "performance");
+        t1.start();
     }
 
     private void initProductionHandler() {
-
-    }
-
-    private void initScalingHandler() {
-
-        listner.contextInitialized(this.workercount);
-    }
-
-    public void startProduction(ProductionHandler productionHandler) {
-        Thread t2 = new Thread(productionHandler);
+        Thread t2 = new Thread(this.prod, "producer");
         t2.start();
     }
+
+
 }
