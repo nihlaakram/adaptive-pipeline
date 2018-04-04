@@ -17,11 +17,11 @@ public class Analyser {
 
 
     /**
-     *
-     * @param noOfStages
-     * @param monitorThreshold
-     * @param planner
-     * @param isScale
+     *Constructor : creates the instance of the analyser
+     * @param noOfStages the number of stages in the pipeline
+     * @param monitorThreshold the number of events to be monitored
+     * @param planner the planning component of the framework
+     * @param isScale should the system scale
      */
     public Analyser(int noOfStages, int monitorThreshold, Planner planner, boolean isScale) {
         this.monitorThreshold = monitorThreshold;
@@ -32,6 +32,10 @@ public class Analyser {
     }
 
 
+    /**
+     * Records the time spent in stage and sends it to Siddhi for latency and tps calculations
+     * @param timestamp the record of time spent in each stage
+     */
     public void analyse(long... timestamp) {
 
         Object[] latencyPreprocessed = new Object[this.objLength / 2];

@@ -18,7 +18,7 @@ public class Monitor {
         //StaticBlockSingleton
         this.planner = new Planner(maxThreads);
         this.analyser = new Analyser(noOfStage, learningThreshold, this.planner, isScale);
-        this.executor = new Executor(noOfStage);
+        this.executor = new Executor();
 
     }
 
@@ -26,7 +26,7 @@ public class Monitor {
         //StaticBlockSingleton
         this.planner = new Planner();
         this.analyser = new Analyser(noOfStage, learningThreshold, this.planner, isScale);
-        this.executor = new Executor(noOfStage);
+        this.executor = new Executor();
 
     }
 

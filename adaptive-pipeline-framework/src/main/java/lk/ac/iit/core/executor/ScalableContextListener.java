@@ -19,21 +19,22 @@ public class ScalableContextListener {
     private LinkedBlockingQueue<PipeData>[] queues = null;
     private Class workerClass;
 
-    /** Constructor
+    /**
+     * Constructor
      *
-     * @param inputQueue The input queue
+     * @param inputQueue  The input queue
      * @param outputQueue The output queue
      */
     public ScalableContextListener(LinkedBlockingQueue<PipeData> inputQueue, LinkedBlockingQueue<PipeData> outputQueue) {
         this.INPUT_QUEUE = inputQueue;
         this.OUTPUT_QUEUE = outputQueue;
+        this.workerClass = SampleWorker.class;
     }
 
 
     /**
-     *
      * @param workerCount The number of workers to be brought down
-     * @return
+     * @return is scaling down successful
      */
     public boolean scaleDown(int workerCount) {
         //log.info("Stopping thread: " + this.threads);
@@ -47,7 +48,7 @@ public class ScalableContextListener {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //log.info("Thread successfully stopped.");
+
             log.info("Scaling down successful.");
             return true;
         }
@@ -57,7 +58,6 @@ public class ScalableContextListener {
 
 
     /**
-     *
      * @param workerCount the number of workers to be added
      */
     public void scaleUp(int workerCount) {
@@ -65,13 +65,11 @@ public class ScalableContextListener {
         this.queues = new LinkedBlockingQueue[workerCount - 1];
         this.runnable = new ScalableWorker[workerCount];
 
-        Class workerClass = SampleWorker.class;
         Constructor constructor = null;
         try {
             constructor = workerClass.getDeclaredConstructor(LinkedBlockingQueue.class, LinkedBlockingQueue.class);
             if (workerCount == 1) {
                 this.runnable[0] = (ScalableWorker) constructor.newInstance(this.INPUT_QUEUE, this.OUTPUT_QUEUE);
-                //this.runnable[0] = Class.forName(workerClass.getName())
 
 
             } else {
@@ -82,7 +80,8 @@ public class ScalableContextListener {
                 for (int i = 1; i < workerCount - 1; i++) {
                     this.runnable[i] = (ScalableWorker) constructor.newInstance(this.queues[i - 1], this.queues[i]);
                 }
-                this.runnable[workerCount - 1] = (ScalableWorker) constructor.newInstance(this.queues[workerCount - 2], this.OUTPUT_QUEUE);
+                this.runnable[workerCount - 1] = (ScalableWorker) constructor.newInstance(this.queues[workerCount - 2],
+                        this.OUTPUT_QUEUE);
             }
 
         } catch (NoSuchMethodException e) {

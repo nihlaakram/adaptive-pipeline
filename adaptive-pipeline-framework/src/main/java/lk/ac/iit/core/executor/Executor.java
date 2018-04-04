@@ -10,14 +10,20 @@ public class Executor {
     private ProducerStage producerStage;
     private TerminationStage terminationStage;
 
-    public Executor(int noOfHandlers) {
-        handlerStages = new HandlerStage[noOfHandlers];
-    }
-
+    /**
+     * Adding the stages of the pipeline
+     * @param handlers
+     */
     public void addHandler(HandlerStage... handlers) {
+
+        handlerStages = new HandlerStage[handlers.length];
         this.handlerStages = handlers;
     }
 
+    /**
+     * Executes scaling based on the stage ID
+     * @param stageID The ID of the stage to be scaled
+     */
     public void executeScaling(int stageID) {
 
 
@@ -30,10 +36,17 @@ public class Executor {
     }
 
 
+    /**
+     * Adds the producer stage
+     * @param producer
+     */
     public void addProducer(ProducerStage producer) {
         this.producerStage = producer;
     }
 
+    /**
+     * Starts execution of the framework
+     */
     public void start() {
         //Start producer
         this.producerStage.start();
@@ -49,6 +62,10 @@ public class Executor {
         }
     }
 
+    /**
+     * Adds the termination stage
+     * @param term
+     */
     public void addTerminator(TerminationStage term) {
         this.terminationStage = term;
     }
