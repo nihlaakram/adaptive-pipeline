@@ -1,6 +1,6 @@
 package lk.ac.iit.usecase.usecase1.stage;
 
-import lk.ac.iit.core.Monitor;
+import lk.ac.iit.core.monitor.Monitor;
 import lk.ac.iit.data.StageData;
 import lk.ac.iit.stage.TerminationStage;
 import lk.ac.iit.usecase.usecase1.data.Message;

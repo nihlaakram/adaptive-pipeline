@@ -27,7 +27,8 @@ public class ScalableWorker implements Runnable {
     public void run() {
         while (true) {
             try {
-                XMLMessage msg = (XMLMessage) this.inQueue.take();
+
+                PipeData msg = this.inQueue.take();
                 if (msg.getTimestamp() == WorkLoadData.scale() || msg.getTimestamp() == WorkLoadData.termination()) {
                     this.outQueue.put(msg);
                     break;
@@ -35,13 +36,26 @@ public class ScalableWorker implements Runnable {
                 } else if (msg.getTimestamp() == WorkLoadData.cont()) {
                     this.outQueue.put(msg);
                 } else {
-                    RandomStringGenerator random = new RandomStringGenerator.Builder()
-                            .withinRange('0', 'z').build();
-                    String charList = random.generate(msg.getWorkload());
-                    msg.addToMessage(charList);
+                    msg = process(msg);
                     this.outQueue.put(msg);
 
                 }
+
+//                XMLMessage msg = (XMLMessage) this.inQueue.take();
+//                if (msg.getTimestamp() == WorkLoadData.scale() || msg.getTimestamp() == WorkLoadData.termination()) {
+//                    this.outQueue.put(msg);
+//                    break;
+//
+//                } else if (msg.getTimestamp() == WorkLoadData.cont()) {
+//                    this.outQueue.put(msg);
+//                } else {
+//                    RandomStringGenerator random = new RandomStringGenerator.Builder()
+//                            .withinRange('0', 'z').build();
+//                    String charList = random.generate(msg.getWorkload());
+//                    msg.addToMessage(charList);
+//                    this.outQueue.put(msg);
+//
+//                }
 
 
             } catch (InterruptedException e) {
@@ -49,6 +63,10 @@ public class ScalableWorker implements Runnable {
             }
         }
 
+    }
+
+    public PipeData process(PipeData msg) {
+        return msg;
     }
 
 }

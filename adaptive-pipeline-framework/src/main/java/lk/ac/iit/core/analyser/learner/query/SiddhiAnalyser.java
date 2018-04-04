@@ -1,6 +1,6 @@
 package lk.ac.iit.core.analyser.learner.query;
 
-import lk.ac.iit.core.Monitor;
+import lk.ac.iit.core.monitor.Monitor;
 import lk.ac.iit.core.analyser.AnalyserData;
 import lk.ac.iit.core.analyser.learner.extension.LatencyAttributeAggregator;
 import lk.ac.iit.core.analyser.learner.extension.TpsAttributeAggregator;
@@ -12,7 +12,7 @@ import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.StreamCallback;
 
-public class SiddhiLearner {
+public class SiddhiAnalyser {
     private final InputHandler inputHandler;
     private final String query;
     private final String inStreamDefinition;
@@ -22,8 +22,14 @@ public class SiddhiLearner {
     private boolean isScale;
 
 
-    public SiddhiLearner(int monitorThreshold, int noOfParameters, Planner planner, boolean isScale) {
-
+    /**
+     * Constructor : creates the instance of the Siddhi analyser
+     * @param monitorThreshold the number of events to be monitored
+     * @param noOfParameters the no of parameters analysed
+     * @param planner the planning component of the framework
+     * @param isScale should the application scale
+     */
+    public SiddhiAnalyser(int monitorThreshold, int noOfParameters, Planner planner, boolean isScale) {
         TpsAttributeAggregator.monitorThreshold = monitorThreshold;
         this.planner = planner;
         this.isScale = isScale;
@@ -58,6 +64,12 @@ public class SiddhiLearner {
 
     }
 
+    /**
+     * Returns the analysed resilts from Siddhi
+     *
+     * @param noOfParameters
+     */
+
     private void initCallback(int noOfParameters) {
         this.siddhiAppRuntime.addCallback("filteredOutputStream", new StreamCallback() {
             @Override
@@ -68,18 +80,16 @@ public class SiddhiLearner {
                     double[] latency = new double[noOfParameters / 2];
                     double[] tps = new double[noOfParameters / 2];
 
-                    //preprocessed attributes for latency and tps
                     for (int i = 0; i < noOfParameters / 2; i++) {
                         latency[i] = (double) ev.getData()[i];
                         tps[i] = (double) ev.getData()[i + (noOfParameters / 2)];
                     }
 
-                    //Planner planner = new Planner(new AnalyserData(tps, latency), 10);
                     PlannerData plannerData = planner.plan(new AnalyserData(tps, latency));
                     System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID() + "\t" + planner.getNoOfThread());
 
                     if (isScale && plannerData.isScalability()) {
-                        Monitor.getMonitor().getExecutor().executeScaling(plannerData.getStageID());
+                            Monitor.getMonitor().getExecutor().executeScaling(plannerData.getStageID());
 
                     }
 
@@ -89,9 +99,13 @@ public class SiddhiLearner {
     }
 
 
-    public void publish(Event obj) {
+    /**
+     * Publishes events to Siddhi
+     * @param event The event to be published
+     */
+    public void publish(Event event) {
         try {
-            inputHandler.send(obj);
+            inputHandler.send(event);
         } catch (InterruptedException e) {
 
         }

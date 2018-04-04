@@ -11,15 +11,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SampleHandlerStage extends HandlerStage {
 
     private AtomicInteger messageSize;
+    private int id;
+    private int count = 0;
 
     public SampleHandlerStage(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue,
                               int messagesize, int id) {
         super(inQueue, outQueue, id);
         this.messageSize = new AtomicInteger(messagesize);
+        this.id = id;
     }
 
     public StageData onEvent(StageData data) {
 
+        //this.count++;
+        System.out.println(this.id+"\t"+data.id);
 
         Message msg = (Message) data.getDataObject();
 

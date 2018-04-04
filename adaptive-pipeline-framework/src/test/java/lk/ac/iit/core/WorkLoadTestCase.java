@@ -1,47 +1,13 @@
-package lk.ac.iit.usecase.usecase01;
+package lk.ac.iit.core;
 
 import lk.ac.iit.core.analyser.workload.WorkLoadModel;
-import lk.ac.iit.data.PipeData;
-import lk.ac.iit.handler.JPipeScaler;
-import lk.ac.iit.handler.PerformanceHandler;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.PatternLayout;
+import org.junit.Assert;
 
-import java.util.concurrent.LinkedBlockingQueue;
+public class WorkLoadTestCase {
 
-public class NeeMain {
+    @org.junit.Test
+    public void Test1() throws InterruptedException {
 
-    public static void main(String[] args) {
-
-
-
-////        //the message size
-//        int messageSize = 100000;
-//
-//        //the no. of messages to use
-//        int messageCount = 10000;
-//
-//        //no of stages
-//        int stageCount = 1;
-
-//        the message size
-        int messageSize = Integer.parseInt(args[1]);
-
-        //the no. of messages to use
-        int messageCount = Integer.parseInt(args[2]);
-
-        //no of stages
-        int stageCount = Integer.parseInt(args[0]);
-
-
-        JPipeScaler scaler = new JPipeScaler(populateModel(), true, messageSize, messageCount, stageCount);
-
-        scaler.start();
-
-    }
-
-    public static WorkLoadModel populateModel() {
         WorkLoadModel model = new WorkLoadModel();
         model.addWorkers(-1,10, 1);//10b
         model.addWorkers(-1,100, 1);//100b
@@ -83,6 +49,7 @@ public class NeeMain {
         model.addWorkers(1,1000000, 3);//1mb
         model.addWorkers(1,10000000, 3);//0mb
 
-        return model;
+        Assert.assertEquals(3, model.getWorkers(1000, 100000));
+
     }
 }

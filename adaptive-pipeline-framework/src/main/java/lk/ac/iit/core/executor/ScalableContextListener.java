@@ -1,9 +1,12 @@
-package lk.ac.iit.handler;
+package lk.ac.iit.core.executor;
 
 import lk.ac.iit.data.PipeData;
+import lk.ac.iit.handler.ScalableWorker;
+import lk.ac.iit.usecase.usecase01.SampleWorker;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ScalableContextListener {
@@ -62,21 +65,36 @@ public class ScalableContextListener {
         this.queues = new LinkedBlockingQueue[workerCount - 1];
         this.runnable = new ScalableWorker[workerCount];
 
-        if (workerCount == 1) {
-            this.runnable[0] = new ScalableWorker(this.INPUT_QUEUE, this.OUTPUT_QUEUE);
-            //this.runnable[0] = Class.forName(workerClass.getName())
+        Class workerClass = SampleWorker.class;
+        Constructor constructor = null;
+        try {
+            constructor = workerClass.getDeclaredConstructor(LinkedBlockingQueue.class, LinkedBlockingQueue.class);
+            if (workerCount == 1) {
+                this.runnable[0] = (ScalableWorker) constructor.newInstance(this.INPUT_QUEUE, this.OUTPUT_QUEUE);
+                //this.runnable[0] = Class.forName(workerClass.getName())
 
 
-        } else {
-            for (int i = 0; i < workerCount - 1; i++) {
-                this.queues[i] = new LinkedBlockingQueue<>();
+            } else {
+                for (int i = 0; i < workerCount - 1; i++) {
+                    this.queues[i] = new LinkedBlockingQueue<>();
+                }
+                this.runnable[0] = (ScalableWorker) constructor.newInstance(this.INPUT_QUEUE, this.queues[0]);
+                for (int i = 1; i < workerCount - 1; i++) {
+                    this.runnable[i] = (ScalableWorker) constructor.newInstance(this.queues[i - 1], this.queues[i]);
+                }
+                this.runnable[workerCount - 1] = (ScalableWorker) constructor.newInstance(this.queues[workerCount - 2], this.OUTPUT_QUEUE);
             }
-            this.runnable[0] = new ScalableWorker(this.INPUT_QUEUE, this.queues[0]);
-            for (int i = 1; i < workerCount - 1; i++) {
-                this.runnable[i] = new ScalableWorker(this.queues[i - 1], this.queues[i]);
-            }
-            this.runnable[workerCount - 1] = new ScalableWorker(this.queues[workerCount - 2], this.OUTPUT_QUEUE);
+
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
+
 
         this.threads = new Thread[workerCount];
 
@@ -88,6 +106,7 @@ public class ScalableContextListener {
 
         log.info("Scaling up successful.");
     }
+
 
 }
 

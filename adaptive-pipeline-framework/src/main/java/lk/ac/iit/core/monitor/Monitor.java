@@ -1,6 +1,7 @@
-package lk.ac.iit.core;
+package lk.ac.iit.core.monitor;
 
 
+import lk.ac.iit.core.executor.Executor;
 import lk.ac.iit.core.analyser.Analyser;
 import lk.ac.iit.core.planner.Planner;
 
@@ -31,6 +32,8 @@ public class Monitor {
 
     //access monitor functions through this
     public synchronized static Monitor getMonitor() {
+
+
         return monitor;
     }
 

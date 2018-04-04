@@ -28,7 +28,7 @@ public class SampleProducerStage extends ProducerStage {
                 Document doc = docBuilder.newDocument();
                 Element rootElement = doc.createElement("XML_MESSAGE");
                 doc.appendChild(rootElement);
-                this.getInQueue().put(new StageData(getNoOfStages(), new Message(doc, rootElement)));
+                this.getInQueue().put(new StageData(getNoOfStages(), new Message(doc, rootElement), i));
 
             } catch (InterruptedException e) {
                 e.printStackTrace();

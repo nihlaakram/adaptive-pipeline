@@ -113,7 +113,7 @@ public class PerformanceHandler implements Runnable {
     private void logPerformance(double avgLatency, double throughput) {
         log.debug("Latency : " + avgLatency + " milli sec ");
         log.info("TPS :" + throughput + " req per sec");
-        log.info("Count : " + this.messageCount);
+      //  log.info("Count : " + this.messageCount);
     }
 }
 

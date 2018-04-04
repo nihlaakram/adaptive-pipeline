@@ -6,13 +6,16 @@ public class StageData implements Data {
     private Object data;
     private boolean isTerminate = false;
 
-    public StageData(int noOfStages, Object data) {
+    public int id;
+
+    public StageData(int noOfStages, Object data, int id) {
         this.timestampArr = new long[noOfStages + 1];
         if (noOfStages > 0) {
             this.timestampArr[0] = System.currentTimeMillis();
         }
 
         this.data = data;
+        this.id = id;
     }
 
     @Override

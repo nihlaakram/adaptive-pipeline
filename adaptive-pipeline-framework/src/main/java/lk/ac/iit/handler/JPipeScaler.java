@@ -1,10 +1,13 @@
 package lk.ac.iit.handler;
 
 import lk.ac.iit.core.analyser.workload.WorkLoadModel;
+import lk.ac.iit.core.executor.ScalableContextListener;
 import lk.ac.iit.data.PipeData;
 import lk.ac.iit.data.queue.AdaptiveInputQueue;
 import lk.ac.iit.data.queue.AdaptiveOutputQueue;
-import lk.ac.iit.usecase.usecase01.SampleWorker;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.PatternLayout;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -19,6 +22,7 @@ public class JPipeScaler {
     private boolean scale;
     private int workercount;
 
+
     public JPipeScaler(WorkLoadModel workLoadModel, boolean scale, int inQueueSize, int outQueueSize, int messageSize, int messageCount) {
         this.workLoadModel = workLoadModel;
         this.inputQueue = AdaptiveInputQueue.getInputQueue(inQueueSize);
@@ -29,6 +33,7 @@ public class JPipeScaler {
     }
 
     public JPipeScaler(WorkLoadModel workLoadModel, boolean scale, int messageSize, int messageCount, int workerCount) {
+        BasicConfigurator.configure(new ConsoleAppender(new PatternLayout(" [%t] %p - %m%n")));
         this.workLoadModel = workLoadModel;
         this.inputQueue = AdaptiveInputQueue.getInputQueue();
         this.outputQueue = AdaptiveOutputQueue.getOutputQueue();

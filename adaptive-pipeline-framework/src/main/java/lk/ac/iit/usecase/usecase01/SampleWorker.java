@@ -15,13 +15,13 @@ public class SampleWorker extends ScalableWorker {
         super(inQueue, outQueue);
     }
 
-//    @Override
-//    public PipeData process(PipeData data) {
-//        XMLMessage msg  = (XMLMessage) data;
-//        RandomStringGenerator random = new RandomStringGenerator.Builder()
-//                .withinRange('0', 'z').build();
-//        String charList = random.generate(msg.getWorkload());
-//        msg.addToMessage(charList);
-//        return msg;
-//    }
+    @Override
+    public PipeData process(PipeData data) {
+        XMLMessage msg  = (XMLMessage) data;
+        RandomStringGenerator random = new RandomStringGenerator.Builder()
+                .withinRange('0', 'z').build();
+        String charList = random.generate(msg.getWorkload());
+        msg.addToMessage(charList);
+        return msg;
+    }
 }

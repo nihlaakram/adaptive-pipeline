@@ -16,6 +16,11 @@ public class WorkLoadKey {
         this.workLoadParam = workLoadParam;
     }
 
+    /**
+     * See Object#equals
+     * @param obj
+     * @return
+     */
     public boolean equals(Object obj) {
         if (obj instanceof WorkLoadKey) {
             WorkLoadKey key = (WorkLoadKey) obj;
@@ -26,6 +31,10 @@ public class WorkLoadKey {
     }
 
 
+    /**
+     * See Object#hashCode
+     * @return
+     */
     public int hashCode() {
         return (31 * this.inputRate) ^ this.workLoadParam;
     }

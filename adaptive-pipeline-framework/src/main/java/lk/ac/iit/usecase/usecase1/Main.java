@@ -1,6 +1,6 @@
 package lk.ac.iit.usecase.usecase1;
 
-import lk.ac.iit.core.Monitor;
+import lk.ac.iit.core.monitor.Monitor;
 import lk.ac.iit.data.StageData;
 import lk.ac.iit.stage.HandlerStage;
 import lk.ac.iit.stage.ProducerStage;
@@ -16,8 +16,8 @@ public class Main {
     public static void main(String[] args) {
 
 
-        int stageCount = Integer.parseInt(args[0]);
-        int messageSize = Integer.parseInt(args[1]);
+        int stageCount = 2;
+        int messageSize = 100000;
         messageSize = messageSize / stageCount;
 
         switch (stageCount) {
@@ -39,7 +39,7 @@ public class Main {
     }
 
     private static void twoStages(int stageCount, int messageSize) {
-        int learningThreshold = 10000;//five hundred thousand
+        int learningThreshold = 10;//five hundred thousand
         int maxThreads = 10;
         boolean isScale = true;
         boolean isVisualize = false;
@@ -68,7 +68,7 @@ public class Main {
     }
 
     private static void threeStages(int stageCount, int messageSize) {
-        int learningThreshold = 10000;//five hundred thousand
+        int learningThreshold = 10;//five hundred thousand
         int maxThreads = 10;
         boolean isScale = true;
         boolean isVisualize = false;

@@ -15,7 +15,7 @@ public class WorkLoadModel implements BaseModel {
     }
 
     /**
-     * Returns the resuls of the Workload model
+     * Returns the results of the Workload model
      *
      * @return past results of the model
      */

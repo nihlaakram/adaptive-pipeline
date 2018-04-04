@@ -1,6 +1,6 @@
 package lk.ac.iit.core.analyser;
 
-import lk.ac.iit.core.analyser.learner.query.SiddhiLearner;
+import lk.ac.iit.core.analyser.learner.query.SiddhiAnalyser;
 import lk.ac.iit.core.planner.Planner;
 import org.wso2.siddhi.core.event.Event;
 
@@ -10,16 +10,24 @@ import java.util.List;
 
 public class Analyser {
 
-    private SiddhiLearner siddhi;
+    private SiddhiAnalyser siddhi;
     private int monitorThreshold;
     private int objLength;
     private Planner planner;
 
+
+    /**
+     *
+     * @param noOfStages
+     * @param monitorThreshold
+     * @param planner
+     * @param isScale
+     */
     public Analyser(int noOfStages, int monitorThreshold, Planner planner, boolean isScale) {
         this.monitorThreshold = monitorThreshold;
         this.objLength = 2 * noOfStages;
         this.planner = planner;
-        this.siddhi = new SiddhiLearner(this.monitorThreshold, this.objLength, this.planner, isScale);
+        this.siddhi = new SiddhiAnalyser(this.monitorThreshold, this.objLength, this.planner, isScale);
 
     }
 

@@ -1,6 +1,6 @@
 package lk.ac.iit.stage;
 
-import lk.ac.iit.core.Monitor;
+import lk.ac.iit.core.monitor.Monitor;
 import lk.ac.iit.data.StageData;
 
 import java.util.concurrent.BlockingQueue;
