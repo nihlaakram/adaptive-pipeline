@@ -24,7 +24,19 @@
 
     </properties>
 
-    <!--<repositories>-->
+    <repositories>
+            <repository>
+                <id>maven-snapshots</id>
+                <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+                <layout>default</layout>
+                <releases>
+                    <enabled>false</enabled>
+                </releases>
+                <snapshots>
+                    <enabled>true</enabled>
+                </snapshots>
+            </repository>
+
         <!--<repository>-->
             <!--<id>wso2.releases</id>-->
             <!--<name>WSO2 internal Repository</name>-->
@@ -50,7 +62,7 @@
             <!--</releases>-->
         <!--</repository>-->
 
-    <!--</repositories>-->
+    </repositories>
 
 
 

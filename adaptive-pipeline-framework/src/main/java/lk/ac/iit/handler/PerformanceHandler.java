@@ -1,10 +1,15 @@
 package lk.ac.iit.handler;
 
+import javafx.application.Application;
+import lk.ac.iit.core.analyser.data.AnalyserReport;
 import lk.ac.iit.data.PipeData;
 import lk.ac.iit.data.WorkLoadData;
-import lk.ac.iit.usecase.usecase01.XMLMessage;
+import lk.ac.iit.usecase.builder.handler.XMLMessage;
+import lk.ac.iit.visual.MainFX;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -15,6 +20,8 @@ public class PerformanceHandler implements Runnable {
     private BlockingQueue<PipeData> inQueue;
     private int messageCount;
     private long startTime;
+
+    private List<AnalyserReport> performanceReport = new ArrayList<>();
 
 
     /**
@@ -45,6 +52,8 @@ public class PerformanceHandler implements Runnable {
                     totalLatency = 0;
                 } else if (msg.getTimestamp() == WorkLoadData.termination()) {
                     calculatePerformance(totalLatency);
+                    //display
+                    Application.launch(MainFX.class);
                     break;
                 } else {
                     this.messageCount++;
@@ -91,7 +100,7 @@ public class PerformanceHandler implements Runnable {
         double throughput = this.messageCount / runTime;
 
         logPerformance(latency, throughput);
-        //System.out.println(totalLatency);
+
 
         this.messageCount = 0;
         this.startTime = System.currentTimeMillis();
@@ -107,7 +116,7 @@ public class PerformanceHandler implements Runnable {
     private void logPerformance(double avgLatency, double throughput) {
         log.debug("Latency : " + avgLatency + " milli sec ");
         log.info("TPS :" + throughput + " req per sec");
-        //  log.info("Count : " + this.messageCount);
+        this.performanceReport.add(new AnalyserReport(avgLatency, throughput));
     }
 }
 

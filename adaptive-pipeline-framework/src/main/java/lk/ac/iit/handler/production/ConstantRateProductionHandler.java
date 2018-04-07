@@ -3,7 +3,7 @@ package lk.ac.iit.handler.production;
 import lk.ac.iit.core.analyser.workload.WorkLoadModel;
 import lk.ac.iit.core.executor.ScalableContextListener;
 import lk.ac.iit.data.PipeData;
-import lk.ac.iit.usecase.usecase01.XMLMessage;
+import lk.ac.iit.usecase.builder.handler.XMLMessage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

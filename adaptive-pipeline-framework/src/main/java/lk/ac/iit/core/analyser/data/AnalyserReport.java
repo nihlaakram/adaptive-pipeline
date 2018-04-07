@@ -3,21 +3,23 @@ package lk.ac.iit.core.analyser.data;
 public class AnalyserReport {
 
 
-    private AnalyserData analyserData;
-    private AnalysedData analysedData;
+
+    private double avgLatency;
+    private double tps;
 
 
-    public AnalyserReport(AnalyserData analyserData, AnalysedData analysedData) {
-        this.analyserData = analyserData;
-        this.analysedData = analysedData;
+    public AnalyserReport(double avgLatency, double tps) {
+        this.avgLatency = avgLatency;
+        this.tps = tps;
     }
 
-    public AnalyserData getAnalyserData() {
-        return this.analyserData;
+
+    public double getAvgLatency() {
+        return avgLatency;
     }
 
-    public AnalysedData getAnalysedData() {
-        return this.analysedData;
+    public double getTps() {
+        return tps;
     }
 
 
