@@ -2,11 +2,10 @@ package lk.ac.iit.data;
 
 public class StageData implements Data {
 
+    public int id;
     private long[] timestampArr;
     private Object data;
     private boolean isTerminate = false;
-
-    public int id;
 
     public StageData(int noOfStages, Object data, int id) {
         this.timestampArr = new long[noOfStages + 1];

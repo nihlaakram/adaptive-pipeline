@@ -18,6 +18,7 @@ public class WorkLoadKey {
 
     /**
      * See Object#equals
+     *
      * @param obj
      * @return
      */
@@ -33,6 +34,7 @@ public class WorkLoadKey {
 
     /**
      * See Object#hashCode
+     *
      * @return
      */
     public int hashCode() {

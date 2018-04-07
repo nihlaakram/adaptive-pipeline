@@ -38,7 +38,7 @@ public class WorkLoadTestCase {
         model.addWorkers(1000000, 5);//1mb
         model.addWorkers(10000000, 5);//0mb
 
-        Assert.assertEquals(5, model.getWorkers( 1000000));
+        Assert.assertEquals(5, model.getWorkers(1000000));
 
     }
 
@@ -98,13 +98,13 @@ public class WorkLoadTestCase {
 
         log.info("WorkLoadModel TestCase 06");
         WorkLoadModel model = new WorkLoadModel();
-        model.addWorkers( 10, 1);//10b
-        model.addWorkers( 100, 1);//100b
-        model.addWorkers( 1000, 1);//1kb
-        model.addWorkers( 10000, 5);//10kb
-        model.addWorkers( 100000, 5);//100kb
-        model.addWorkers( 1000000, 5);//1mb
-        model.addWorkers( 10000000, 5);//0mb
+        model.addWorkers(10, 1);//10b
+        model.addWorkers(100, 1);//100b
+        model.addWorkers(1000, 1);//1kb
+        model.addWorkers(10000, 5);//10kb
+        model.addWorkers(100000, 5);//100kb
+        model.addWorkers(1000000, 5);//1mb
+        model.addWorkers(10000000, 5);//0mb
 
         Assert.assertEquals(1, model.getWorkers(1000));
 
@@ -123,7 +123,7 @@ public class WorkLoadTestCase {
         model.addWorkers(1000000, 5);//1mb
         model.addWorkers(10000000, 5);//0mb
 
-        Assert.assertEquals(1, model.getWorkers( 10));
+        Assert.assertEquals(1, model.getWorkers(10));
 
     }
 

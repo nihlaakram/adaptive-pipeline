@@ -1,5 +1,5 @@
-import lk.ac.iit.data.PipeData;
 import lk.ac.iit.core.executor.ScalableContextListener;
+import lk.ac.iit.data.PipeData;
 import lk.ac.iit.usecase.usecase01.XMLMessage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -28,8 +28,7 @@ public class ScalableContextListenerTestCase {
         int stageCount = 3;
 
         //contribution from each stage to the string
-        int charCount = messageSize/stageCount;
-
+        int charCount = messageSize / stageCount;
 
 
         //required queues

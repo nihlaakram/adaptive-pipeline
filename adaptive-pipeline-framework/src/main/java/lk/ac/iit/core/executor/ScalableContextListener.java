@@ -2,7 +2,7 @@ package lk.ac.iit.core.executor;
 
 import lk.ac.iit.data.PipeData;
 import lk.ac.iit.handler.ScalableWorker;
-import lk.ac.iit.usecase.usecase01.SampleWorker;
+import lk.ac.iit.usecase.builder.handler.XMLScalableHandler;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Constructor;
@@ -17,7 +17,7 @@ public class ScalableContextListener {
     private Thread threads[] = null;
     private ScalableWorker[] runnable = null;
     private LinkedBlockingQueue<PipeData>[] queues = null;
-    private Class workerClass;
+    private Class workerClass = XMLScalableHandler.class;
 
     /**
      * Constructor
@@ -28,7 +28,7 @@ public class ScalableContextListener {
     public ScalableContextListener(LinkedBlockingQueue<PipeData> inputQueue, LinkedBlockingQueue<PipeData> outputQueue) {
         this.INPUT_QUEUE = inputQueue;
         this.OUTPUT_QUEUE = outputQueue;
-        this.workerClass = SampleWorker.class;
+        //this.workerClass = SampleWorker.class;
     }
 
 
@@ -67,6 +67,7 @@ public class ScalableContextListener {
 
         Constructor constructor = null;
         try {
+            System.out.println(workerClass.getName());
             constructor = workerClass.getDeclaredConstructor(LinkedBlockingQueue.class, LinkedBlockingQueue.class);
             if (workerCount == 1) {
                 this.runnable[0] = (ScalableWorker) constructor.newInstance(this.INPUT_QUEUE, this.OUTPUT_QUEUE);
@@ -107,5 +108,8 @@ public class ScalableContextListener {
     }
 
 
+    public void addWorker(Class workerClass) {
+        this.workerClass = workerClass;
+    }
 }
 

@@ -2,8 +2,6 @@ package lk.ac.iit.handler;
 
 import lk.ac.iit.data.PipeData;
 import lk.ac.iit.data.WorkLoadData;
-import lk.ac.iit.usecase.usecase01.XMLMessage;
-import org.apache.commons.text.RandomStringGenerator;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -12,9 +10,10 @@ public class ScalableWorker implements Runnable {
     LinkedBlockingQueue<PipeData> inQueue;
     LinkedBlockingQueue<PipeData> outQueue;
 
-    /**Constructor
+    /**
+     * Constructor
      *
-     * @param inQueue Input queue
+     * @param inQueue  Input queue
      * @param outQueue Output queue
      */
     public ScalableWorker(LinkedBlockingQueue<PipeData> inQueue, LinkedBlockingQueue<PipeData> outQueue) {

@@ -1,4 +1,4 @@
-package lk.ac.iit.core.analyser.learner.extension;
+package lk.ac.iit.core.analyser.siddhi.extension;
 
 
 import org.wso2.siddhi.annotation.Example;
@@ -17,12 +17,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Extension(
-        name = "latency",
+        name = "tps",
         namespace = "learner",
-        description = "This extension returns the latency of aggregated events.",
+        description = "This extension returns the throughput of aggregated events.",
         parameters = {
                 @Parameter(name = "data",
-                        description = "The value that needs to be aggregated for the latency.",
+                        description = "The value that needs to be aggregated for the throughput.",
                         type = {DataType.LONG})
 
         },
@@ -31,17 +31,19 @@ import java.util.Map;
                 type = {DataType.DOUBLE}),
         examples = @Example(
                 syntax = "from inputStream#window.length(5)" +
-                        "\nselect learner:latency(value) as latencyOfValues" +
+                        "\nselect learner:tps(value) as tpsOfValues" +
                         "\ninsert into outputStream;",
-                description = "This will returns the latency of aggregated values as a double " +
+                description = "This will returns the throughput of aggregated values as a double " +
                         "value for each event arrival and expiry of fixed window length 5."
         )
 )
 
-public class LatencyAttributeAggregator extends AttributeAggregator {
+public class TpsAttributeAggregator extends AttributeAggregator {
 
+    public static int monitorThreshold = 0;
     private int count = 0;
-    private double totalLatency = 0;
+    private long startTime;
+    private long endTime;
 
     protected void init(ExpressionExecutor[] expressionExecutors, ConfigReader configReader,
                         SiddhiAppContext siddhiAppContext) {
@@ -61,24 +63,32 @@ public class LatencyAttributeAggregator extends AttributeAggregator {
     }
 
     public Object processAdd(Object data) {
-        this.count++;
+        if (count == 0) {
+            this.startTime = (long) data;
+            count++;
+            return this.startTime;
+        } else if (count == this.monitorThreshold - 1) {
+            this.count++;
+            this.endTime = (long) data;
+            return ((monitorThreshold) / ((this.endTime - this.startTime) / 1000.0));
+        } else {
+            this.count++;
+            return null;
+        }
 
-        this.totalLatency += (long) data;
-        return (this.totalLatency / this.count);
     }
 
 
     public Object processAdd(Object[] data) {
 
-        return new IllegalStateException("Latency cannot process data array, but found " + data);
+        return new IllegalStateException("Throughput cannot process data array, but found " + data);
 
     }
 
 
     public Object processRemove(Object data) {
         this.count--;
-        this.totalLatency -= (double) data;
-        return (this.totalLatency / this.count);
+        return null;
 
 
     }
@@ -92,13 +102,12 @@ public class LatencyAttributeAggregator extends AttributeAggregator {
     @Override
     public boolean canDestroy() {
 
-        return this.count == 0 && this.totalLatency == 0.0;
+        return this.count == 0;
     }
 
     public Object reset() {
         this.count = 0;
-        this.totalLatency = 0.0;
-        return this.totalLatency;
+        return this.count;
     }
 
     public void start() {
@@ -109,13 +118,11 @@ public class LatencyAttributeAggregator extends AttributeAggregator {
 
     public Map<String, Object> currentState() {
         Map<String, Object> state = new HashMap<>();
-        state.put("Latency", this.totalLatency);
         state.put("Count", this.count);
         return state;
     }
 
     public void restoreState(Map<String, Object> state) {
-        this.totalLatency = (Double) state.get("Median");
         this.count = (Integer) state.get("Count");
 
     }

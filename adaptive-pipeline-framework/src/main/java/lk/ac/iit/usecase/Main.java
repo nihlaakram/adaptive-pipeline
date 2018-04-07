@@ -1,37 +1,16 @@
 package lk.ac.iit.usecase;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.Stroke;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 class GraphPanel extends JPanel {
 
+    private static final Stroke GRAPH_STROKE = new BasicStroke(2f);
     private int width = 800;
     private int heigth = 400;
     private int padding = 25;
@@ -39,13 +18,39 @@ class GraphPanel extends JPanel {
     private Color lineColor = new Color(44, 102, 230, 180);
     private Color pointColor = new Color(100, 100, 100, 180);
     private Color gridColor = new Color(200, 200, 200, 200);
-    private static final Stroke GRAPH_STROKE = new BasicStroke(2f);
     private int pointWidth = 4;
     private int numberYDivisions = 10;
     private List<Double> scores;
 
     public GraphPanel(List<Double> scores) {
         this.scores = scores;
+    }
+
+    private static void createAndShowGui() {
+        List<Double> scores = new ArrayList<>();
+        Random random = new Random();
+        int maxDataPoints = 40;
+        int maxScore = 10;
+        for (int i = 0; i < maxDataPoints; i++) {
+            scores.add((double) random.nextDouble() * maxScore);
+//            scores.add((double) i);
+        }
+        GraphPanel mainPanel = new GraphPanel(scores);
+        mainPanel.setPreferredSize(new Dimension(800, 600));
+        JFrame frame = new JFrame("DrawGraph");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(mainPanel);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGui();
+            }
+        });
     }
 
     @Override
@@ -153,41 +158,14 @@ class GraphPanel extends JPanel {
         return maxScore;
     }
 
-    public void setScores(List<Double> scores) {
-        this.scores = scores;
-        invalidate();
-        this.repaint();
-    }
-
     public List<Double> getScores() {
         return scores;
     }
 
-    private static void createAndShowGui() {
-        List<Double> scores = new ArrayList<>();
-        Random random = new Random();
-        int maxDataPoints = 40;
-        int maxScore = 10;
-        for (int i = 0; i < maxDataPoints; i++) {
-            scores.add((double) random.nextDouble() * maxScore);
-//            scores.add((double) i);
-        }
-        GraphPanel mainPanel = new GraphPanel(scores);
-        mainPanel.setPreferredSize(new Dimension(800, 600));
-        JFrame frame = new JFrame("DrawGraph");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(mainPanel);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGui();
-            }
-        });
+    public void setScores(List<Double> scores) {
+        this.scores = scores;
+        invalidate();
+        this.repaint();
     }
 }
 
@@ -198,3 +176,52 @@ public class Main {
 
     }
 }
+
+class ActivitySelection {
+    // Prints a maximum set of activities that can be done by a single
+    // person, one at a time.
+    //  n   -->  Total number of activities
+    //  s[] -->  An array that contains start time of all activities
+    //  f[] -->  An array that contains finish time of all activities
+    public static void printMaxActivities(int s[], int f[], int n) {
+        int i, j;
+
+        System.out.print("Following activities are selected : n");
+
+        // The first activity always gets selected
+        i = 0;
+        System.out.print(i + " ");
+
+        // Consider rest of the activities
+        for (j = 1; j < n; j++) {
+            // If this activity has start time greater than or
+            // equal to the finish time of previously selected
+            // activity, then select it
+            if (s[j] >= f[i]) {
+                System.out.print(j + " ");
+                i = j;
+            }
+        }
+    }
+
+    // driver program to test above function
+    public static void main(String[] args) {
+        /**
+         * int s[] =  {1, 3, 0, 5, 8, 5};
+         int f[] =  {2, 4, 6, 7, 9, 9};
+         int n = s.length;
+         */
+        int s[] = {255, 596};
+        int f[] = {2, 1};
+        System.out.println(255 / 2.0 + "\t" + 569 / 1);
+        int n = s.length;
+
+        // printMaxActivities(s, f, n);
+
+    }
+
+
+}
+
+
+

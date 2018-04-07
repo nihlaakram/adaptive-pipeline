@@ -23,9 +23,9 @@
         <configuration>
           <instructions>
             <Bundle-SymbolicName>org.wso2.extension.siddhi.window.uniquelengthbatch</Bundle-SymbolicName>
-            <Bundle-Name>lk.ac.iit.core.analyser.learner</Bundle-Name>
-            <Export-Package>lk.ac.iit.core.analyser.learner,
-                            lk.ac.iit.core.analyser.learner.*</Export-Package>
+            <Bundle-Name>lk.ac.iit.core.analyser.siddhi</Bundle-Name>
+            <Export-Package>lk.ac.iit.core.analyser.siddhi,
+                            lk.ac.iit.core.analyser.siddhi.*</Export-Package>
             <Import-Package>*;resolution:=optional</Import-Package>
             <DynamicImport-Package>*</DynamicImport-Package>
           </instructions>
@@ -95,7 +95,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>lk.ac.iit.usecase.usecase01.NeeMain</mainClass>
+              <mainClass>lk.ac.iit.usecase.usecase1.TestPipe</mainClass>
             </manifest>
           </archive>
         </configuration>

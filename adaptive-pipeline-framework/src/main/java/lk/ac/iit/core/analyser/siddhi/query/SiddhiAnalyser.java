@@ -1,11 +1,17 @@
-package lk.ac.iit.core.analyser.learner.query;
+package lk.ac.iit.core.analyser.siddhi.query;
 
+import lk.ac.iit.core.analyser.GreedyOptimizer;
+import lk.ac.iit.core.analyser.data.AnalysedData;
+import lk.ac.iit.core.analyser.data.AnalyserData;
+import lk.ac.iit.core.analyser.siddhi.extension.LatencyAttributeAggregator;
+import lk.ac.iit.core.analyser.siddhi.extension.TpsAttributeAggregator;
 import lk.ac.iit.core.monitor.Monitor;
-import lk.ac.iit.core.analyser.AnalyserData;
-import lk.ac.iit.core.analyser.learner.extension.LatencyAttributeAggregator;
-import lk.ac.iit.core.analyser.learner.extension.TpsAttributeAggregator;
 import lk.ac.iit.core.planner.Planner;
 import lk.ac.iit.core.planner.PlannerData;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
 import org.wso2.siddhi.core.SiddhiAppRuntime;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
@@ -13,6 +19,7 @@ import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.StreamCallback;
 
 public class SiddhiAnalyser {
+    private static final Logger log = Logger.getLogger(SiddhiAnalyser.class);
     private final InputHandler inputHandler;
     private final String query;
     private final String inStreamDefinition;
@@ -24,12 +31,14 @@ public class SiddhiAnalyser {
 
     /**
      * Constructor : creates the instance of the Siddhi analyser
+     *
      * @param monitorThreshold the number of events to be monitored
-     * @param noOfParameters the no of parameters analysed
-     * @param planner the planning component of the framework
-     * @param isScale should the application scale
+     * @param noOfParameters   the no of parameters analysed
+     * @param planner          the planning component of the framework
+     * @param isScale          should the application scale
      */
     public SiddhiAnalyser(int monitorThreshold, int noOfParameters, Planner planner, boolean isScale) {
+        BasicConfigurator.configure(new ConsoleAppender(new PatternLayout("[%p] - %m%n")));
         TpsAttributeAggregator.monitorThreshold = monitorThreshold;
         this.planner = planner;
         this.isScale = isScale;
@@ -65,7 +74,7 @@ public class SiddhiAnalyser {
     }
 
     /**
-     * Returns the analysed resilts from Siddhi
+     * Returns the analysed results from Siddhi
      *
      * @param noOfParameters
      */
@@ -75,21 +84,35 @@ public class SiddhiAnalyser {
             @Override
             public void receive(org.wso2.siddhi.core.event.Event[] events) {
                 for (Event ev : events) {
-                    System.out.println(ev);
+
 
                     double[] latency = new double[noOfParameters / 2];
                     double[] tps = new double[noOfParameters / 2];
 
+                    log.info("- - - - - - - - - - - - - - - - - - - -" +
+                            "\nAnalysis Component Logger, Performance values at :"
+                            + System.currentTimeMillis());
                     for (int i = 0; i < noOfParameters / 2; i++) {
                         latency[i] = (double) ev.getData()[i];
                         tps[i] = (double) ev.getData()[i + (noOfParameters / 2)];
+                        log.info("Performance for Stage" + (i + 1) + " -> latency : " + latency[i] + " ms , tps : " +
+                                "" + tps[i] + " req/sec");
                     }
 
-                    PlannerData plannerData = planner.plan(new AnalyserData(tps, latency));
-                    System.out.println(plannerData.isScalability() + "\t" + plannerData.getStageID() + "\t" + planner.getNoOfThread());
+
+                    AnalyserData analyserData = new AnalyserData(tps, latency);
+                    GreedyOptimizer optimizer = new GreedyOptimizer(analyserData);
+                    AnalysedData analysedData = optimizer.analyse();
+
+                    PlannerData plannerData = planner.plan(analysedData);
+
+
+                    log.info("- - - - - - - - - - - - - - - - - - - -" +
+                            "\nPlaning Component Logger, Scaling analysis and planing summary ");
+                    log.info("Scaling status : " + plannerData.isScalability() + "\nScalable Stage : " + plannerData.getStageID());
 
                     if (isScale && plannerData.isScalability()) {
-                            Monitor.getMonitor().getExecutor().executeScaling(plannerData.getStageID());
+                        Monitor.getMonitor().getExecutor().executeScaling(plannerData.getStageID());
 
                     }
 
@@ -101,6 +124,7 @@ public class SiddhiAnalyser {
 
     /**
      * Publishes events to Siddhi
+     *
      * @param event The event to be published
      */
     public void publish(Event event) {

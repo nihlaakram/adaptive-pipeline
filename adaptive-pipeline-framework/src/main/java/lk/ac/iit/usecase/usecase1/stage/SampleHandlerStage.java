@@ -24,7 +24,7 @@ public class SampleHandlerStage extends HandlerStage {
     public StageData onEvent(StageData data) {
 
         //this.count++;
-        System.out.println(this.id+"\t"+data.id);
+        System.out.println(this.id + "\t" + data.id);
 
         Message msg = (Message) data.getDataObject();
 

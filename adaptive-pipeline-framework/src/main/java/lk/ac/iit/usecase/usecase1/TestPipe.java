@@ -5,7 +5,6 @@ import lk.ac.iit.data.StageData;
 import lk.ac.iit.stage.HandlerStage;
 import lk.ac.iit.stage.ProducerStage;
 import lk.ac.iit.stage.TerminationStage;
-import lk.ac.iit.usecase.usecase1.stage.SampleProducerStage;
 import lk.ac.iit.usecase.usecase1.stage.SampleTerminationStage;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,14 +16,14 @@ public class TestPipe {
 
 
         int stageCount = 2;
-        int messageSize = 100000;
+        int messageSize = 10000;
         messageSize = messageSize / stageCount;
 
         int learningThreshold = 10000;//five hundred thousand
         int maxThreads = 10;
         boolean isScale = true;
         boolean isVisualize = false;
-        Monitor.initMonitor(stageCount, learningThreshold, maxThreads, isScale, isVisualize);
+        Monitor.initMonitor(stageCount, learningThreshold, maxThreads, isScale);
         Monitor monitor = Monitor.getMonitor();
 
 
@@ -38,7 +37,7 @@ public class TestPipe {
         HandlerStage stage2 = new Stage1(b2, b3, messageSize, 2);
         HandlerStage stage1 = new Stage2(b1, b2, messageSize, 1);
 
-        ProducerStage producer = new SampleProducerStage(stageCount, maxThreads, b1);
+        ProducerStage producer = new SampleStage(stageCount, maxThreads, b1);
 
 
         monitor.getExecutor().addProducer(producer);
@@ -51,14 +50,14 @@ public class TestPipe {
 
 }
 
- class Stage1 extends HandlerStage {
+class Stage1 extends HandlerStage {
 
     private AtomicInteger messageSize;
     private int id;
     private int count = 0;
 
     public Stage1(LinkedBlockingQueue<StageData> inQueue, LinkedBlockingQueue<StageData> outQueue,
-                              int messagesize, int id) {
+                  int messagesize, int id) {
         super(inQueue, outQueue, id);
         this.messageSize = new AtomicInteger(messagesize);
         this.id = id;
@@ -66,10 +65,9 @@ public class TestPipe {
 
     public StageData onEvent(StageData data) {
 
-        //this.count++;
-        //System.out.println(this.id+"\t"+data.id);
 
-        for (int i=0; i<10000; i++){
+        for (int i = 0; i < 1000000; i++) {
+
             //do nothing
         }
         return data;
@@ -94,12 +92,6 @@ class Stage2 extends HandlerStage {
 
     public StageData onEvent(StageData data) {
 
-        //this.count++;
-        //System.out.println(this.id+"\t"+data.id);
-
-//        for (int i=0; i<10000; i++){
-//            //do nothing
-//        }
         return data;
 
 

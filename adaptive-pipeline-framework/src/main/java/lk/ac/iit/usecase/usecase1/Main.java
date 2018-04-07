@@ -43,7 +43,7 @@ public class Main {
         int maxThreads = 10;
         boolean isScale = true;
         boolean isVisualize = false;
-        Monitor.initMonitor(stageCount, learningThreshold, maxThreads, isScale, isVisualize);
+        Monitor.initMonitor(stageCount, learningThreshold, maxThreads, isScale);
         Monitor monitor = Monitor.getMonitor();
 
 
@@ -72,7 +72,7 @@ public class Main {
         int maxThreads = 10;
         boolean isScale = true;
         boolean isVisualize = false;
-        Monitor.initMonitor(stageCount, learningThreshold, maxThreads, isScale, isVisualize);
+        Monitor.initMonitor(stageCount, learningThreshold, maxThreads, isScale);
         Monitor monitor = Monitor.getMonitor();
 
 
@@ -103,7 +103,7 @@ public class Main {
         int maxThreads = 10;
         boolean isScale = true;
         boolean isVisualize = false;
-        Monitor.initMonitor(stageCount, learningThreshold, maxThreads, isScale, isVisualize);
+        Monitor.initMonitor(stageCount, learningThreshold, maxThreads, isScale);
         Monitor monitor = Monitor.getMonitor();
 
 
@@ -137,7 +137,7 @@ public class Main {
         int maxThreads = 10;
         boolean isScale = true;
         boolean isVisualize = false;
-        Monitor.initMonitor(stageCount, learningThreshold, maxThreads, isScale, isVisualize);
+        Monitor.initMonitor(stageCount, learningThreshold, maxThreads, isScale);
         Monitor monitor = Monitor.getMonitor();
 
 

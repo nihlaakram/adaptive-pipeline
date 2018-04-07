@@ -1,4 +1,4 @@
-package lk.ac.iit.usecase.usecase01;
+package lk.ac.iit.usecase.builder.handler;
 
 import lk.ac.iit.data.PipeData;
 import lk.ac.iit.handler.ScalableWorker;
@@ -6,12 +6,14 @@ import org.apache.commons.text.RandomStringGenerator;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class SampleWorker extends ScalableWorker {
+public class XMLScalableHandler extends ScalableWorker {
     /**
      * Constructor
-     * See ScalableWorker#constructor
+     *
+     * @param inQueue  Input queue
+     * @param outQueue Output queue
      */
-    public SampleWorker(LinkedBlockingQueue<PipeData> inQueue, LinkedBlockingQueue<PipeData> outQueue) {
+    public XMLScalableHandler(LinkedBlockingQueue<PipeData> inQueue, LinkedBlockingQueue<PipeData> outQueue) {
         super(inQueue, outQueue);
     }
 

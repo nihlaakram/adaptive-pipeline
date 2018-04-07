@@ -1,6 +1,6 @@
 package lk.ac.iit.core.analyser;
 
-import lk.ac.iit.core.analyser.learner.query.SiddhiAnalyser;
+import lk.ac.iit.core.analyser.siddhi.query.SiddhiAnalyser;
 import lk.ac.iit.core.planner.Planner;
 import org.wso2.siddhi.core.event.Event;
 
@@ -17,11 +17,12 @@ public class Analyser {
 
 
     /**
-     *Constructor : creates the instance of the analyser
-     * @param noOfStages the number of stages in the pipeline
+     * Constructor : creates the instance of the analyser
+     *
+     * @param noOfStages       the number of stages in the pipeline
      * @param monitorThreshold the number of events to be monitored
-     * @param planner the planning component of the framework
-     * @param isScale should the system scale
+     * @param planner          the planning component of the framework
+     * @param isScale          should the system scale
      */
     public Analyser(int noOfStages, int monitorThreshold, Planner planner, boolean isScale) {
         this.monitorThreshold = monitorThreshold;
@@ -34,6 +35,7 @@ public class Analyser {
 
     /**
      * Records the time spent in stage and sends it to Siddhi for latency and tps calculations
+     *
      * @param timestamp the record of time spent in each stage
      */
     public void analyse(long... timestamp) {

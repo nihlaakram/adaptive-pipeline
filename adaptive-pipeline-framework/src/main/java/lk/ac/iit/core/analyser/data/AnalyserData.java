@@ -1,4 +1,4 @@
-package lk.ac.iit.core.analyser;
+package lk.ac.iit.core.analyser.data;
 
 public class AnalyserData {
 
@@ -8,6 +8,7 @@ public class AnalyserData {
 
     /**
      * Constructor : Creates an instance of the analysed data
+     *
      * @param tpsArr
      * @param avgLatency
      */
@@ -19,6 +20,7 @@ public class AnalyserData {
 
     /**
      * Returns the tps values of each stage
+     *
      * @return
      */
     public double[] getTpsArr() {
@@ -28,6 +30,7 @@ public class AnalyserData {
 
     /**
      * Returns the average latency values of each stage
+     *
      * @return
      */
     public double[] getAvgLatency() {

@@ -1,6 +1,7 @@
 package lk.ac.iit.core.planner;
 
-import lk.ac.iit.core.analyser.AnalyserData;
+import lk.ac.iit.core.analyser.data.AnalysedData;
+import lk.ac.iit.core.analyser.data.AnalyserData;
 
 public class Planner {
 
@@ -24,7 +25,8 @@ public class Planner {
     }
 
     public int getNoOfThread() {
-        return this.noOfThread = Thread.activeCount() - 1;
+        this.noOfThread = Thread.activeCount() - 1;
+        return this.noOfThread;
     }
 
     //check is the system can scale
@@ -84,6 +86,18 @@ public class Planner {
                 //return tps
                 return this.tpsScale(analyserData);
             }
+        }
+        return new PlannerData(false, -1);
+    }
+
+    public PlannerData plan(AnalysedData analysedData) {
+
+        //check if the system is capable of scaling
+        if (this.systemScale()) {
+            //check latency
+            PlannerData data = new PlannerData(analysedData.isScalability(), analysedData.getHandlerID());
+            return data;
+
         }
         return new PlannerData(false, -1);
     }
