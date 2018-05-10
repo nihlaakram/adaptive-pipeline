@@ -21,8 +21,6 @@ public class ProducerStage extends Thread {
     public void run() {
         addInput();
         addTermination();
-
-
     }
 
     private void addTermination() {
@@ -31,8 +29,6 @@ public class ProducerStage extends Thread {
                 StageData data = new TerminationMessage();
                 this.inQueue.put(data);
             }
-
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

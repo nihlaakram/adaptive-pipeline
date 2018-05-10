@@ -34,40 +34,49 @@ public class ScalableContextListener {
 
     /**
      * @param workerCount The number of workers to be brought down
-     * @return is scaling down successful
+     * @return is scaling down request successful
      */
     public boolean scaleDown(int workerCount) {
-        //log.info("Stopping thread: " + this.threads);
-        if (this.threads != null) {
 
-            try {
-                for (int i = 0; i < workerCount; i++) {
-                    this.threads[i].join();
+        //log.info("Reinitialze .");
+            if (this.threads != null) {
+                try {
+                    for (int i = 0; i < workerCount; i++) {
+                        this.threads[i].join();
 
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
-            log.info("Scaling down successful.");
-            return true;
+                //log.info("Scaling down successful.");
+                return true;
+            }
+            log.error("Scaling down failed.");
+            return false;
         }
-        log.error("Scaling down failed.");
-        return false;
+
+
+
+        /**
+         * @param workerCount the number of workers to be added
+         */
+    public void scaleUp(int workerCount) {
+        log.info("--------------------------------------");
+        log.info("Initializing scaling");
+        log.info("Requesting scaling upto : "+workerCount+" stages");
+        execute(workerCount);
+        log.info("Scaling up successful.");
     }
 
 
-    /**
-     * @param workerCount the number of workers to be added
-     */
-    public void scaleUp(int workerCount) {
+    public void execute(int workerCount) {
 
         this.queues = new LinkedBlockingQueue[workerCount - 1];
         this.runnable = new ScalableWorker[workerCount];
 
         Constructor constructor = null;
         try {
-            System.out.println(workerClass.getName());
             constructor = workerClass.getDeclaredConstructor(LinkedBlockingQueue.class, LinkedBlockingQueue.class);
             if (workerCount == 1) {
                 this.runnable[0] = (ScalableWorker) constructor.newInstance(this.INPUT_QUEUE, this.OUTPUT_QUEUE);
@@ -99,17 +108,23 @@ public class ScalableContextListener {
         this.threads = new Thread[workerCount];
 
         for (int i = 0; i < workerCount; i++) {
-            this.threads[i] = new Thread(this.runnable[i], "scaled-worker");
+            this.threads[i] = new Thread(this.runnable[i], "scaled-worker-"+i);
             this.threads[i].start();
 
         }
 
-        log.info("Scaling up successful.");
     }
 
 
     public void addWorker(Class workerClass) {
         this.workerClass = workerClass;
     }
+
+    public void start(int workerCount){
+        log.info("--------------------------------------");
+        log.info("Initializing Pipeline.");
+        execute(workerCount);
+    }
 }
+
 

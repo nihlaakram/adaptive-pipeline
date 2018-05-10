@@ -94,7 +94,6 @@ public class Planner {
 
         //check if the system is capable of scaling
         if (this.systemScale()) {
-            //check latency
             PlannerData data = new PlannerData(analysedData.isScalability(), analysedData.getHandlerID());
             return data;
 

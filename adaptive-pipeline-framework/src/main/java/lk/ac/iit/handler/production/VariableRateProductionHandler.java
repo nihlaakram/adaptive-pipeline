@@ -32,14 +32,29 @@ public class VariableRateProductionHandler implements Runnable {
         this.model = model;
     }
 
+    private void generate (int sleep, int messageCount){
+        for (int i = 0; i < messageCount; i++) {
+            if (i % 100 == 0) {
+                try {
+                    Thread.sleep(sleep / 10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            populate();
+        }
+    }
+
     @Override
     public void run() {
 
 
         try {
+
+
             //workload 1000req/sec
-            int sleep_1 = 1000;
-            for (int i = 0; i < this.messageCount; i++) {
+            int sleep_1 = 100000;
+            for (int i = 0; i < 5000; i++) {
                 if (i != 0 && i % 100 == 0) {
                     Thread.sleep(sleep_1 / 10);
                 }
@@ -48,10 +63,10 @@ public class VariableRateProductionHandler implements Runnable {
             this.inQueue.put(new XMLMessage(-1, null, null, this.workload));
 
             boolean init = this.listener.scaleDown(1);
-            this.workers = model.getWorkers((1000 / (sleep_1 / 1000)), this.workload);
+            this.workers = model.getWorkers(10, this.workload);
             if (init) {
                 this.listener.scaleUp(this.workers);
-                for (int i = 0; i < this.messageCount; i++) {
+                for (int i = 0; i < 5000; i++) {
                     if (i != 0 && i % 100 == 0) {
                         Thread.sleep(sleep_1 / 10);
                     }
@@ -68,8 +83,8 @@ public class VariableRateProductionHandler implements Runnable {
             System.out.println("Change in workload -----------");
             this.workers = 1;
             this.listener.scaleUp(this.workers);
-            int sleep_2 = 100000;
-            for (int i = 0; i < 5000; i++) {
+            int sleep_2 = 1000;
+            for (int i = 0; i < 10000; i++) {
                 if (i != 0 && i % 100 == 0) {
 
                     Thread.sleep(sleep_2 / 10);
@@ -79,10 +94,10 @@ public class VariableRateProductionHandler implements Runnable {
             this.inQueue.put(new XMLMessage(-1, null, null, this.workload));
 
             init = this.listener.scaleDown(this.workers);
-            this.workers = model.getWorkers((1000 / (sleep_2 / 1000)), this.workload);
+            this.workers = model.getWorkers(1000, this.workload);
             if (init) {
                 this.listener.scaleUp(this.workers);
-                for (int i = 0; i < 5000; i++) {
+                for (int i = 0; i < 10000; i++) {
                     if (i != 0 && i % 100 == 0) {
                         Thread.sleep(sleep_2 / 10);
                     }

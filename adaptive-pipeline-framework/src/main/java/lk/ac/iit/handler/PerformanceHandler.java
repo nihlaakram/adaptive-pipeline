@@ -48,12 +48,13 @@ public class PerformanceHandler implements Runnable {
                 }
 
                 if (msg.getTimestamp() == WorkLoadData.scale()) {
+
                     calculatePerformance(totalLatency);
-                    totalLatency = 0;
+//                    totalLatency = 0;
                 } else if (msg.getTimestamp() == WorkLoadData.termination()) {
                     calculatePerformance(totalLatency);
                     //display
-                    Application.launch(MainFX.class);
+                    //Application.launch(MainFX.class);
                     break;
                 } else {
                     this.messageCount++;
@@ -92,16 +93,11 @@ public class PerformanceHandler implements Runnable {
      * @param totalLatency the cumulative latency of the application
      */
     private void calculatePerformance(long totalLatency) {
-
         long endTime = System.currentTimeMillis();
         double latency = totalLatency / this.messageCount;
         double runTime = (endTime - this.startTime) / 1000.0;
-
         double throughput = this.messageCount / runTime;
-
         logPerformance(latency, throughput);
-
-
         this.messageCount = 0;
         this.startTime = System.currentTimeMillis();
 
@@ -114,9 +110,31 @@ public class PerformanceHandler implements Runnable {
      * @param throughput throughput of the application
      */
     private void logPerformance(double avgLatency, double throughput) {
-        log.debug("Latency : " + avgLatency + " milli sec ");
+        log.info("--------------------------------------");
+        log.info("Latency : " + avgLatency + " milli sec ");
         log.info("TPS :" + throughput + " req per sec");
         this.performanceReport.add(new AnalyserReport(avgLatency, throughput));
+        if(this.performanceReport.size()%2==0){
+            int bef = this.performanceReport.size()-2;
+            int af = bef+1;
+
+            double befTps = this.performanceReport.get(bef).getTps();
+            double afTps = this.performanceReport.get(af).getTps();
+
+            double befLat = this.performanceReport.get(bef).getAvgLatency();
+            double afLat = this.performanceReport.get(af).getAvgLatency();
+
+            double befRat = (befTps/befLat);
+            double afRat = (afTps/afLat);
+
+            double tpsPerc= ((afTps-befTps)/befTps)*100;
+            double latPerc = ((befLat-afLat)/befLat)*100;
+            double ratPerc = ((befRat-afRat)/befRat)*100;
+
+            log.info("Effect on TPS : " +tpsPerc+ "%");
+            log.info("Effect on Latency : " +latPerc+ "%");
+            log.info("Effect on overall performance : " +ratPerc+ "%");
+        }
     }
 }
 

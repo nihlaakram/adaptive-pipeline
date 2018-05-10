@@ -29,9 +29,8 @@ public class TerminationStage implements Runnable {
                         onEvent(data);
                         monitor.setTimestamp(data.getTimestamp());
                     }
-
                 } catch (NullPointerException e) {
-                    //do nothing
+                    //e.printStackTrace();
                 }
             }
         }

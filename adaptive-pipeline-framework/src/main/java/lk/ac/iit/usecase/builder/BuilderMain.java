@@ -17,7 +17,7 @@ public class BuilderMain {
         //no of stages
         int stageCount = 1;
 
-////        the message size
+//        the message size
 //        int messageSize = Integer.parseInt(args[1]);
 //
 //        //the no. of messages to use

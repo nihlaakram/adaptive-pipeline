@@ -44,24 +44,19 @@ public class HandlerStage implements Cloneable, Runnable {
                         terminate();
                         break;
                     }
-
                 } catch (NullPointerException e) {
-                    //do nothing
+                    //e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }
-
-
     }
 
     private void terminate() {
         try {
             StageData data = new TerminationMessage();
             this.outQueue.put(data);
-
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

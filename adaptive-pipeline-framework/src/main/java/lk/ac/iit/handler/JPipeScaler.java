@@ -92,16 +92,16 @@ public class JPipeScaler {
 
     private void handleMonitor() {
         this.monitor.getListener().addWorker(this.workerClass);
-        this.monitor.getListener().scaleUp(this.workercount);
+        this.monitor.getListener().start(this.workercount);
     }
 
     private void initPerformanceHandler() {
-        Thread t1 = new Thread(this.performanceHandler, "performance");
+        Thread t1 = new Thread(this.performanceHandler, "performance-handler");
         t1.start();
     }
 
     private void initProductionHandler() {
-        Thread t2 = new Thread(this.prod, "producer");
+        Thread t2 = new Thread(this.prod, "production-handler");
         t2.start();
     }
 

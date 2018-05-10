@@ -38,7 +38,6 @@ public class ConstantRateProductionHandler implements Runnable {
 
         try {
 
-            System.out.println(workers);
             for (int i = 0; i < messageCount; i++) {
                 populate();
             }
@@ -46,7 +45,7 @@ public class ConstantRateProductionHandler implements Runnable {
 
             boolean destroyed = this.listner.scaleDown(this.workers);
             this.workers = model.getWorkers(this.workload);
-            System.out.println(workers);
+            //System.out.println(workers);
             if (destroyed) {
                 this.listner.scaleUp(this.workers);
                 for (int i = 0; i < messageCount; i++) {

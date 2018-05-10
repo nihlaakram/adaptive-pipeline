@@ -95,7 +95,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>lk.ac.iit.usecase.usecase1.TestPipe</mainClass>
+              <mainClass>lk.ac.iit.usecase.builder.BuilderMain</mainClass>
             </manifest>
           </archive>
         </configuration>
