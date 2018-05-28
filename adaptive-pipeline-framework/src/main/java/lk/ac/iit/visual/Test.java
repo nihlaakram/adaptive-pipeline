@@ -25,7 +25,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ac.iit.core.analyser.data.AnalyserReport;
 import lk.ac.iit.visual.data.ExternalReader;
-import lk.ac.iit.visual.data.PerformanceInstance;
 import lk.ac.iit.visual.data.PerformanceLogger;
 
 public class Test extends Application {
