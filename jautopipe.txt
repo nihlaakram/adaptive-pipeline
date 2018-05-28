@@ -1,0 +1,16 @@
+- - - - - - - - - - - - - - - - - - - -
+Analysis Component Logger, Performance values at :1527535464475
+Performance for Stage1 -> latency : 1385.0952 ms , tps : 714285.7142857143 req/sec
+Performance for Stage2 -> latency : 1.3531 ms , tps : 6993.006993006993 req/sec- - - - - - - - - - - - - - - - - - - -
+Planing Component Logger, Scaling analysis and planing summary 
+Scaling status : true
+Scalable Stage : 1
+- - - - - - - - - - - - - - - - - - - -
+Executing Component Logger
+Successfully Scaled Stage1- - - - - - - - - - - - - - - - - - - -
+Analysis Component Logger, Performance values at :1527535464535
+Performance for Stage1 -> latency : 1449.969 ms , tps : 1666666.6666666667 req/sec
+Performance for Stage2 -> latency : 0.5105 ms , tps : 5000000.0 req/sec
+Effect on TPS : 23733.333333333336%
+Effect on Latency : -4.618361896364987%
+Effect on overall performance : 22681.214407603373%

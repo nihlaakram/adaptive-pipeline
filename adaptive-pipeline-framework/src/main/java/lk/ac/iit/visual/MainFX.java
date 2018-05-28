@@ -1,13 +1,17 @@
 package lk.ac.iit.visual;
 
 
+import javafx.animation.FillTransition;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -26,10 +30,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import lk.ac.iit.core.analyser.Analyser;
 import lk.ac.iit.core.analyser.data.AnalysedData;
 import lk.ac.iit.core.analyser.data.AnalyserReport;
@@ -56,16 +64,81 @@ public class MainFX extends Application {
 
         HBox hbox = addHBox();
         border.setTop(hbox);
-       border.setLeft(addSpace());
+        border.setLeft(addSpace());
 
         border.setRight(addGridPane());
 
-        border.setCenter(addVBox());
+        border.setCenter(addAnimation());
+
+        BorderPane border1 = new BorderPane();
+        border1.setCenter(addVBox());
+        border.setBottom(border1);
 
         Scene scene = new Scene(border);
         stage.setScene(scene);
-        stage.setTitle("Layout Sample");
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+
+
+
+        stage.setWidth(1500);
+        stage.setHeight(900);
+        stage.setTitle("JAutoPipe");
         stage.show();
+    }
+
+    private Node addAnimation() {
+
+        Polygon rectangle1 = new Polygon();
+        Polygon rectangle2 = new Polygon();
+
+        //lines
+        Polygon line1 = new Polygon();
+        Polygon line2 = new Polygon();
+
+        //Adding coordinates to the hexagon
+        rectangle1.getPoints().addAll(new Double[]{
+                200.0, 50.0,
+                300.0, 50.0,
+                300.0, 100.0,
+                200.0, 100.0
+        });
+        rectangle2.getPoints().addAll(new Double[]{
+                500.0, 50.0,
+                600.0, 50.0,
+                600.0, 100.0,
+                500.0, 100.0
+        });
+        //Adding coordinates to the hexagon
+        line1.getPoints().addAll(new Double[]{
+                50.0, 73.0,
+                200.0, 73.0,
+                200.0, 77.0,
+                50.0, 77.0
+        });
+        line2.getPoints().addAll(new Double[]{
+                50.0, 73.0,
+                400.0, 173.0,
+                400.0, 177.0,
+                50.0, 77.0
+        });
+        //Setting the fill color for the hexagon
+
+        rectangle2.setFill(Color.BLUE);
+        line1.setFill(Color.BLACK);
+        line2.setFill(Color.BLACK);
+        //Creating a Group object
+        Group root = new Group(rectangle1, rectangle2, line1, line2);
+
+        //transition
+
+        FillTransition ft = new FillTransition(Duration.millis(3000), rectangle1, Color.BLUE, Color.RED);
+        ft.setCycleCount(4);
+        ft.setAutoReverse(true);
+
+        ft.play();
+
+        return root;
     }
 
     private HBox addHBox() {
@@ -77,6 +150,9 @@ public class MainFX extends Application {
 
         Text text = new Text("JPipe: Performance Analysis Report");
         text.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+
+
+
 
         hbox.getChildren().add(text);
         return hbox;
