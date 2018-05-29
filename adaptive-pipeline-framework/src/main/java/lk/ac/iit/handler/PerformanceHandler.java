@@ -6,10 +6,10 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
@@ -21,12 +21,11 @@
 
 package lk.ac.iit.handler;
 
-import javafx.application.Application;
 import lk.ac.iit.core.analyser.data.AnalyserReport;
 import lk.ac.iit.data.PipeData;
 import lk.ac.iit.data.WorkLoadData;
 import lk.ac.iit.usecase.builder.handler.XMLMessage;
-import lk.ac.iit.visual.MainFX;
+import lk.ac.iit.visual.data.logger.PerfLogger;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public class PerformanceHandler implements Runnable {
     private BlockingQueue<PipeData> inQueue;
     private int messageCount;
     private long startTime;
-
+    private PerfLogger logger = PerfLogger.getLogger();
     private List<AnalyserReport> performanceReport = new ArrayList<>();
 
 
@@ -81,23 +80,6 @@ public class PerformanceHandler implements Runnable {
                     this.messageCount++;
                     totalLatency += (System.currentTimeMillis() - msg.getTimestamp());
 
-//                    TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//                    Transformer transformer = null;
-//                    try {
-//                        transformer = transformerFactory.newTransformer();
-//                    } catch (TransformerConfigurationException e) {
-//                        e.printStackTrace();
-//                    }
-//                    DOMSource source = new DOMSource(msg.getMessage());
-//
-//                    StreamResult result = new StreamResult(System.out);
-//                    System.out.println();
-//
-//                    try {
-//                        transformer.transform(source, result);
-//                    } catch (TransformerException e) {
-//                        e.printStackTrace();
-//                    }
                 }
 
 
@@ -134,10 +116,14 @@ public class PerformanceHandler implements Runnable {
         log.info("--------------------------------------");
         log.info("Latency : " + avgLatency + " milli sec ");
         log.info("TPS :" + throughput + " req per sec");
+        this.logger.log("\n--------------------------------------"
+                + "\nLatency : " + avgLatency + " milli sec " +
+                "\nTPS :" + throughput + " req per sec");
         this.performanceReport.add(new AnalyserReport(avgLatency, throughput));
-        if(this.performanceReport.size()%2==0){
-            int bef = this.performanceReport.size()-2;
-            int af = bef+1;
+
+        if (this.performanceReport.size() % 2 == 0) {
+            int bef = this.performanceReport.size() - 2;
+            int af = bef + 1;
 
             double befTps = this.performanceReport.get(bef).getTps();
             double afTps = this.performanceReport.get(af).getTps();
@@ -145,16 +131,18 @@ public class PerformanceHandler implements Runnable {
             double befLat = this.performanceReport.get(bef).getAvgLatency();
             double afLat = this.performanceReport.get(af).getAvgLatency();
 
-            double befRat = (befTps/befLat);
-            double afRat = (afTps/afLat);
+            double befRat = (befTps / befLat);
+            double afRat = (afTps / afLat);
 
-            double tpsPerc= ((afTps-befTps)/befTps)*100;
-            double latPerc = ((befLat-afLat)/befLat)*100;
-            double ratPerc = ((befRat-afRat)/befRat)*100;
+            double tpsPerc = ((afTps - befTps) / befTps) * 100;
+            double latPerc = ((befLat - afLat) / befLat) * 100;
+            double ratPerc = ((befRat - afRat) / befRat) * 100;
 
-            log.info("Effect on TPS : " +tpsPerc+ "%");
-            log.info("Effect on Latency : " +latPerc+ "%");
-            log.info("Effect on overall performance : " +ratPerc+ "%");
+            log.info("Effect on TPS : " + tpsPerc + "%");
+            log.info("Effect on Latency : " + latPerc + "%");
+            log.info("Effect on overall performance : " + ratPerc + "%");
+
+            this.logger.close();
         }
     }
 }

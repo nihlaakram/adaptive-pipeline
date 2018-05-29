@@ -6,10 +6,10 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
@@ -24,7 +24,7 @@ package lk.ac.iit.core.executor;
 import lk.ac.iit.stage.HandlerStage;
 import lk.ac.iit.stage.ProducerStage;
 import lk.ac.iit.stage.TerminationStage;
-import lk.ac.iit.visual.data.ExternalLogger;
+import lk.ac.iit.visual.data.logger.ExternalLogger;
 import org.apache.log4j.Logger;
 
 public class Executor {
@@ -61,7 +61,7 @@ public class Executor {
                 "\nExecuting Component Logger");
         log.info("Successfully Scaled Stage" + stageID);
         ExternalLogger.getLogger().log("\n- - - - - - - - - - - - - - - - - - - -" +
-                "\nExecuting Component Logger"+
+                "\nExecuting Component Logger" +
                 "\nSuccessfully Scaled Stage" + stageID);
         this.execCount++;
 

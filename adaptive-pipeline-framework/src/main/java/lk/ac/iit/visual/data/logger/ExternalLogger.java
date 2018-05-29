@@ -19,50 +19,67 @@
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package lk.ac.iit.stage;
+package lk.ac.iit.visual.data.logger;
 
-import lk.ac.iit.data.StageData;
-import lk.ac.iit.data.TerminationMessage;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+public class ExternalLogger {
 
-public class ProducerStage extends Thread {
-    private BlockingQueue<StageData> inQueue;
-    private int maxThreads;
-    private int noOfStages;
+    private static ExternalLogger logger = null;
+    private String fileName;
+    private BufferedWriter bufferedWriter = null;
+    private FileWriter fileWriter = null;
 
-    public ProducerStage(int noOfStages, int maxThreads, LinkedBlockingQueue<StageData> in) {
-        this.inQueue = in;
-        this.maxThreads = maxThreads;
-        this.noOfStages = noOfStages;
-    }
+    private ExternalLogger() {
 
-    @Override
-    public void run() {
-        addInput();
-        addTermination();
-    }
-
-    private void addTermination() {
+        this.fileName = "jautopipe.txt";
         try {
-            for (int i = 0; i < this.maxThreads; i++) {
-                StageData data = new TerminationMessage();
-                this.inQueue.put(data);
-            }
-        } catch (InterruptedException e) {
+            this.fileWriter = new FileWriter(this.fileName);
+            this.bufferedWriter = new BufferedWriter(fileWriter);
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
-    public void addInput() {
+    public synchronized static ExternalLogger getLogger() {
+        if (logger == null) {
+            logger = new ExternalLogger();
+        }
+        return logger;
     }
 
-    public BlockingQueue<StageData> getInQueue() {
-        return this.inQueue;
+    public void log(String content) {
+
+
+        try {
+
+            bufferedWriter.write(content);
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
     }
 
-    public int getNoOfStages() {
-        return this.noOfStages;
+    public void close() {
+
+        try {
+
+            if (this.bufferedWriter != null)
+                this.bufferedWriter.close();
+
+            if (this.fileWriter != null)
+                this.fileWriter.close();
+
+        } catch (IOException ex) {
+
+            ex.printStackTrace();
+
+        }
     }
 }

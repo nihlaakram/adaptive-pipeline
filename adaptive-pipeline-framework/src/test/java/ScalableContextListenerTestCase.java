@@ -1,13 +1,5 @@
 import lk.ac.iit.core.executor.ScalableContextListener;
-import lk.ac.iit.data.PipeData;
-import lk.ac.iit.usecase.usecase01.XMLMessage;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
 
 public class ScalableContextListenerTestCase {

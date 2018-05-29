@@ -1,8 +1,28 @@
-package lk.ac.iit.visual;
+/**
+ * Copyright 2018, Nihla Akram
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ * <p>
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ * <p>
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ * OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+package lk.ac.iit.visual.plot;
 
 import javafx.animation.FillTransition;
 import javafx.animation.SequentialTransition;
-import javafx.animation.StrokeTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -24,12 +44,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ac.iit.core.analyser.data.AnalyserReport;
-import lk.ac.iit.visual.data.ExternalReader;
+import lk.ac.iit.visual.data.reader.ExternalReader;
 import lk.ac.iit.visual.data.PerformanceLogger;
 
-public class Test extends Application {
-
-    TableView<AnalyserReport> table;
+public class Visualizer_Type1 extends Application {
 
 
     @Override
@@ -48,7 +66,7 @@ public class Test extends Application {
         border.setRight(addReport(reader));
 
         //add animation component
-        border.setCenter(addAnimation1(reader));
+        border.setCenter(addAnimation1());
 
         //graphs of the two tps and latency variation
         border.setBottom(addGraphs(reader));
@@ -64,7 +82,7 @@ public class Test extends Application {
 
     }
 
-    private Node addAnimation1(ExternalReader reader) {
+    private Node addAnimation1() {
 
         //initial system
         Text text = new Text("Before Scaling");
@@ -184,10 +202,9 @@ public class Test extends Application {
         fline5.setFill(Color.BLACK);
 
 
-
         //Creating a Group object
         Group root = new Group(text, rectangle1, rectangle2, line1, line2, line3,
-                text1, frectangle1,frectangle2, frectangle3, fline1, fline2, fline3,
+                text1, frectangle1, frectangle2, frectangle3, fline1, fline2, fline3,
                 fline4, fline5);
 
         //transition
@@ -264,7 +281,6 @@ public class Test extends Application {
         ft.setAutoReverse(false);
 
 
-
         FillTransition ft1 = new FillTransition(Duration.millis(3000), rectangle3, Color.WHITE, Color.BLUE);
         ft1.setCycleCount(1);
         ft1.setAutoReverse(false);
@@ -300,7 +316,6 @@ public class Test extends Application {
     }
 
 
-
     private VBox addReport(ExternalReader reader) {
 
         //manipulate data
@@ -310,34 +325,33 @@ public class Test extends Application {
         double afTps = getMinValue(logger.getAfter().get(0).getPerfNumbers()[1],
                 logger.getAfter().get(1).getPerfNumbers()[1]);
 
-        double befLat = logger.getBefore().get(0).getPerfNumbers()[0]+
+        double befLat = logger.getBefore().get(0).getPerfNumbers()[0] +
                 logger.getBefore().get(1).getPerfNumbers()[0];
-        double  afLat = logger.getAfter().get(0).getPerfNumbers()[0]+
+        double afLat = logger.getAfter().get(0).getPerfNumbers()[0] +
                 logger.getAfter().get(1).getPerfNumbers()[0];
 
 
-        double befRat = (befTps/befLat);
-        double afRat = (afTps/afLat);
+        double befRat = (befTps / befLat);
+        double afRat = (afTps / afLat);
 
-        double tpsPerc= ((afTps-befTps)/befTps)*100;
-        double latPerc = ((befLat-afLat)/befLat)*100;
-        double ratPerc = ((afRat-befRat)/befRat)*100;
+        double tpsPerc = ((afTps - befTps) / befTps) * 100;
+        double latPerc = ((befLat - afLat) / befLat) * 100;
+        double ratPerc = ((afRat - befRat) / befRat) * 100;
 
         Text title = new Text("Performance Impact");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
-        Text text = new Text("\n\nNet TPS Before Scaling : " +Math.round(befTps)+ " req/sec");
-        Text text1 = new Text("Net TPS After Scaling : " +Math.round(afTps)+ " req/sec\n--");
+        Text text = new Text("\n\nNet TPS Before Scaling : " + Math.round(befTps) + " req/sec");
+        Text text1 = new Text("Net TPS After Scaling : " + Math.round(afTps) + " req/sec\n--");
 
-        Text text2 = new Text("\nNet Latency Before Scaling : " +Math.round(befLat)+ " ms");
-        Text text3 = new Text("Net Latency After Scaling : " +Math.round(afLat)+ " ms\n--");
+        Text text2 = new Text("\nNet Latency Before Scaling : " + Math.round(befLat) + " ms");
+        Text text3 = new Text("Net Latency After Scaling : " + Math.round(afLat) + " ms\n--");
 
-        Text text4 = new Text("\nEffect on TPS : " +Math.round(tpsPerc)+ "%");
+        Text text4 = new Text("\nEffect on TPS : " + Math.round(tpsPerc) + "%");
 
-        Text text5 = new Text("Effect on Latency : " +Math.round(latPerc)+ "%");
+        Text text5 = new Text("Effect on Latency : " + Math.round(latPerc) + "%");
 
-        Text text6 = new Text("Effect on overall performance : " +Math.round(ratPerc)+ "%");
-
+        Text text6 = new Text("Effect on overall performance : " + Math.round(ratPerc) + "%");
 
 
         VBox vBox = new VBox();
@@ -359,14 +373,12 @@ public class Test extends Application {
     private VBox addSpace() {
 
         VBox vbox = new VBox();
-        vbox.setPadding(new Insets(10,10,10,10));
+        vbox.setPadding(new Insets(10, 10, 10, 10));
         vbox.setSpacing(8);
         vbox.setStyle("-fx-background-color: #ffffff;");
 
         return vbox;
     }
-
-
 
 
     private GridPane addGraphs(ExternalReader reader) {
@@ -378,9 +390,9 @@ public class Test extends Application {
         double afTps = getMinValue(logger.getAfter().get(0).getPerfNumbers()[1],
                 logger.getAfter().get(1).getPerfNumbers()[1]);
 
-        double befLat = logger.getBefore().get(0).getPerfNumbers()[0]+
+        double befLat = logger.getBefore().get(0).getPerfNumbers()[0] +
                 logger.getBefore().get(1).getPerfNumbers()[0];
-        double  afLat = logger.getAfter().get(0).getPerfNumbers()[0]+
+        double afLat = logger.getAfter().get(0).getPerfNumbers()[0] +
                 logger.getAfter().get(1).getPerfNumbers()[0];
 
         //visualize
@@ -395,8 +407,8 @@ public class Test extends Application {
         xAxis.setLabel("No. of requests");
         yAxis.setLabel("TPS (req/sec)");
         //creating the chart
-        final LineChart<String,Number> lineChart =
-                new LineChart<>(xAxis,yAxis);
+        final LineChart<String, Number> lineChart =
+                new LineChart<>(xAxis, yAxis);
 
         lineChart.setTitle("TPS Monitoring");
 
@@ -422,8 +434,8 @@ public class Test extends Application {
         xAxis1.setLabel("No. of requests");
         yAxis1.setLabel("Latency (ms)");
 
-        final LineChart<String,Number> lineChart1 =
-                new LineChart<>(xAxis1,yAxis1);
+        final LineChart<String, Number> lineChart1 =
+                new LineChart<>(xAxis1, yAxis1);
 
         lineChart1.setTitle("Latency Monitoring");
 
@@ -445,7 +457,7 @@ public class Test extends Application {
     }
 
     private double getMinValue(double t1, double t2) {
-        if (t1>t2){
+        if (t1 > t2) {
             return t2;
         }
         return t1;

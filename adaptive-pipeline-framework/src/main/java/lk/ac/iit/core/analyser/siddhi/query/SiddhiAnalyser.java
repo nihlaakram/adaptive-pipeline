@@ -6,10 +6,10 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
@@ -29,7 +29,7 @@ import lk.ac.iit.core.analyser.siddhi.extension.TpsAttributeAggregator;
 import lk.ac.iit.core.monitor.Monitor;
 import lk.ac.iit.core.planner.Planner;
 import lk.ac.iit.core.planner.PlannerData;
-import lk.ac.iit.visual.data.ExternalLogger;
+import lk.ac.iit.visual.data.logger.ExternalLogger;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
@@ -45,6 +45,7 @@ import java.util.List;
 
 public class SiddhiAnalyser {
     private static final Logger log = Logger.getLogger(SiddhiAnalyser.class);
+    private static List<AnalyserData> analyserDataList = new ArrayList<AnalyserData>();
     private final InputHandler inputHandler;
     private final String query;
     private final String inStreamDefinition;
@@ -52,8 +53,7 @@ public class SiddhiAnalyser {
     private SiddhiAppRuntime siddhiAppRuntime;
     private Planner planner;
     private boolean isScale;
-    private int plannerCount =0;
-    private static List<AnalyserData> analyserDataList = new ArrayList<AnalyserData>();
+    private int plannerCount = 0;
 
 
     /**
@@ -133,9 +133,8 @@ public class SiddhiAnalyser {
                     }
 
 
-
                     AnalyserData analyserData = new AnalyserData(tps, latency);
-                    
+
                     GreedyOptimizer optimizer = new GreedyOptimizer(analyserData);
 
                     AnalysedData analysedData = optimizer.analyse();
@@ -152,9 +151,9 @@ public class SiddhiAnalyser {
                     log.info("Scaling status : " + plannerData.isScalability() + "\nScalable Stage : " +
                             plannerData.getStageID());
 
-                    if(plannerCount<1){
+                    if (plannerCount < 1) {
                         ExternalLogger.getLogger().log("- - - - - - - - - - - - - - - - - - - -" +
-                                "\nPlaning Component Logger, Scaling analysis and planing summary "+
+                                "\nPlaning Component Logger, Scaling analysis and planing summary " +
                                 "\nScaling status : " + plannerData.isScalability() + "\nScalable Stage : " +
                                 plannerData.getStageID());
 
@@ -168,45 +167,44 @@ public class SiddhiAnalyser {
                     plannerCount++;
 
 
-
                 }
             }
         });
     }
 
     private void reportPerformance() {
-        if(analyserDataList.size()%2==0){
-            int bef = analyserDataList.size()-2;
-            int af = bef+1;
+        if (analyserDataList.size() % 2 == 0) {
+            int bef = analyserDataList.size() - 2;
+            int af = bef + 1;
             int stageCount = analyserDataList.get(af).getAvgLatency().length;
 
             double befTps = getMinValue(analyserDataList.get(bef).getTpsArr());
             double afTps = getMinValue(analyserDataList.get(af).getTpsArr());
 
             double befLat = 0;
-            double afLat =  0;
+            double afLat = 0;
 
-            for(int i =0; i<stageCount; i++){
+            for (int i = 0; i < stageCount; i++) {
 
-                 befLat += analyserDataList.get(bef).getAvgLatency()[i];
-                 afLat +=  analyserDataList.get(af).getAvgLatency()[i];
+                befLat += analyserDataList.get(bef).getAvgLatency()[i];
+                afLat += analyserDataList.get(af).getAvgLatency()[i];
             }
 
-            double befRat = (befTps/befLat);
-            double afRat = (afTps/afLat);
+            double befRat = (befTps / befLat);
+            double afRat = (afTps / afLat);
 
-            double tpsPerc= ((afTps-befTps)/befTps)*100;
-            double latPerc = ((befLat-afLat)/befLat)*100;
-            double ratPerc = ((afRat-befRat)/befRat)*100;
+            double tpsPerc = ((afTps - befTps) / befTps) * 100;
+            double latPerc = ((befLat - afLat) / befLat) * 100;
+            double ratPerc = ((afRat - befRat) / befRat) * 100;
 
-            log.info("Effect on TPS : " +tpsPerc+ "%");
-            log.info("Effect on Latency : " +latPerc+ "%");
-            log.info("Effect on overall performance : " +ratPerc+ "%");
+            log.info("Effect on TPS : " + tpsPerc + "%");
+            log.info("Effect on Latency : " + latPerc + "%");
+            log.info("Effect on overall performance : " + ratPerc + "%");
 
 
-            ExternalLogger.getLogger().log("\nEffect on TPS : " +tpsPerc+ "%");
-            ExternalLogger.getLogger().log("\nEffect on Latency : " +latPerc+ "%");
-            ExternalLogger.getLogger().log("\nEffect on overall performance : " +ratPerc+ "%");
+            ExternalLogger.getLogger().log("\nEffect on TPS : " + tpsPerc + "%");
+            ExternalLogger.getLogger().log("\nEffect on Latency : " + latPerc + "%");
+            ExternalLogger.getLogger().log("\nEffect on overall performance : " + ratPerc + "%");
             ExternalLogger.getLogger().close();
         } else {
 

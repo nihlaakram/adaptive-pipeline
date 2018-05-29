@@ -7,9 +7,7 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -17,18 +15,12 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -38,11 +30,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lk.ac.iit.core.analyser.Analyser;
-import lk.ac.iit.core.analyser.data.AnalysedData;
 import lk.ac.iit.core.analyser.data.AnalyserReport;
-
-import static com.sun.org.apache.xml.internal.serializer.Version.getProduct;
 
 
 /**
@@ -78,7 +66,6 @@ public class MainFX extends Application {
         stage.setScene(scene);
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
-
 
 
         stage.setWidth(1500);
@@ -152,8 +139,6 @@ public class MainFX extends Application {
         text.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
 
-
-
         hbox.getChildren().add(text);
         return hbox;
     }
@@ -166,7 +151,7 @@ public class MainFX extends Application {
 
         TableColumn<AnalyserReport, String> nameColumn = new TableColumn<>("BeforeScaling");
         nameColumn.setMinWidth(200);
-       // nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        // nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         //Price column
         TableColumn<AnalyserReport, Double> priceColumn = new TableColumn<>("After Scaling");
@@ -202,11 +187,11 @@ public class MainFX extends Application {
     }
 
 
-
-    public ObservableList<AnalyserReport> getPerformance(){
+    public ObservableList<AnalyserReport> getPerformance() {
         ObservableList<AnalyserReport> analysedData = FXCollections.observableArrayList();
         analysedData.add(new AnalyserReport(859.00, 20));
-        analysedData.add(new AnalyserReport(859.00, 20));;
+        analysedData.add(new AnalyserReport(859.00, 20));
+        ;
         //System.out.println(products.size());
         return analysedData;
     }
@@ -225,8 +210,8 @@ public class MainFX extends Application {
         xAxis.setLabel("No. of requests");
         yAxis.setLabel("TPS");
         //creating the chart
-        final LineChart<String,Number> lineChart =
-                new LineChart<>(xAxis,yAxis);
+        final LineChart<String, Number> lineChart =
+                new LineChart<>(xAxis, yAxis);
 
         lineChart.setTitle("TPS Monitoring");
         //defining a series
@@ -246,8 +231,8 @@ public class MainFX extends Application {
         xAxis1.setLabel("No. of requests");
         yAxis1.setLabel("TPS");
         //creating the chart
-        final LineChart<String,Number> lineChart1 =
-                new LineChart<>(xAxis1,yAxis1);
+        final LineChart<String, Number> lineChart1 =
+                new LineChart<>(xAxis1, yAxis1);
 
         lineChart1.setTitle("TPS Monitoring");
         //defining a series

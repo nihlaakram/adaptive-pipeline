@@ -6,10 +6,10 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
@@ -24,6 +24,7 @@ package lk.ac.iit.core.executor;
 import lk.ac.iit.data.PipeData;
 import lk.ac.iit.handler.ScalableWorker;
 import lk.ac.iit.usecase.builder.handler.XMLScalableHandler;
+import lk.ac.iit.visual.data.logger.PerfLogger;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Constructor;
@@ -39,6 +40,7 @@ public class ScalableContextListener {
     private ScalableWorker[] runnable = null;
     private LinkedBlockingQueue<PipeData>[] queues = null;
     private Class workerClass = XMLScalableHandler.class;
+    private PerfLogger logger = PerfLogger.getLogger();
 
     /**
      * Constructor
@@ -60,34 +62,38 @@ public class ScalableContextListener {
     public boolean scaleDown(int workerCount) {
 
         //log.info("Reinitialze .");
-            if (this.threads != null) {
-                try {
-                    for (int i = 0; i < workerCount; i++) {
-                        this.threads[i].join();
+        if (this.threads != null) {
+            try {
+                for (int i = 0; i < workerCount; i++) {
+                    this.threads[i].join();
 
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
-
-                //log.info("Scaling down successful.");
-                return true;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            log.error("Scaling down failed.");
-            return false;
+
+            //log.info("Scaling down successful.");
+            return true;
         }
+        log.error("Scaling down failed.");
+        return false;
+    }
 
 
-
-        /**
-         * @param workerCount the number of workers to be added
-         */
+    /**
+     * @param workerCount the number of workers to be added
+     */
     public void scaleUp(int workerCount) {
         log.info("--------------------------------------");
         log.info("Initializing scaling");
-        log.info("Requesting scaling upto : "+workerCount+" stages");
+        log.info("Requesting scaling upto : " + workerCount + " stages");
         execute(workerCount);
         log.info("Scaling up successful.");
+        this.logger.log("--------------------------------------"
+                + "\nInitializing scaling"
+                + "\nRequesting scaling upto : " + workerCount + " stages"
+                + "\nScaling up successful.");
+
     }
 
 
@@ -129,7 +135,7 @@ public class ScalableContextListener {
         this.threads = new Thread[workerCount];
 
         for (int i = 0; i < workerCount; i++) {
-            this.threads[i] = new Thread(this.runnable[i], "scaled-worker-"+i);
+            this.threads[i] = new Thread(this.runnable[i], "scaled-worker-" + i);
             this.threads[i].start();
 
         }
@@ -141,7 +147,7 @@ public class ScalableContextListener {
         this.workerClass = workerClass;
     }
 
-    public void start(int workerCount){
+    public void start(int workerCount) {
         log.info("--------------------------------------");
         log.info("Initializing Pipeline.");
         execute(workerCount);

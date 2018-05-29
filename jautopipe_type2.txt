@@ -1,0 +1,10 @@
+--------------------------------------
+Initializing scaling
+Requesting scaling upto : 2 stages
+Scaling up successful.
+--------------------------------------
+Latency : 8117.0 milli sec 
+TPS :555.895269331258 req per sec
+--------------------------------------
+Latency : 13643.0 milli sec 
+TPS :860.2890571231934 req per sec
